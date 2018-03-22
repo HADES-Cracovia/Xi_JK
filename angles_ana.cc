@@ -247,7 +247,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	Int_t vcnt=fCatFwDetCandSim->getEntries();
 	Int_t pcnt=fCatParticleCandSim->getEntries();
 	Int_t gknt=fCatGeantKine->getEntries();
-
+	Double_t tof;
 	//cout<<gknt<<endl;
 	
 
@@ -376,6 +376,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	      if(vectorcand_creationID!=0)//skip all particles different then from elementary reaction
 		continue;
 	    
+	    tof = fwdetstrawvec -> getTofRec();
+	    // if(tof == 0)
+	    //	    cout << " #tof: " << tof << endl;
+	    if(tof == 0)
+		continue;
+	    
 	    hCPChi2FW->Fill(fwdetstrawvec->getChi2());
 	    if(vectorcandID==14 && (vectorcandparentID==18 || vectorcand_creationID==0))//protons in FwDet
 	      {
@@ -447,6 +453,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		hTDAll->Fill(distance);
 		hTDRAll->Fill(vertex_z_sim-vertex_z);
 		hMLAll->Fill(mass);
+		if(tof == 0)
+		    cout << " #bad tof: " << tof << endl;
 		nInsertAll++;//increase number of intersections
 
 	
