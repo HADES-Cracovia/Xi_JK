@@ -18,6 +18,7 @@
 #include <sstream>
 #include <TGraph.h>
 #include <TGraphErrors.h>
+#include <TPaveText.h>
 
 #define PR(x) std::cout << "++DEBUG: " << #x << " = |" << x << "| (" << __FILE__ << ", " << __LINE__ << ")\n";
 
@@ -113,15 +114,17 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH2F* h2CPtargetPosition=new TH2F("h2CPtargetPosition","Origin point for particles from primaty vertex",100,1,-1,100,1,-1); 
     
     TCanvas* cMassLambda=new TCanvas("cMassLambda","Reconstructed lambda mass");
-    int immin=800;
-    int immax=2000;
+    int immin=1050;
+    int immax=1200;
     int imres=250;
     TH1F* hMLAll=new TH1F("hMLAll","reconstraced mass of all particles combination",imres,immin,immax);
     TH1F* hMLPiHades=new TH1F("hMLPiHades","reconstraced mass of all combination, pion in HADES",imres,immin,immax);
     TH1F* hMLDist=new TH1F("hMLDist","Pion in Hades, distance between tracks <x",imres,immin,immax);
     TH1F* hMLDistSel=new TH1F("hMLDistSel","Pion in Hades, distance between tracks <x, only the best tracks",imres,immin,immax);
-    TH1F* hMLDistMass=new TH1F("hMLDistMass","Pion in Hades, distance between tracks <x, Lamda mass in range, only the best tracks",imres,immin,immax);
-
+    TH1F* hMLDistMass=new TH1F("hMLDistMass","Pion in Hades, distance between tracks <x, Lambda mass in range",imres,immin,immax);
+    TH1F* hMLDistMassReal=new TH1F("hMLDistMassReal","Pion in Hades, distance between tracks <x, Lambda mass in range, real Lambda",imres,immin,immax);
+    TH1F* hMLDistVert=new TH1F("hMLDistVert","Pion in Hades, distance between tracks <x, #Lambda_{Vert_z}, only the best tracks",imres,immin,immax);
+    
     TCanvas* cIntersection=new TCanvas("cIntersection","How many times veccand intersect with particlecand");
     TH1I* hIAll=new TH1I("hIAll","All combinations",10,0,10);
     TH1I* hIPiHades=new TH1I("hIPiHades","Pion in HADES",10,0,10);
@@ -129,7 +132,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH1I* hIDistSel=new TH1I("hIDistSel","Pion in HADES, distance between tracks <x, only the best tracks",10,0,10);
 
     TCanvas* cKineLambdaRec=new TCanvas("cKineLambdaRec","Lambda reconstraction, ideal identyfication (mother index)");
-    TH1F* hKLMass=new TH1F("hKLMass","Lambda mass",1000,800,1600);
+    TH1F* hKLMass=new TH1F("hKLMass","Lambda mass",imres,immin,immax);
+    TH1F* hKLMassDist=new TH1F("hKLMassDist","Lambda mass, distance between tracks <x",imres,immin,immax);
+    TH1F* hKLMassDistVert=new TH1F("hKLMassDistVert","Real #Lambda1115, distance between tracks <x, #Lambda_{Vert_z}, only the best tracks",imres,immin,immax);
+   
     TH1F* hKLDistance=new TH1F("hKLDistance","Distance measured between tracks from lambda decay",70,0,70);
     TH2F* h2KLVertexZRRec=new TH2F("h2KLVertexZRRec","X-R vertex coordinate reconstructed from detector",750,-250,500,200,0,200);
     TH1F* hKLVertexZRec=new TH1F("hKLVertexZRec","Z-coordinate of vertex reconstructed in detector",350,-200,500);
@@ -153,21 +159,27 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH2F* hVertexXZX_distvertcut = new TH2F("hVertexXZX_distvertcut", "Xi vertex reconstruction - dist&vert cut", 150, -100, 500, 150, -50, 50);
     TH1F* hVertexXZXproj_distvertcut = new TH1F("hVertexXZXproj_distvertcut", "Xi vertex_z reconstruction - dist&vert cut", 150, -100, 500);
     
-    
-    TCanvas* cVertexResInZ=new TCanvas("cVertexResInZ","Resolution along Z in function of Z");
-    TH1F* hVRIZ [7];
-    TF1* fVRIZgaus[7];
-    TGraphErrors* gVRIZ=new TGraphErrors(7);
-    for(int i=0; i<7;i++)
-      {
-	ostringstream hname;
-	hname << "resolution_in_h_" << i;
-	ostringstream gname;
-	gname << "gaus_no_" << i;
-	hVRIZ[i]=new TH1F(hname.str().c_str(),hname.str().c_str(),100,-300,300);
-	fVRIZgaus[i]=new TF1(gname.str().c_str(),"gaus",-300,300);
-      }
+    TH1F* hVertexXZLreal = new TH1F("hVertexXZLreal", "Real #Lambda1115 vertex_z reconstruction", 150, -100, 500);
+    TH1F* hVertexXZXreal = new TH1F("hVertexXZXreal", "Real #Xi^{-} vertex_z reconstruction", 150, -100, 500);
 
+    TH1F *hCutMTDLAll[20], *hCutMTDLReal[20];
+    char hNameLAllmtd[24], hNameLRealmtd[24];
+    for(int i = 0; i < 20; i++){
+	sprintf(hNameLAllmtd, "hCutMTDLAll_%d", i);
+	hCutMTDLAll[i] = new TH1F(hNameLAllmtd, hNameLAllmtd, imres,immin,immax);
+	sprintf(hNameLRealmtd, "hCutMTDLReal_%d", i);
+	hCutMTDLReal[i] = new TH1F(hNameLRealmtd, hNameLRealmtd, imres,immin,immax);
+    }
+    
+    TH1F *hCutVertLAll[30], *hCutVertLReal[30];
+    char hNameLAll[24], hNameLReal[24];
+    for(int i = -10; i < 20; i++){
+	sprintf(hNameLAll, "hCutVertLAll_%d", i);
+	hCutVertLAll[i+10] = new TH1F(hNameLAll, hNameLAll, imres,immin,immax);
+	sprintf(hNameLReal, "hCutVertLReal_%d", i);
+	hCutVertLReal[i+10] = new TH1F(hNameLReal, hNameLReal, imres,immin,immax);
+    }
+    
     TCanvas* cPrimaryKine=new TCanvas("cPrimaryKine","kinematcs of primary particles");
     TH2F* h2PKpion=new TH2F("h2PKpion", "kinematics for Ksi-",500,0,3500,500,0,35);
     TH2F* h2PKkaon=new TH2F("h2PKkaon", "kinematics for kaons",500,0,3500,500,0,35);
@@ -180,9 +192,19 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     imres=200;
     TCanvas* cKsi=new TCanvas("cKsi","Ksi- measurment");
     TH1F* hKmassall=new TH1F("hKmassall","Mass reconstructed from lambda and pion",imres,immin,immax);
-    TH1F* hKdistanceall=new TH1F("hKdistanceall","distance between lambda and all pions", 200, 0, 200);
+    TH1F* hKmassRX=new TH1F("hKmassRX","Mass reconstructed from real lambda and pion from Xi",imres,immin,immax);
+    TH1F* hKmassRXDist=new TH1F("hKmassRXDist","Mass reconstructed from real lambda and pion from Xi, dist<x",imres,immin,immax);
+    TH1F* hKmassRLpion=new TH1F("hKmassRLpion","Mass reconstructed from real lambda and some pion",imres,immin,immax);
+    TH1F* hKdistanceall=new TH1F("hKdistanceall","distance between lambda and all pions", 200, -20, 200);
+    TH1F* hKdistanceRealXi=new TH1F("hKdistanceRealXi","distance between lambda and pion from Xi", 200, -20, 200);
     TH1F* hKmassdist=new TH1F("hKmassdist","Mass reconstructed from lambda and pion, dist <x",imres,immin,immax);
-    TH1F* hKvertexdist=new TH1F("hKvertexdist","Distance between ksi and lambda vertex - dist cut",250,-100,300);
+    TH1F* hKmassdistVert=new TH1F("hKmassdistVert","Mass reconstructed from lambda and pion, dist <x, #Xi_{Vert_z}",imres,immin,immax);
+    TH1F* hKmassRXDistVert=new TH1F("hKmassRXDistVert","Mass reconstructed from real lambda and pion from Xi, dist <x, #Xi_{Vert_z}",imres,immin,immax);
+    
+    TH1F* hKvertexAll=new TH1F("hKvertexAll","Distance between ksi and lambda vertex - no cuts, all cand",250,-100,300);
+    TH1F* hKvertexReal=new TH1F("hKvertexReal","Distance between ksi and lambda vertex - no cuts, real Xi and Lambda",250,-100,300);
+    TH1F* hKvertexdistAll=new TH1F("hKvertexdistAll","Distance between ksi and lambda vertex - dist cut, all cand",250,-100,300);
+    TH1F* hKvertexdistReal=new TH1F("hKvertexdistReal","Distance between ksi and lambda vertex - dist cut, real Xi and Lambda",250,-100,300);
     TH1F* hKtofproperties=new TH1F("hKtofproperties","value of fTofRec for events from ksi peak",5,0,5);
     TH1F* hKtofHitInd=new TH1F("hKtofHitInd","value of fTofHitInd for events from ksi peak",10,1,-1);
     TH1I* hKpeakID=new TH1I("hKpeakID","counter how many real Ksis are in peak",4,0,4);
@@ -218,15 +240,50 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH1F* hCXsiDet=new TH1F("hCXsiDet","Partiles from Xsi detected",30,0,30);
 
     TCanvas* cPionDist=new TCanvas("cPionDist","distance beween pions and particles");
-    TH1F* hPDpionproton=new TH1F("hPDpionproton","Distance between proton and pion for all combinations; dist[mm]",200,0,200);
-    TH1F* hPDlambda=new TH1F("hPDlambda","Distance between proton and pion from Lambda decay; dist[mm]",200,0,200);
+    TH1F* hPDpionproton=new TH1F("hPDpionproton","Distance between proton and pion for all combinations; dist[mm]",200,-20,200);
+    TH1F* hPDlambda=new TH1F("hPDlambda","Distance between proton and pion from Lambda decay; dist[mm]",200,-20,200);
 
     TH1I* hHmoduls=new TH1I("hHmoduls","how many moduls for track was used",5,0,5); 
     TH1I* hHNDetector=new TH1I("hHNDetector","value of getNDetector for pions from Xi peak",100,1,100);
     TH1F* hKmassvert=new TH1F("hKmassvert","Mass reconstructed from lambda and pion --- vertex cut",imres,immin,immax);
     TH1F* hKmassdistvert=new TH1F("hKmassdistvert","Mass reconstructed from lambda and pion --- dist & vertex cut",imres,immin,immax);
+    
     TH1F* hKvertexvert=new TH1F("hKvertexvert","Distance between ksi and lambda vertex - vert cut",250,-100,300);
     TH1F* hKvertexdistvert=new TH1F("hKvertexdistvert","Distance between ksi and lambda vertex - dist&vert cut",250,-100,300);
+
+    TH1F *hCutMTDXAll[20], *hCutMTDXReal[20];
+    char hNameXAllmtd[24], hNameXRealmtd[24];
+    for(int i = 0; i < 20; i++){
+	sprintf(hNameXAllmtd, "hCutMTDXAll_%d", i);
+	hCutMTDXAll[i] = new TH1F(hNameXAllmtd, hNameXAllmtd, imres,immin,immax);
+	sprintf(hNameXRealmtd, "hCutMTDXReal_%d", i);
+	hCutMTDXReal[i] = new TH1F(hNameXRealmtd, hNameXRealmtd, imres,immin,immax);
+    }
+    
+    
+    TH1F *hCutVertAll[30], *hCutVertReal[30];
+    char hNameAll[24], hNameReal[24];
+    for(int i = -10; i < 20; i++){
+	sprintf(hNameAll, "hCutVertAll_%d", i);
+	hCutVertAll[i+10] = new TH1F(hNameAll, hNameAll, imres,immin,immax);
+	sprintf(hNameReal, "hCutVertReal_%d", i);
+	hCutVertReal[i+10] = new TH1F(hNameReal, hNameReal, imres,immin,immax);
+    }
+    
+    TCanvas* cVertexResInZ=new TCanvas("cVertexResInZ","Resolution along Z in function of Z");
+    TH1F* hVRIZ [7];
+    TF1* fVRIZgaus[7];
+    TGraphErrors* gVRIZ=new TGraphErrors(7);
+    for(int i=0; i<7;i++)
+      {
+	ostringstream hname;
+	hname << "resolution_in_h_" << i;
+	ostringstream gname;
+	gname << "gaus_no_" << i;
+	hVRIZ[i]=new TH1F(hname.str().c_str(),hname.str().c_str(),100,-300,300);
+	fVRIZgaus[i]=new TF1(gname.str().c_str(),"gaus",-300,300);
+      }
+
 
     
     //event loop *************************************************
@@ -344,7 +401,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    Int_t nInsertDistance=0;
 	    Int_t nInsertDistanceSel=0;
 	    	    
-	    for(int k=0; k<gknt; k++)//find particle ID
+	    /* for(int k=0; k<gknt; k++)//find particle ID
 	      {
 		hkine = HCategoryManager::getObject(hkine, fCatGeantKine,k);
 		vectorcand_creationID=hkine->getMechanism();
@@ -359,7 +416,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    vectorcandparentTID=hkine->getParentTrack();
 		    break;
 		  }		
-	      }
+		  }*/
+	    vectorcandID = fwdetstrawvec -> getGeantPID();
+	    vectorcandparentTID = fwdetstrawvec -> getGeantParentTrackNum();
 	    hCdet->Fill(vectorcandID);
 	    
 	    for(int k=0; k<gknt; k++)//find particle parent ID
@@ -375,12 +434,16 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    if(primary_vertex)//by defoult no!
 	      if(vectorcand_creationID!=0)//skip all particles different then from elementary reaction
 		continue;
-	    
+
 	    tof = fwdetstrawvec -> getTofRec();
+	    if(tof == 0.0)
+		fwdetstrawvec -> setTofRec(-1);
+
+	   		
 	    // if(tof == 0)
 	    //	    cout << " #tof: " << tof << endl;
-	    if(tof == 0)
-		continue;
+	    //if(tof == 0)
+	    //	continue;
 	    
 	    hCPChi2FW->Fill(fwdetstrawvec->getChi2());
 	    if(vectorcandID==14 && (vectorcandparentID==18 || vectorcand_creationID==0))//protons in FwDet
@@ -404,9 +467,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		//Int_t particlecandTID=particlecand->getGeantTrack();
 		Int_t particlecand_parentID=particlecand->getGeantParentPID();
 		Int_t particlecand_geanttrack=particlecand->getGeantTrack();
-		double max_distance = 10; // !!
-		double cut_vertex_z_min = 10; // !!
-		double cut_vertex_z_max = 250; // !!
+		double max_distanceL = 25; // !!
+		double max_distanceX = 20; // !!
+		double cut_vertex_z_minL = 0; // !!
+		double cut_vertex_z_minX = -50; // !!
+		double cut_vertex_z_max = 300; // !!
+		double cutVert;
 
 		hHparticleID->Fill(hades_ID);
 		
@@ -450,58 +516,96 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		TLorentzVector sum_mass = *fwdetstrawvec + *particlecand;
 		Float_t mass=sum_mass.M();
 
-		hTDAll->Fill(distance);
 		hTDRAll->Fill(vertex_z_sim-vertex_z);
 		hMLAll->Fill(mass);
-		if(tof == 0)
-		    cout << " #bad tof: " << tof << endl;
+		//if(tof == 0)
+		//  cout << " #bad tof: " << tof << endl;
 		nInsertAll++;//increase number of intersections
-
-	
+		// if(mass > 1715 && mass < 1740){
+		//     particlecand -> print();
+		//     fwdetstrawvec -> print();
+		// }
 		
 		if(vectorcandID==14 && hades_ID==9)//Pion in Hades, proton in FW
 		  {
 		    hTDPiProton->Fill(distance);
 		    hTDRPiProton->Fill(vertex_z_sim-vertex_z);
 		  }
-		if(hades_ID==9)//pion in HADES, everything in FwDet
+		if(particlecand->isFlagBit(kIsUsed) && hades_ID==9)//pion in HADES, everything in FwDet
 		  {
+		      for(int d = 0; d < 20; d++){
+			  if(distance < (d*5)+5)
+			      hCutMTDLAll[d] -> Fill(mass);
+		      }
+		      		      
 		    hMLPiHades->Fill(mass);
 		    hPDpionproton->Fill(distance);
 		    nInsertPion++;
 		  }
-		if(distance<max_distance && hades_ID==9)//pion in HADES, everything in FwDet, for close tracks
-		  {
+		if(distance<max_distanceL && hades_ID==9)//pion in HADES, everything in FwDet, for close tracks
+		{
 		    hMLDist->Fill(mass);
 		    nInsertDistance++;
 		  }
 		
-		if(particlecand->isFlagBit(kIsUsed) && distance<max_distance)//only the best tracks from HADES
+		if(particlecand->isFlagBit(kIsUsed) && distance<max_distanceL)//only the best tracks from HADES
 		  {
-		      hVertexXZL -> Fill(vertex_z, vertex_x);
-		      hVertexXZLproj -> Fill(vertex_z);
-		    hTDAllCh2->Fill(distance);
-		    hTDRAllCh2->Fill(vertex_z_sim-vertex_z);
-		    if(vectorcandID==14 && hades_ID ==9)
+		      hTDAllCh2->Fill(distance);
+		      hTDRAllCh2->Fill(vertex_z_sim-vertex_z);
+		      if(vectorcandID==14 && hades_ID ==9)
 		      {
-			hTDPiProtonCh2->Fill(distance);
-			hTDRPiProtonCh2->Fill(vertex_z_sim-vertex_z);
+			  hTDPiProtonCh2->Fill(distance);
+			  hTDRPiProtonCh2->Fill(vertex_z_sim-vertex_z);
 		      }
-		    if(distance<max_distance && hades_ID==9)
+		      if(hades_ID==9)
 		      {
-			hMLDistSel->Fill(mass);
-			nInsertDistanceSel++;
-			hVRradialSel->Fill(-(vertex_r_sim-vertex_r));
-			hVRzSel->Fill(-(vertex_z_sim-vertex_z));
+			  hMLDistSel->Fill(mass);
+			  nInsertDistanceSel++;
+			  hVRradialSel->Fill(-(vertex_r_sim-vertex_r));
+			  hVRzSel->Fill(-(vertex_z_sim-vertex_z));
+
+			  if(vertex_z > cut_vertex_z_minL && vertex_z < cut_vertex_z_max)
+			      hMLDistVert -> Fill(mass);
+
+			  for(int v = -10; v < 20; v++){
+			      if(vertex_z > v*10 && vertex_z < cut_vertex_z_max)
+				  hCutVertLAll[v+10] -> Fill(mass);
+			  }
+
+			  if(mass>1105 && mass<1125){
+			      hVertexXZL -> Fill(vertex_z, vertex_x);
+			      hVertexXZLproj -> Fill(vertex_z);
+			  }
+
 		      }
 		  }
 		
 		if(particlecand_parentID==18 && vectorcandparentID==18 && particlecand->isFlagBit(kIsUsed))//particles from lambda vertex
-		  {
+		{
+		    for(int d = 0; d < 20; d++){
+			if(distance < (d*5)+5)
+			    hCutMTDLReal[d] -> Fill(mass);
+		    }
+		      
 		    hKLDistance->Fill(distance);
 		    hPDlambda->Fill(distance);
 		    hKLMass->Fill(mass);
 
+		    if(distance<max_distanceL){ 
+			hKLMassDist -> Fill(mass);
+			if(vertex_z > cut_vertex_z_minL && vertex_z < cut_vertex_z_max)
+			    hKLMassDistVert -> Fill(mass);
+			
+			for(int v = -10; v < 20; v++){
+			    if(vertex_z > v*10 && vertex_z < cut_vertex_z_max)
+				hCutVertLReal[v+10] -> Fill(mass);
+			}
+			
+			if(mass>1105 && mass<1125){
+			    hVertexXZLreal -> Fill(vertex_z);
+			}
+
+		    }
 		    hKLVertexZRec->Fill(vertex_z);
 		    hKLVertexZSim->Fill(vertex_z_sim);
 
@@ -519,12 +623,16 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			  }
 		      }
 		  }
+	      
 		//Xi reconstruction
 		//****************
-		if(mass>1110 && mass<1120 && distance<max_distance && particlecand->isFlagBit(kIsUsed) && hades_ID==9)
+		if(mass>1106 && mass<1126 && particlecand->isFlagBit(kIsUsed) && hades_ID==9 && vertex_z > cut_vertex_z_minL && vertex_z < cut_vertex_z_max && distance<max_distanceL)
 		{
-		  hMLDistMass -> Fill(mass);  
-		  for(int f=0;f<pcnt;f++)//scan all particles detected in HADES except Pion udes for Lambda reconstraction
+		  hMLDistMass -> Fill(mass);
+		  if(particlecand_parentID==18 && vectorcandparentID==18) //real Lambda and pion
+		      hMLDistMassReal -> Fill(mass);
+		  
+		  for(int f=0;f<pcnt;f++)//scan all particles detected in HADES except Pion used for Lambda reconstraction
 		    {
 		      if(f==i)
 			continue;//skip pion from lambda decay
@@ -585,13 +693,35 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			  hVertexXZX_nocuts -> Fill(vertex_ksi.Z(), vertex_ksi.X());
 			  hVertexXZXproj_nocuts -> Fill(vertex_ksi.Z());
 
+			  if(particlecand_parentID==18 && vectorcandparentID==18){ //real Lambda and pion
+			      hKmassRLpion -> Fill(ksiVector.M());
+			  }
 			  
-			  if(distance_ksi<max_distance && ksicand->isFlagBit(kIsUsed)) //cut on dist Lambda - pim
+			  if(particlecand_parentID==18 && vectorcandparentID==18 && ksi_parentID==23 && ksicand->isFlagBit(kIsUsed)){ //real Xi -- Lambda and pion from Xi
+			      for(int d = 0; d < 20; d++){
+				  if(distance_ksi < (d*5)+5)
+				      hCutMTDXReal[d] -> Fill(ksiVector.M());
+			      }
+			      			      
+			      hKdistanceRealXi -> Fill(distance_ksi);
+			      hKmassRX -> Fill(ksiVector.M());
+			      hKvertexReal->Fill((vertex-vertex_ksi).length());
+			  }
+
+			  if(ksicand->isFlagBit(kIsUsed)){
+			      for(int d = 0; d < 20; d++){
+				  if(distance_ksi < (d*5)+5)
+				      hCutMTDXAll[d] -> Fill(ksiVector.M());
+			      }
+			      hKvertexAll->Fill((vertex-vertex_ksi).length());
+			  }
+			  			  
+			  if(distance_ksi<max_distanceX && ksicand->isFlagBit(kIsUsed)) //cut on dist Lambda - pim
 			    {
 			      hKmassdist->Fill(ksiVector.M());
 //			      HGeomVector vertex_ksi;
 //			      vertex_ksi=particle_tool.calcVertexAnalytical(base_lambda,dir_lambda,base_pion,dir_pion);
-			      hKvertexdist->Fill((vertex-vertex_ksi).length());//*TMath::Sign(1.0,vertex.Z()-vertex_ksi.Z()));//distance between vertexes multyply by order of them (+ or -)
+			      hKvertexdistAll->Fill((vertex-vertex_ksi).length());//*TMath::Sign(1.0,vertex.Z()-vertex_ksi.Z()));//distance between vertexes multyply by order of them (+ or -)
 			      hKtofproperties->Fill(ksicand->getTofRec());
 			      hKtofproperties->Fill(particlecand->getTofRec());
 			      hKtofHitInd->Fill(ksicand->getTofHitInd());
@@ -599,9 +729,32 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 
 			      hVertexXZX -> Fill(vertex_ksi.Z(), vertex_ksi.X());
 			      hVertexXZXproj -> Fill(vertex_ksi.Z());
+
+			      if(vertex_ksi.Z() > cut_vertex_z_minX && vertex_ksi.Z() < cut_vertex_z_max)
+				  hKmassdistVert -> Fill(ksiVector.M());
+
+			      for(int v = -10; v < 20; v++){
+				  if(vertex_ksi.Z() > v*10 && vertex_ksi.Z() < cut_vertex_z_max)
+				      hCutVertAll[v+10] -> Fill(ksiVector.M());
+			      }
 			      
-			      if(particlecand_parentID==18 && vectorcandparentID==18 && ksi_parentID==23)
+			      if(particlecand_parentID==18 && vectorcandparentID==18 && ksi_parentID==23){ //real Xi -- Lambda and pion from Xi
 				hKpeakID->Fill(1);
+				hKdistanceRealXi -> Fill(distance_ksi);
+				hKmassRXDist -> Fill(ksiVector.M());
+				hVertexXZXreal -> Fill(vertex_ksi.Z());
+				hKvertexdistReal->Fill((vertex-vertex_ksi).length());
+				
+				if(vertex_ksi.Z() > cut_vertex_z_minX && vertex_ksi.Z() < cut_vertex_z_max)
+				    hKmassRXDistVert -> Fill(ksiVector.M());
+
+
+				for(int v = -10; v < 20; v++){
+				    if(vertex_ksi.Z() > v*10 && vertex_ksi.Z() < cut_vertex_z_max)
+					hCutVertReal[v+10] -> Fill(ksiVector.M());
+				}
+				
+			      }
 			      else
 				hKpeakID->Fill(0);
 
@@ -614,7 +767,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 
 			  //HGeomVector vertex_ksi1;
 			  // vertex_ksi1=particle_tool.calcVertexAnalytical(base_lambda,dir_lambda,base_pion,dir_pion);
-			   if(vertex_ksi.Z() > cut_vertex_z_min && vertex_ksi.Z() < cut_vertex_z_max && ksicand->isFlagBit(kIsUsed)) //cut on vertex_z
+			  if(vertex_ksi.Z() > cut_vertex_z_minX && vertex_ksi.Z() < cut_vertex_z_max && ksicand->isFlagBit(kIsUsed)) //cut on vertex_z
 			   {
 			       hKmassvert->Fill(ksiVector.M());
 			      
@@ -625,24 +778,24 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			      			       
 			   }
 
-			   if(distance_ksi<max_distance && vertex_ksi.Z() > cut_vertex_z_min && vertex_ksi.Z() < cut_vertex_z_max && ksicand->isFlagBit(kIsUsed))
+			   if(distance_ksi<max_distanceX && vertex_ksi.Z() > cut_vertex_z_minX && vertex_ksi.Z() < cut_vertex_z_max && ksicand->isFlagBit(kIsUsed))
 			   {
 			       hKmassdistvert->Fill(ksiVector.M());
 			       hKvertexdistvert->Fill((vertex-vertex_ksi).length());//*TMath::Sign(1.0,vertex.Z()-vertex_ksi1.Z()));//distance between vertexes multyply by order of them (+ or -)
 			       hVertexXZX_distvertcut -> Fill(vertex_ksi.Z(), vertex_ksi.X());
 			       hVertexXZXproj_distvertcut -> Fill(vertex_ksi.Z());
 			   }
-			   
+			  			   
 			}
 		    }
 		}
 		//end*of*Xi**************
-	      }//end of HADES loop
+	  }//end of HADES loop
 	    hIAll->Fill(nInsertAll);
 	    hIPiHades->Fill(nInsertPion);
 	    hIDist->Fill(nInsertDistance);
 	    hIDistSel->Fill(nInsertDistanceSel);
-	  }//end of FW loop
+    }//end of FW loop
 
 
 	//Only HADES
@@ -668,10 +821,111 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	      }
 	  }
 	//End only HADES
-    } // end eventloop
+} // end eventloop
 	//***********************************************************************************
-	
-    	
+
+    TPaveText *ptMTDCut = new TPaveText(.25, .7, .3, .85, "NDC");
+    ptMTDCut -> SetFillColor(0);
+    ptMTDCut -> SetBorderSize(0);
+    ptMTDCut -> SetTextSize(.07);
+    char dc[12];
+    
+    
+    TPaveText *ptVertCut = new TPaveText(.25, .7, .3, .85, "NDC");
+    ptVertCut -> SetFillColor(0);
+    ptVertCut -> SetBorderSize(0);
+    ptVertCut -> SetTextSize(.07);
+    char vc[12];
+
+    for(int i = 0; i < 20; i++){
+	ptMTDCut -> Clear();
+	sprintf(dc, "MTD<%d", (i*5)+5);
+	ptMTDCut -> AddText(dc);
+	hCutMTDLAll[i] -> GetXaxis() -> SetTitle("inv M [MeV]");
+	hCutMTDLAll[i] -> GetYaxis() -> SetTitle("counts");
+	hCutMTDLAll[i] -> Draw();
+	ptMTDCut -> Draw("same");
+	hCutMTDLAll[i] -> Write();
+
+	hCutMTDLReal[i] -> GetXaxis() -> SetTitle("inv M [MeV]");
+	hCutMTDLReal[i] -> GetYaxis() -> SetTitle("counts");
+	hCutMTDLReal[i] -> Draw();
+	ptMTDCut -> Draw("same");
+	hCutMTDLReal[i] -> Write();
+
+	hCutMTDXAll[i] -> GetXaxis() -> SetTitle("inv M [MeV]");
+	hCutMTDXAll[i] -> GetYaxis() -> SetTitle("counts");
+	hCutMTDXAll[i] -> Draw();
+	ptMTDCut -> Draw("same");
+	hCutMTDXAll[i] -> Write();
+
+	hCutMTDXReal[i] -> GetXaxis() -> SetTitle("inv M [MeV]");
+	hCutMTDXReal[i] -> GetYaxis() -> SetTitle("counts");
+	hCutMTDXReal[i] -> Draw();
+	ptMTDCut -> Draw("same");
+	hCutMTDXReal[i] -> Write();
+    }
+    
+    
+    TCanvas *cVertCutScanLAll = new TCanvas("cVertCutScanLAll", "cVertCutScanLAll", 1800, 1400);
+    cVertCutScanLAll -> Divide(5,6);
+    for(int i = -10; i < 20; i++){
+  	cVertCutScanLAll -> cd(i+11);
+	ptVertCut -> Clear();
+	sprintf(vc, "Vert>%d", i*10);
+	ptVertCut -> AddText(vc);
+	hCutVertLAll[i+10] -> GetXaxis() -> SetTitle("inv M [MeV]");
+	hCutVertLAll[i+10] -> GetYaxis() -> SetTitle("counts");
+	hCutVertLAll[i+10] -> Draw();
+	ptVertCut -> Draw("same");
+	hCutVertLAll[i+10] -> Write();
+    }
+    cVertCutScanLAll -> Write();
+
+    TCanvas *cVertCutScanLReal = new TCanvas("cVertCutScanLReal", "cVertCutScanLReal", 1800, 1400);
+    cVertCutScanLReal -> Divide(5,6);
+    for(int i = -10; i < 20; i++){
+	cVertCutScanLReal -> cd(i+11);
+	ptVertCut -> Clear();
+	sprintf(vc, "Vert>%d", i*10);
+	ptVertCut -> AddText(vc);
+	hCutVertLReal[i+10] -> GetXaxis() -> SetTitle("inv M [MeV]");
+	hCutVertLReal[i+10] -> GetYaxis() -> SetTitle("counts");
+	hCutVertLReal[i+10] -> Draw();
+	ptVertCut -> Draw("same");
+	hCutVertLReal[i+10] -> Write();
+  }
+    cVertCutScanLReal -> Write();
+    
+    TCanvas *cVertCutScanAll = new TCanvas("cVertCutScanAll", "cVertCutScanAll", 1800, 1400);
+    cVertCutScanAll -> Divide(5,6);
+    for(int i = -10; i < 20; i++){
+  	cVertCutScanAll -> cd(i+11);
+	ptVertCut -> Clear();
+	sprintf(vc, "Vert>%d", i*10);
+	ptVertCut -> AddText(vc);
+	hCutVertAll[i+10] -> GetXaxis() -> SetTitle("inv M [MeV]");
+	hCutVertAll[i+10] -> GetYaxis() -> SetTitle("counts");
+	hCutVertAll[i+10] -> Draw();
+	ptVertCut -> Draw("same");
+	hCutVertAll[i+10] -> Write();
+    }
+    cVertCutScanAll -> Write();
+
+    TCanvas *cVertCutScanReal = new TCanvas("cVertCutScanReal", "cVertCutScanReal", 1800, 1400);
+    cVertCutScanReal -> Divide(5,4);
+    for(int i = -10; i < 20; i++){
+	cVertCutScanReal -> cd(i+11);
+	ptVertCut -> Clear();
+	sprintf(vc, "Vert>%d", i*10);
+	ptVertCut -> AddText(vc);
+	hCutVertReal[i+10] -> GetXaxis() -> SetTitle("inv M [MeV]");
+	hCutVertReal[i+10] -> GetYaxis() -> SetTitle("counts");
+	hCutVertReal[i+10] -> Draw();
+	ptVertCut -> Draw("same");
+	hCutVertReal[i+10] -> Write();
+  }
+    cVertCutScanReal -> Write();
 
     hVertexXZL -> Draw("colz");
     hVertexXZL -> Write();
@@ -709,9 +963,19 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hVertexXZXproj_distvertcut -> Draw();
     hVertexXZXproj_distvertcut -> Write();
 
+    hVertexXZLreal -> GetXaxis() -> SetTitle("z [mm]");
+    hVertexXZLreal -> Draw();
+    hVertexXZLreal -> Write();
+    hVertexXZXreal -> GetXaxis() -> SetTitle("z [mm]");
+    hVertexXZXreal -> Draw();
+    hVertexXZXreal -> Write();
+
     hMLDistMass -> GetXaxis() -> SetTitle("M [MeV]");
     hMLDistMass -> Draw(); 
     hMLDistMass -> Write();
+    hMLDistMassReal -> GetXaxis() -> SetTitle("M [MeV]");
+    hMLDistMassReal -> Draw();
+    hMLDistMassReal -> Write();
     hKmassdist -> GetXaxis() -> SetTitle("M [MeV]");
     hKmassdist -> Draw(); 
     hKmassdist -> Write();
@@ -721,17 +985,52 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hKmassdistvert -> GetXaxis() -> SetTitle("M [MeV]");
     hKmassdistvert -> Draw();
     hKmassdistvert-> Write();
+    hKmassRLpion -> Write();
+    hKmassRX -> Write();
+    hKmassRXDist -> Write();
 
-    hKvertexdist -> GetXaxis() -> SetTitle("z [mm]");
-    hKvertexdist -> Draw();
-    hKvertexdist -> Write();
+    TCanvas *cVertdiff = new TCanvas("cVertdiff", "cVertdiff");
+    cVertdiff -> Divide(2,2);
+    cVertdiff -> cd(1);
+    hKvertexAll -> GetXaxis() -> SetTitle("dist [mm]");
+    hKvertexAll -> Draw();
+    hKvertexAll -> Write();
+    cVertdiff -> cd(2);
+    hKvertexReal -> GetXaxis() -> SetTitle("dist [mm]");
+    hKvertexReal -> Draw();
+    hKvertexReal -> Write();
+    cVertdiff -> cd(3);
+    hKvertexdistAll -> GetXaxis() -> SetTitle("dist [mm]");
+    hKvertexdistAll -> Draw();
+    hKvertexdistAll -> Write();
+    cVertdiff -> cd(4);
+    hKvertexdistReal -> GetXaxis() -> SetTitle("dist [mm]");
+    hKvertexdistReal -> Draw();
+    hKvertexdistReal -> Write();
+    cVertdiff -> Write();
+
+    
     hKvertexvert -> GetXaxis() -> SetTitle("z [mm]");
     hKvertexvert -> Draw();
     hKvertexvert -> Write();
     hKvertexdistvert -> GetXaxis() -> SetTitle("z [mm]");
     hKvertexdistvert -> Draw();
     hKvertexdistvert -> Write();
+    
+    hMLDistVert -> GetXaxis() -> SetTitle("z [mm]");
+    hMLDistVert -> Draw();
+    hMLDistVert -> Write();
+    hKLMassDistVert -> GetXaxis() -> SetTitle("z [mm]");
+    hKLMassDistVert -> Draw();
+    hKLMassDistVert -> Write();
+    hKmassdistVert -> GetXaxis() -> SetTitle("z [mm]");
+    hKmassdistVert -> Draw();
+    hKmassdistVert -> Write();
+    hKmassRXDistVert -> GetXaxis() -> SetTitle("z [mm]");
+    hKmassRXDistVert -> Draw();
+    hKmassRXDistVert -> Write();
 
+    
     hTDPiProton -> GetXaxis() -> SetTitle("dist z [mm]");
     hTDPiProton -> Draw();
     hTDPiProton -> Write();
@@ -744,6 +1043,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hKdistanceall -> GetXaxis() -> SetTitle("dist [mm]");
     hKdistanceall -> Draw();
     hKdistanceall -> Write();
+    hKdistanceRealXi -> GetXaxis() -> SetTitle("dist [mm]");
+    hKdistanceRealXi -> Draw();
+    hKdistanceRealXi -> Write();
     
     //draw all
     cTrackDistance->Divide(2,2);
@@ -788,7 +1090,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hMLDistSel->Draw();
     hMLAll->Write();
     hMLDist->Write();
-
+    hMLPiHades->Write();
+    hMLDistSel -> Write();
+    
     cIntersection->Divide(2,2);
     cIntersection->cd(1);
     hIAll->Draw();
@@ -812,7 +1116,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     h2KLVertexZRRec->Draw("COLZ");
     cKineLambdaRec->cd(6);
     hKLVertexZRec->Draw();
-
+    hKLMass->Write();
+    hKLMassDist->Write();
+    
     cVertexRes->Divide(2,2);
     cVertexRes->cd(1);
     hVRradial->Draw();
@@ -869,7 +1175,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     cKsi->cd(3);
     hKmassdist->Draw();
     cKsi->cd(4);
-    hKvertexdist->Draw();
+    hKvertexdistAll->Draw();
     hKmassall->Write();
     hKmassdist->Write();
 
@@ -952,8 +1258,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     cEff->Write();
     cCounter->Write();
     cPionDist->Write();
-    
-    
+
     output_file->Close();
     cout << "writing root tree done" << endl;
 
