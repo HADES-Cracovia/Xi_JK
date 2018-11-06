@@ -27,7 +27,6 @@
 #include <TString.h>
 #include <TSpectrum.h>
 
-#include "partID.cc"
 #include "massPID.cc"
 #include "mass2PID.cc"
 #include "mass2PIDfit.cc"
@@ -351,11 +350,11 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	int particleGeantID, vectorcandGeantID, ksicandGeantID;
 	int graphiID=0;
 	
-	for(int i=0;i<pcnt;i++)//particle candidates from HADES--------------------------------------------------
+	for(int l=0;l<pcnt;l++)//particle candidates from HADES--------------------------------------------------
 	{ 
-	    particlecand = HCategoryManager::getObject(particlecand, fCatParticleCandSim,i);
+	    particlecand = HCategoryManager::getObject(particlecand, fCatParticleCandSim,l);
 	    //  particlecand = HCategoryManager::getObject(particlecand, fCatParticleCand,i);
-	    //  if(!particlecand->isFlagBit(kIsUsed)) continue; //<<<<<??????????<<<<<<<<<
+	    if(!particlecand->isFlagBit(kIsUsed)) continue; //<<<<<??????????<<<<<<<<<
 	    
 	    float mom_h = particlecand -> getMomentum();
 	    float charge_h = particlecand -> getCharge();
@@ -370,7 +369,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    float tofRec_h = particlecand -> getTofRec();
 	    float tof_h = particlecand -> getTof();
 
-	    //this PID not used now -> use mass2PID() below
+	    //this PID not used now -> use mass2PID() or mass2PIDfit() below
 	    if(beta_h!=-1){
 		for(int npid = 0; npid < partN; npid++){
 		    if(gCut[npid] -> GetName() == "CUTG_00") continue;
@@ -490,7 +489,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    {
 		fwdetstrawvec=HCategoryManager::getObject(fwdetstrawvec, fCatFwDetCandSim, j);
 		fwdetstrawcal=HCategoryManager::getObject(fwdetstrawcal, fCatFwDetCandSim, j);
-		
+//		if(!fwdetstrawcal->isFlagBit(kIsUsed)) continue; //<<<<<??????????<<<<<<<<<
+
 		float tof_v = fwdetstrawvec -> getTof();
 //		float dE_v = fwdetstrawcal -> getEloss(); //E loss in the straw
 //		float dE_v = fwdetstrawcal -> getEloss(); //drift radius loss in the straw
@@ -498,8 +498,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		// float mom_v = fwdetstrawvec -> getMomentum();
 		// float charge_v = fwdetstrawvec -> getCharge();
 	
-//		vectorcandID = tofPID(tof_v);
-		vectorcandID = 14;
+		vectorcandID = tofPID(tof_v);
+//		vectorcandID = 14;
 		hVpid -> Fill(vectorcandID);
 		
 		fwdetstrawvec -> calc4vectorProperties(HPhysicsConstants::mass(vectorcandID));
@@ -608,51 +608,56 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		if(mass > massLmin && mass < massLmax && particlecand->isFlagBit(kIsUsed) && particleID == 9 && vectorcandID == 14 && vertex_z > cut_vertex_z_minL && vertex_z < cut_vertex_z_max && distance < max_distanceL){
 		    for(int f=0;f<pcnt;f++)//scan all particles detected in HADES except Pion used for Lambda reconstraction
 		    {
-		      if(f==i)
+		      if(f==l)
 			continue;//skip pion from lambda decay
 
 		      ksicand = HCategoryManager::getObject(ksicand, fCatParticleCandSim,f);
-		      // if(!ksicand->isFlagBit(kIsUsed)) continue; //<<<<<??????????<<<<<<<<<
+		      if(!ksicand->isFlagBit(kIsUsed)) continue; //<<<<<??????????<<<<<<<<<
 		      ksicandGeantID = ksicand -> getGeantPID();
 		      
-		      float mom_h_Xi = particlecand -> getMomentum();
-		      float charge_h_Xi = particlecand -> getCharge();
-		      float dEdx_h_Xi = particlecand -> getMdcdEdx();
-		      float beta_h_Xi = particlecand -> getBeta();
-		      //float mass_h_Xi = particlecand -> getMass();
+		      float mom_h_Xi = ksicand -> getMomentum();
+		      float charge_h_Xi = ksicand -> getCharge();
+		      float dEdx_h_Xi = ksicand -> getMdcdEdx();
+		      float beta_h_Xi = ksicand -> getBeta();
+		      //float mass_h_Xi = ksicand -> getMass();
 		      float mass_h_Xi =  mom_h_Xi*(TMath::Sqrt((1/beta_h_Xi/beta_h_Xi)-1)); 
 		      float mass2_h_Xi = mass_h_Xi*mass_h_Xi;
 		      //float ener_h_Xi = .5*mom_h*mom_h/mass_h;
 		      float pq_h_Xi = mom_h_Xi*charge_h_Xi;
-		      //float tofRec_h_Xi = particlecand -> getTofRec();
-		      //float tof_h_Xi = particlecand -> getTof();
+		      //float tofRec_h_Xi = ksicand -> getTofRec();
+		      //float tof_h_Xi = ksicand -> getTof();
 
-		      ksicandID = mass2PIDfit(fitpar, mass2_h_Xi, pq_h_Xi, nPartSpec);
+		      // PID
+		      if(beta_h!=-1 && mass_h > 0)
+			  ksicandID = mass2PIDfit(fitpar, mass2_h_Xi, pq_h_Xi, nPartSpec);
+		      else break;
+		      hPpid -> Fill(ksicandID);
+		      
 		      if(!ksicandID){
 			  cout << "break: invalid ksicandID: " << ksicandID << endl;
 		      }
-		      if(ksicandID==9){ //particle in Hades is pion
-			  ksicand->calc4vectorProperties(HPhysicsConstants::mass(ksicandID));
-			  HGeomVector base_pion;
-			  HGeomVector dir_pion;
-			  particle_tool.calcSegVector(ksicand->getZ(),ksicand->getR(),TMath::DegToRad()*ksicand->getPhi(),TMath::DegToRad()*ksicand->getTheta(),base_pion,dir_pion);
-			  HGeomVector base_lambda=vertex;
-			  HGeomVector dir_lambda(sum_mass.X(),sum_mass.Y(),sum_mass.Z());
-			  //calculate distance between pion and lambda
-			  double distance_ksi=particle_tool.calculateMinimumDistance(base_lambda,dir_lambda,base_pion,dir_pion);			  
-			  TLorentzVector ksiVector=sum_mass+*ksicand;
-			  double ksiMass = ksiVector.M();
 
-			  //calculate vertex Xi
-			  HGeomVector vertex_ksi;
-			  vertex_ksi=particle_tool.calcVertexAnalytical(base_lambda,dir_lambda,base_pion,dir_pion);
-			  double ksiVert = vertex_ksi.Z();
-		     			  
-		     
+		      ksicand->calc4vectorProperties(HPhysicsConstants::mass(ksicandID));
+		      HGeomVector base_pion;
+		      HGeomVector dir_pion;
+		      particle_tool.calcSegVector(ksicand->getZ(),ksicand->getR(),TMath::DegToRad()*ksicand->getPhi(),TMath::DegToRad()*ksicand->getTheta(),base_pion,dir_pion);
+		      HGeomVector base_lambda=vertex;
+		      HGeomVector dir_lambda(sum_mass.X(),sum_mass.Y(),sum_mass.Z());
+		      //calculate distance between pion and lambda
+		      double distance_ksi=particle_tool.calculateMinimumDistance(base_lambda,dir_lambda,base_pion,dir_pion);			  
+		      TLorentzVector ksiVector=sum_mass+*ksicand;
+		      double ksiMass = ksiVector.M();
+		      
+		      //calculate vertex Xi
+		      HGeomVector vertex_ksi;
+		      vertex_ksi=particle_tool.calcVertexAnalytical(base_lambda,dir_lambda,base_pion,dir_pion);
+		      double ksiVert = vertex_ksi.Z();
+		      
+		      if(ksicandID==9){ //particle in Hades is pion
     			  hTDpiL->Fill(distance_ksi);  //dist between L and pi
 			  hMXAll->Fill(ksiMass); //mass Xi: MTD_L, VERTzL, mL
 			  
-			  if(distance_ksi < max_distanceX && ksicand -> isFlagBit(kIsUsed)){
+			  if(distance_ksi < max_distanceX){
 			      hMXPiLMTD -> Fill(ksiMass);
 			      hXVertpiL -> Fill(ksiVert);
 			  			      
@@ -661,7 +666,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			      }
 			  }
 		      }
-		    }
+		    } //end scan for second pion
 		} //end Xi reconstruction
 	    } //end FD
 	} //end HADES
@@ -679,10 +684,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hEkin_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hBeta_m_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM1_h -> GetXaxis() -> SetTitle("m [MeV]");
-    hM12_h -> GetXaxis() -> SetTitle("m^{2} [MeV]");
+    hM12_h -> GetXaxis() -> SetTitle("m^{2}*q [MeV]");
     hM2_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM22_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
-    hM1_m_h -> GetXaxis() -> SetTitle("m [MeV]");
+    hM1_m_h -> GetXaxis() -> SetTitle("m*q [MeV]");
     hM2_m_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM22_m_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
 
@@ -692,11 +697,11 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hBeta_m_h -> GetYaxis() -> SetTitle("#beta");
     hM1_h -> GetYaxis() -> SetTitle("counts");
     hM12_h -> GetYaxis() -> SetTitle("counts");
-    hM2_h -> GetYaxis() -> SetTitle("m [MeV]");
-    hM22_h -> GetYaxis() -> SetTitle("m^{2} [(MeV)^{2}]");
+    hM2_h -> GetYaxis() -> SetTitle("m*q [MeV]");
+    hM22_h -> GetYaxis() -> SetTitle("m^{2}*q [(MeV)^{2}]");
     hM1_m_h -> GetYaxis() -> SetTitle("counts");
-    hM2_m_h -> GetYaxis() -> SetTitle("m [MeV]");
-    hM22_m_h -> GetYaxis() -> SetTitle("m^{2} [(MeV)^{2}]");
+    hM2_m_h -> GetYaxis() -> SetTitle("m*q [MeV]");
+    hM22_m_h -> GetYaxis() -> SetTitle("m^{2}*q [(MeV)^{2}]");
     
     hdEdx_h -> Write();
     hBeta_h -> Write();
@@ -734,12 +739,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hBeta_tof -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hEkin_tof -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hBeta_m_tof -> GetXaxis() -> SetTitle("p*q [MeV/c]");
-    hM1_tof -> GetXaxis() -> SetTitle("m [MeV]");
-    hM12_tof -> GetXaxis() -> SetTitle("m^{2} [MeV]");
+    hM1_tof -> GetXaxis() -> SetTitle("m*q [MeV]");
+    hM12_tof -> GetXaxis() -> SetTitle("m^{2}*q [MeV]");
     hM2_tof -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM22_tof -> GetXaxis() -> SetTitle("p*q [MeV/c]");
-    hM1_m_tof -> GetXaxis() -> SetTitle("m [MeV]");
-    hM12_m_tof -> GetXaxis() -> SetTitle("m^{2} [MeV]");
+    hM1_m_tof -> GetXaxis() -> SetTitle("m*q [MeV]");
+    hM12_m_tof -> GetXaxis() -> SetTitle("m^{2}*q [MeV]");
     hM2_m_tof -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM22_m_tof -> GetXaxis() -> SetTitle("p*q [MeV/c]");
    
@@ -749,12 +754,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hBeta_m_tof -> GetYaxis() -> SetTitle("#beta");
     hM1_tof -> GetYaxis() -> SetTitle("counts");
     hM12_tof -> GetYaxis() -> SetTitle("counts");
-    hM2_tof -> GetYaxis() -> SetTitle("m [MeV]");
-    hM22_tof -> GetYaxis() -> SetTitle("m^{2} [MeV^{2}]");
+    hM2_tof -> GetYaxis() -> SetTitle("m*q [MeV]");
+    hM22_tof -> GetYaxis() -> SetTitle("m^{2}*q [MeV^{2}]");
     hM1_m_tof -> GetYaxis() -> SetTitle("counts");
     hM12_m_tof -> GetYaxis() -> SetTitle("counts");
-    hM2_m_tof -> GetYaxis() -> SetTitle("m [MeV]");
-    hM22_m_tof -> GetYaxis() -> SetTitle("m^{2} [MeV^{2}]");
+    hM2_m_tof -> GetYaxis() -> SetTitle("m*q [MeV]");
+    hM22_m_tof -> GetYaxis() -> SetTitle("m^{2}*q [MeV^{2}]");
     
     hdEdx_tof -> Write();
     hBeta_tof -> Write();
@@ -784,12 +789,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hBeta_rpc -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hEkin_rpc -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hBeta_m_rpc -> GetXaxis() -> SetTitle("p*q [MeV/c]");
-    hM1_rpc -> GetXaxis() -> SetTitle("m [MeV]");
-    hM12_rpc -> GetXaxis() -> SetTitle("m^{2} [MeV^{2}]");
+    hM1_rpc -> GetXaxis() -> SetTitle("m*q [MeV]");
+    hM12_rpc -> GetXaxis() -> SetTitle("m^{2}*q [MeV^{2}]");
     hM2_rpc -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM22_rpc -> GetXaxis() -> SetTitle("p*q [MeV/c]");
-    hM1_m_rpc -> GetXaxis() -> SetTitle("m [MeV]");
-    hM12_m_rpc -> GetXaxis() -> SetTitle("m^{2} [MeV^{2}]");
+    hM1_m_rpc -> GetXaxis() -> SetTitle("m*q [MeV]");
+    hM12_m_rpc -> GetXaxis() -> SetTitle("m^{2}*q [MeV^{2}]");
     hM2_m_rpc -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM22_m_rpc -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     
@@ -799,12 +804,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hBeta_m_rpc -> GetYaxis() -> SetTitle("#beta");
     hM1_rpc -> GetYaxis() -> SetTitle("counts");
     hM12_rpc -> GetYaxis() -> SetTitle("counts");
-    hM2_rpc -> GetYaxis() -> SetTitle("m [MeV]");
-    hM22_rpc -> GetYaxis() -> SetTitle("m^{2} [(MeV)^{2}]");
+    hM2_rpc -> GetYaxis() -> SetTitle("m*q [MeV]");
+    hM22_rpc -> GetYaxis() -> SetTitle("m^{2}*q [(MeV)^{2}]");
     hM1_m_rpc -> GetYaxis() -> SetTitle("counts");
     hM12_m_rpc -> GetYaxis() -> SetTitle("counts");
-    hM2_m_rpc -> GetYaxis() -> SetTitle("m [MeV]");
-    hM22_m_rpc -> GetYaxis() -> SetTitle("m^{2} [(MeV)^{2}]");
+    hM2_m_rpc -> GetYaxis() -> SetTitle("m*q [MeV]");
+    hM22_m_rpc -> GetYaxis() -> SetTitle("m^{2}*q [(MeV)^{2}]");
     
     hdEdx_rpc -> Write();
     hBeta_rpc -> Write();
