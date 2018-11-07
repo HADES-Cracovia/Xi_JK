@@ -1,0 +1,1 @@
+In this dir one can analize the Xi production with the use of the real PID. The input files for anaBkgd2.C macro are generated in ../XiRealPID with the use of the "vertex" program. The output files from anaBkgd2.C are written to the "./out_ana" dir (create it!).
