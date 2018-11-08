@@ -22,13 +22,9 @@ void anaBkgd2(){
     //inv mass Lambda1115 & Xi
     TH1F *hLallSum = new TH1F("hLallSum", "hLallSum", nbinsL, minL, maxL);
     TH1F *hrealLSum = new TH1F("hrealLSum", "hrealLSum", nbinsL, minL, maxL);
-    TH1F *hXallSum = new TH1F("hXallSum", "hXallSum", nbinsX, minX, maxX);
-    TH1F *hXrealLpimSum = new TH1F("hXrealLpimSum", "hXrealLpimSum", nbinsX, minX, maxX);
     TH1F *hrealXSum = new TH1F("hrealXSum", "hrealXSum", nbinsX, minX, maxX);
     TH1F *hLallSumSc = new TH1F("hLallSumSc", "hLallSumSc", nbinsL, minL, maxL);
     TH1F *hrealLSumSc = new TH1F("hrealLSumSc", "hrealLSumSc", nbinsL, minL, maxL);
-    TH1F *hXallSumSc = new TH1F("hXallSumSc", "hXallSumSc", nbinsX, minX, maxX);
-    TH1F *hXrealLpimSumSc = new TH1F("hXrealLpimSumSc", "hXrealLpimSumSc", nbinsX, minX, maxX);
     TH1F *hrealXSumSc = new TH1F("hrealXSumSc", "hrealXSumSc", nbinsX, minX, maxX);
 
     TH1F *hLallSumBG = new TH1F("hLallSumBG", "hLallSumBG", nbinsL, minL, maxL);
@@ -54,23 +50,15 @@ void anaBkgd2(){
     THStack *hXmass_sc = new THStack(); //Xi, scaled with cr_sec, no cuts
     THStack *hXmass_sc_fin = new THStack(); //Xi, scaled with cr_sec, up to MTD_X cut
 
-    //MTD_L, Lmass
-    TH1F *hLallSumScLmass = new TH1F("hLallSumScLmass", "hLallSumScLmass", nbinsL, minL, maxL);
-    TH1F *hrealLSumScLmass = new TH1F("hrealLSumScLmass", "hrealLSumScLmass", nbinsL, minL, maxL);
-
     //MTD_L, Lmass, MTD_X
     //inv mass Lambda1115 & Xi
     TH1F *hLallSumMtd = new TH1F("hLallSumMtd", "hLallSumMtd", nbinsL, minL, maxL);
     TH1F *hrealLSumMtd = new TH1F("hrealLSumMtd", "hrealLSumMtd", nbinsL, minL, maxL);
     TH1F *hrealLSumLmass = new TH1F("hrealLSumLmass", "hrealLSumLmass", nbinsL, minL, maxL);
-    TH1F *hXallSumMtd = new TH1F("hXallSumMtd", "hXallSumMtd", nbinsX, minX, maxX);
-    TH1F *hXrealLpimSumMtd = new TH1F("hXrealLpimSumMtd", "hXrealLpimSumMtd", nbinsX, minX, maxX);
     TH1F *hrealXSumMtd = new TH1F("hrealXSumMtd", "hrealXSumMtd", nbinsX, minX, maxX);
     TH1F *hLallSumScMtd = new TH1F("hLallSumScMtd", "hLallSumScMtd", nbinsL, minL, maxL);
     TH1F *hrealLSumScLmassMtd = new TH1F("hrealLSumScLmassMtd", "hrealLSumScLmassMtd", nbinsL, minL, maxL);
     TH1F *hrealLSumScMtd = new TH1F("hrealLSumScMtd", "hrealLSumScMtd", nbinsL, minL, maxL);
-    TH1F *hXallSumScMtd = new TH1F("hXallSumScMtd", "hXallSumScMtd", nbinsX, minX, maxX);
-    TH1F *hXrealLpimSumScMtd = new TH1F("hXrealLpimSumScMtd", "hXrealLpimSumScMtd", nbinsX, minX, maxX);
     TH1F *hrealXSumScMtd = new TH1F("hrealXSumScMtd", "hrealXSumScMtd", nbinsX, minX, maxX);
 
     TH1F *hLallSumBGMtd = new TH1F("hLallSumBGMtd", "hLallSumBGMtd", nbinsL, minL, maxL);
@@ -82,10 +70,10 @@ void anaBkgd2(){
      TH1F *hLallSumBGScLmass = new TH1F("hLallSumBGScLmass", "hLallSumBGScLmass", nbinsL, minL, maxL);
      TH1F *hrealLSumPeakScLmass = new TH1F("hrealLSumPeakScLmass", "hrealLSumPeakScLmass", nbinsL, minL, maxL);
 
-    TH1F *hXallSumBGMtd = new TH1F("hXallSumBGMtd", "hXallSumBGMtd", nbinsX, minX, maxX);
-    TH1F *hrealXSumPeakMtd = new TH1F("hrealXSumPeakMtd", "hrealXSumPeakMtd", nbinsX, minX, maxX);
-    TH1F *hXallSumBGScMtd = new TH1F("hXallSumBGScMtd", "hXallSumBGScMtd", nbinsX, minX, maxX);
-    TH1F *hrealXSumPeakScMtd = new TH1F("hrealXSumPeakScMtd", "hrealXSumPeakScMtd", nbinsX, minX, maxX);
+     TH1F *hXallSumBGMtd = new TH1F("hXallSumBGMtd", "hXallSumBGMtd", nbinsX, minX, maxX);
+     TH1F *hrealXSumPeakMtd = new TH1F("hrealXSumPeakMtd", "hrealXSumPeakMtd", nbinsX, minX,maxX);
+     TH1F *hXallSumBGScMtd = new TH1F("hXallSumBGScMtd", "hXallSumBGScMtd", nbinsX, minX, maxX);
+     TH1F *hrealXSumPeakScMtd = new TH1F("hrealXSumPeakScMtd", "hrealXSumPeakScMtd", nbinsX, minX, maxX);
     
     //only signal channel 090
     TH1F *hLall90Mtd, *hrealL90Mtd, *hrealX90Mtd, *hLall90ScMtd, *hrealL90ScMtd, *hrealX90ScMtd;
@@ -95,33 +83,6 @@ void anaBkgd2(){
     cLambdaXiMassMtd -> Divide(3,2);
     cLambdaXiMassScMtd -> Divide(3,2);
 
-    //MTD_L scan
-    TCanvas *cMTD_LscanAll = new TCanvas("cMTD_LscanAll", "cMTD_LscanAll", 2000, 1000);
-    TCanvas *cMTD_LscanReal = new TCanvas("cMTD_LscanReal", "cMTD_LscanReal", 2000, 1000);
-    cMTD_LscanAll -> Divide(5,4);
-    cMTD_LscanReal -> Divide(5,4);
-    
-    TH1F *hLall1scMTDScanSum[20], *hrealL1scMTDScanSum[20];
-    TH1F *hLallSumBGScMTDScan[20];
-    TH1F *hrealLSumPeakScMTDScan[20];
-
-    TCanvas *cMTD_LscanSB = new TCanvas("cMTD_LscanSB", "cMTD_LscanSB", 2000, 1000);
-    cMTD_LscanSB -> Divide(5,4);
-    
-   //MTD_X scan
-    TCanvas *cMTD_XscanAll = new TCanvas("cMTD_XscanAll", "cMTD_XscanAll", 2000, 1000);
-    TCanvas *cMTD_XscanReal = new TCanvas("cMTD_XscanReal", "cMTD_XscanReal", 2000, 1000);
-    cMTD_XscanAll -> Divide(5,4);
-    cMTD_XscanReal -> Divide(5,4);
-    
-    TH1F *hXall1scMTDScanSum[20], *hrealX1scMTDScanSum[20];
-    TH1F *hXallSumBGScMTDScan[20];
-    TH1F *hrealXSumPeakScMTDScan[20];
-
-    TCanvas *cMTD_XscanSB = new TCanvas("cMTD_XscanSB", "cMTD_XscanSB", 2000, 1000);
-    cMTD_XscanSB -> Divide(5,4);
-    
-
     //MTD_L, Lmass, MTD_X, Vertz_X
     //Lambda1115
     TH1F *hLVertex_sig = new TH1F("hLVertex_sig", "hLVertex_sig", 150, -100, 500); //Lambda1115 vertex_z signal
@@ -130,11 +91,9 @@ void anaBkgd2(){
 
     TH1F *hLallSumVert = new TH1F("hLallSumVert", "hLallSumVert", nbinsL, minL, maxL);
     TH1F *hrealLSumVert = new TH1F("hrealLSumVert", "hrealLSumVert", nbinsL, minL, maxL);
-    TH1F *hXallSumVert = new TH1F("hXallSumVert", "hXallSumVert", nbinsX, minX, maxX);
     TH1F *hrealXSumVert = new TH1F("hrealXSumVert", "hrealXSumVert", nbinsX, minX, maxX);
     TH1F *hLallSumScVert = new TH1F("hLallSumScVert", "hLallSumScVert", nbinsL, minL, maxL);
     TH1F *hrealLSumScVert = new TH1F("hrealLSumScVert", "hrealLSumScVert", nbinsL, minL, maxL);
-    TH1F *hXallSumScVert = new TH1F("hXallSumScVert", "hXallSumScVert", nbinsX, minX, maxX);
     TH1F *hrealXSumScVert = new TH1F("hrealXSumScVert", "hrealXSumScVert", nbinsX, minX, maxX);
 
     TH1F *hLallSumBGVert = new TH1F("hLallSumBGVert", "hLallSumBGVert", nbinsL, minL, maxL);
@@ -159,26 +118,6 @@ void anaBkgd2(){
     TCanvas *cVertZ_L = new TCanvas("cVertZ_L", "#Lambda/(1115/) vertex reconstruction - z", 2000, 1000);
     cVertZ_L -> Divide(4,2);
     
-    TCanvas *cVertZ_LscanAll1 = new TCanvas("cVertZ_LscanAll1", "cVertZ_LscanAll1", 2000, 1000);
-    TCanvas *cVertZ_LscanAll2 = new TCanvas("cVertZ_LscanAll2", "cVertZ_LscanAll2", 2000, 1000);
-    TCanvas *cVertZ_LscanReal1 = new TCanvas("cVertZ_LscanReal1", "cVertZ_LscanReal1", 2000, 1000);
-    TCanvas *cVertZ_LscanReal2 = new TCanvas("cVertZ_LscanReal2", "cVertZ_LscanReal2", 2000, 1000);
-    cVertZ_LscanAll1 -> Divide(5,3);
-    cVertZ_LscanReal1 -> Divide(5,3);
-    cVertZ_LscanAll2 -> Divide(5,3);
-    cVertZ_LscanReal2 -> Divide(5,3);
-
-    TH1F *hLall1scVertScanSum[30];
-    TH1F *hrealL1scVertScanSum[30];
-    TH1F *hLallSumBGScVertScan[30];
-    TH1F *hrealLSumPeakScVertScan[30];
-
-    TCanvas *cVertZ_LscanSB1 = new TCanvas("cVertZ_LscanSB1", "cVertZ_LscanSB1", 2000, 1000);
-    cVertZ_LscanSB1 -> Divide(5,3);
-    TCanvas *cVertZ_LscanSB2 = new TCanvas("cVertZ_LscanSB2", "cVertZ_LscanSB2", 2000, 1000);
-    cVertZ_LscanSB2 -> Divide(5,3);
-
-      
     //Xi
     TH1F *hXVertex_sig = new TH1F("hXVertex_sig", "hXVertex_sig", 150, -100, 500); //Xi vertex_z signal
     TH1F *hXVertex_bg = new TH1F("hXVertex_bg", "hXVertex_bg", 150, -100, 500); //Xi vertex_z bg
@@ -186,32 +125,6 @@ void anaBkgd2(){
     
     TCanvas *cVertZ_X = new TCanvas("cVertZ_X", "Xi vertex reconstruction - z", 2000, 1000);
     cVertZ_X -> Divide(4,2);
-
-    TCanvas *cVertZ_XscanAll1 = new TCanvas("cVertZ_XscanAll1", "cVertZ_XscanAll1", 2000, 1000);
-    TCanvas *cVertZ_XscanReal1 = new TCanvas("cVertZ_XscanReal1", "cVertZ_XscanReal1", 2000, 1000);
-    cVertZ_XscanAll1 -> Divide(5,3);
-    cVertZ_XscanReal1 -> Divide(5,3);
-    TCanvas *cVertZ_XscanAll2 = new TCanvas("cVertZ_XscanAll2", "cVertZ_XscanAll2", 2000, 1000);
-    TCanvas *cVertZ_XscanReal2 = new TCanvas("cVertZ_XscanReal2", "cVertZ_XscanReal2", 2000, 1000);
-    cVertZ_XscanAll2 -> Divide(5,3);
-    cVertZ_XscanReal2 -> Divide(5,3);
-
-    TH1F *hXall1scVertScanSum[30], *hrealX1scVertScanSum[30];
-    TH1F *hXallSumBGScVertScan[30];
-    TH1F *hrealXSumPeakScVertScan[30];
-
-    TCanvas *cVertZ_XscanSB1 = new TCanvas("cVertZ_XscanSB1", "cVertZ_XscanSB1", 2000, 1000);
-    cVertZ_XscanSB1 -> Divide(5,3);
-    TCanvas *cVertZ_XscanSB2 = new TCanvas("cVertZ_XscanSB2", "cVertZ_XscanSB2", 2000, 1000);
-    cVertZ_XscanSB2 -> Divide(5,3);
-
-    //    TCanvas *cVertDiff_allCh = new TCanvas("cVertDiff_allCh", "cVertDiff_allCh");
-    //    cVertDiff_allCh -> Divide(2,1);
-    //TCanvas *cVertDiff = new TCanvas("cVertDiff", "cVertDiff");
-    //cVertDiff -> Divide(2,2);
-    //TCanvas *cVertDiffMtd = new TCanvas("cVertDiffMtd", "cVertDiffMtd");
-    //cVertDiffMtd -> Divide(2,2);
-
 
     //MTD & VERT all channels
     //Lambda
@@ -249,12 +162,6 @@ void anaBkgd2(){
     cVERTX -> cd(2);
     nice_canv1(gPad);
     //*******************************************************************************
-    /* TH1F *hVertDiff_realSumsc = new TH1F("hVertDiff_realSumsc", "hVertDiff_realSumsc", 150, -100, 300); //Difference between Lambda and Xi vertex, real sum, cr sec scaled
-    TH1F *hVertDiff_allSumsc = new TH1F("hVertDiff_allSumsc", "hVertDiff_allSumsc", 150, -100, 300); //Difference between Lambda and Xi vertex, all cand. sum, cr sec scaled
-    TH1F *hVertDiffMtd_realSumsc = new TH1F("hVertDiffMtd_realSumsc", "hVertDiffMtd_realSumsc", 150, -100, 300); //Difference between Lambda and Xi vertex, real sum after MTD_X cut, cr sec scaled
-    TH1F *hVertDiffMtd_allSumsc = new TH1F("hVertDiffMtd_allSumsc", "hVertDiffMtd_allSumsc", 150, -100, 300); //Difference between Lambda and Xi vertex, all cand. sum after MTD_X cut, cr sec scaled
-    */
-
     //fit function for gauss estimation
     TF1 *fit = new TF1("fit", "gaus");
     double mmax, center_fit, sigma_fit, s_b, m3sigma, p3sigma;
@@ -302,7 +209,7 @@ void anaBkgd2(){
     lChan -> SetTextSize(.04);
 
     for(int i = 0; i < 7; i++){
-      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_all5.root", chan[i]);
+      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_test5.root", chan[i]);
       	TFile *f1 = TFile::Open(chanNo, "READ");
 
 	TPaveText *ptch = new TPaveText(.5, .7, .8, .85, "NDC");
@@ -312,16 +219,14 @@ void anaBkgd2(){
 	ptch -> AddText(reac[i].c_str());
 
 	//no cuts
-	TH1F *hLall = (TH1F*)f1->Get("hMLAll"); //all combinations of H-FD
+	TH1F *hAllHFd = (TH1F*)f1->Get("hMLAll"); //all combinations of H-FD
+	TH1F *hLall = (TH1F*)f1->Get("hMLPiHades"); //pi in H, anth in FD
 	TH1F *hrealL = (TH1F*)f1->Get("hMLPiHpF"); //pion in H, p in FD
-	//	TH1F *hXall = (TH1F*)f1->Get("hMXAll"); //Lambda and pion in H, in mL range
-	//	TH1F *hXrealLpim = (TH1F*)f1->Get("hKmassRLpion");
 	TH1F *hrealX = (TH1F*)f1->Get("hMXAll"); //Lambda and pion in H, in mL range
-	
+
+	hAllHFd -> Rebin(2)
 	hLall -> Rebin(2);
 	hrealL -> Rebin(2);
-	//	hXall -> Rebin(2);
-	//	hXrealLpim -> Rebin(2);
 	hrealX -> Rebin(2);
 
 	//spectrum MTD_L
@@ -329,163 +234,43 @@ void anaBkgd2(){
 	TH1F *hMTD_Lreal = (TH1F*)f1 -> Get("hTDpip"); //distance between proton in FD and pion in H
 
 	//spectrum MTD_X
-	//	TH1F *hMTD_Xall = (TH1F*)f1 -> Get("hTDpiL"); //distance between Lambda and pion in H
 	TH1F *hMTD_Xreal = (TH1F*)f1 -> Get("hTDpiL"); //distance between Lambda and pion in H
 	
-	//MTD_L, Lmass
-	//	TH1F *hLallLmass = (TH1F*)f1->Get("hMLDistMass");
-	//	TH1F *hrealLLmass = (TH1F*)f1->Get("hMLDistMassReal");
-	
-	//	hLallLmass -> Rebin(2);
-	//	hrealLLmass -> Rebin(2);
-
 	//MTD_L, Lmass, MTD_X
 	TH1F *hLallMtd = (TH1F*)f1->Get("hMLPiHadesMTD"); //pion in H, anything in FD, MTD_X
 	TH1F *hrealLMtd = (TH1F*)f1->Get("hMLPiHpFMTD"); //pion in H, proton in FD, MTD_X
-	//	TH1F *hXallMtd = (TH1F*)f1->Get("hMXPiLMTD"); //Lambda and pion in H, MTD_X
 	TH1F *hrealXMtd = (TH1F*)f1->Get("hMXPiLMTD"); //Lambda and pion in H, MTD_X
 
 	hLallMtd -> Rebin(2);
 	hrealLMtd -> Rebin(2);
-	//	hXallMtd -> Rebin(2);
 	hrealXMtd -> Rebin(2);
-	/*
-	//MTD_L scan
-	TH1F *hLallMTDScan[20];
-	TH1F *hrealLMTDScan[20];
-	char hNameLAllmtd[24], hNameLRealmtd[24];
-	for(int k = 0; k < 20; k++){
-	  sprintf(hNameLAllmtd, "hCutMTDLAll_%d", k);
-	  sprintf(hNameLRealmtd, "hCutMTDLReal_%d", k);
-	  hLallMTDScan[k] = (TH1F*)f1->Get(hNameLAllmtd);
-	  hrealLMTDScan[k] = (TH1F*)f1->Get(hNameLRealmtd);
-	}
-
-	//MTD_X scan
-	TH1F *hXallMTDScan[20];
-	TH1F *hrealXMTDScan[20];
-	char hNameXAllmtd[24], hNameXRealmtd[24];
-	for(int k = 0; k < 20; k++){
-	  sprintf(hNameXAllmtd, "hCutMTDXAll_%d", k);
-	  sprintf(hNameXRealmtd, "hCutMTDXReal_%d", k);
-	  hXallMTDScan[k] = (TH1F*)f1->Get(hNameXAllmtd);
-	  hrealXMTDScan[k] = (TH1F*)f1->Get(hNameXRealmtd);
-	}
-	*/
 
 	//spectrum Vertz_L
 	TH1F *hVertz_Lall = (TH1F*)f1 -> Get("hVertpiFD"); //vertZ of anything in FD and pion in H 
 	TH1F *hVertz_Lreal = (TH1F*)f1 -> Get("hVertpip"); //vertZ of proton in FD and pion in H 
 
 	//spectrum Vertz_X
-	//	TH1F *hVertz_Xall = (TH1F*)f1 -> Get("hXVertpiL"); //vertZ of Lambda and pion in H 
 	TH1F *hVertz_Xreal = (TH1F*)f1 -> Get("hXVertpiL"); //vertZ of Lambda and pion in H 
 
 	//MTD_L, Lmass, MTD_X, Vertz_X
 	TH1F *hLallVert = (TH1F*)f1->Get("hMLPiHadesMTDVert"); //pion in H, anything in FD, MTD_X
 	TH1F *hrealLVert = (TH1F*)f1->Get("hMLPiHpFMTDVert"); //pion in H, proton in FD, MTD_X
-	//	TH1F *hXallVert = (TH1F*)f1->Get("hMXPiLMTDVertVert"); //Lambda and pion in H, MTD_X
 	TH1F *hrealXVert = (TH1F*)f1->Get("hMXPiLMTDVert"); //Lambda and pion in H, MTD_X
 
 	hLallVert -> Rebin(2);
 	hrealLVert -> Rebin(2);
-	//	hXallVert -> Rebin(2);
 	hrealXVert -> Rebin(2);
-	/*
-	//VERTz_L scan
-	TH1F *hLallVertScan[30];
-	TH1F *hrealLVertScan[30];
-	char hNameLAll[24], hNameLReal[24];
-	for(int k = -10; k < 20; k++){
-	  sprintf(hNameLAll, "hCutVertLAll_%d", k);
-	  sprintf(hNameLReal, "hCutVertLReal_%d", k);
-	  hLallVertScan[k+10] = (TH1F*)f1->Get(hNameLAll);
-	  hrealLVertScan[k+10] = (TH1F*)f1->Get(hNameLReal);
-	}
 
-	//VERTz_X scan
-	TH1F *hXallVertScan[30];
-	TH1F *hrealXVertScan[30];
-	char hNameAll[24], hNameReal[24];
-	for(int k = -10; k < 20; k++){
-	  sprintf(hNameAll, "hCutVertAll_%d", k);
-	  sprintf(hNameReal, "hCutVertReal_%d", k);
-	  hXallVertScan[k+10] = (TH1F*)f1->Get(hNameAll);
-	  hrealXVertScan[k+10] = (TH1F*)f1->Get(hNameReal);
-	}
-	*/
 	int col = i+1;
 	if(i == 2) col = 8;
 	if(i == 4) col = 42;
 	if(i == 6) col = 15;
 
-	/*TH1F *hVertDiffAll = (TH1F*)f1 -> Get("hKvertexAll");
-	TH1F *hVertDiffReal = (TH1F*)f1 -> Get("hKvertexReal");
-	TH1F *hVertDiffMtdAll = (TH1F*)f1 -> Get("hKvertexdistAll");
-	TH1F *hVertDiffMtdReal = (TH1F*)f1 -> Get("hKvertexdistReal");
-
-	TH1F *hVertDiffAllsc = (TH1F*)hVertDiffAll -> Clone("hVertDiffAllsc_c");
-	TH1F *hVertDiffRealsc = (TH1F*)hVertDiffReal -> Clone("hVertDiffRealsc_c");
-	TH1F *hVertDiffMtdAllsc = (TH1F*)hVertDiffMtdAll -> Clone("hVertDiffMtdAllsc_c");
-	TH1F *hVertDiffMtdRealsc = (TH1F*)hVertDiffMtdReal -> Clone("hVertDiffMtdRealsc_c");
-
-	hVertDiffAllsc -> Rebin(3);
-	hVertDiffRealsc -> Rebin(3);
-	hVertDiffMtdAllsc -> Rebin(3);
-	hVertDiffMtdRealsc -> Rebin(3);
-
-	hVertDiffAllsc -> Scale(cr_sec[i]);
-	hVertDiffRealsc -> Scale(cr_sec[i]);
-	hVertDiffMtdAllsc -> Scale(cr_sec[i]);
-	hVertDiffMtdRealsc -> Scale(cr_sec[i]);
-
-	hVertDiffAllsc -> SetLineColor(col);
-	hVertDiffRealsc -> SetLineColor(col);
-	hVertDiffMtdAllsc -> SetLineColor(col);
-	hVertDiffMtdRealsc -> SetLineColor(col);
-
-	hVertDiff_realSumsc -> Add(hVertDiffRealsc);
-	hVertDiff_allSumsc -> Add(hVertDiffAllsc);
-	hVertDiffMtd_realSumsc -> Add(hVertDiffMtdRealsc);
-	hVertDiffMtd_allSumsc -> Add(hVertDiffMtdAllsc);
-
-	cVertDiff_allCh -> cd(1);
-	nice_canv1(gPad);
-	hVertDiffAllsc -> SetTitle("Distance between ksi and lambda VERT - no cuts, all cand, scaled");
-	hVertDiffAllsc -> GetXaxis() -> SetTitle("dist [mm]");
-	hVertDiffAllsc -> GetYaxis() -> SetTitle("counts*#sigma");
-	hVertDiffAllsc -> Draw("same");
-
-	cVertDiff_allCh -> cd(2);
-	nice_canv1(gPad);
-	hVertDiffMtdAllsc -> SetTitle("Distance between ksi and lambda VERT - after MTD_X, all cand, scaled");
-	hVertDiffMtdAllsc -> GetXaxis() -> SetTitle("dist [mm]");
-	hVertDiffMtdAllsc -> GetYaxis() -> SetTitle("counts*#sigma");
-	hVertDiffMtdAllsc -> Draw("same");
-	*/
-	/*	cVertDiff_allCh -> cd(3);
-	nice_canv1(gPad);
-	hVertDiffRealsc -> SetTitle("Distance between ksi and lambda VERT - no cuts, real #Xi and #Lambda, scaled");
-	hVertDiffRealsc -> GetXaxis() -> SetTitle("dist [mm]");
-	hVertDiffRealsc -> GetYaxis() -> SetTitle("counts*#sigma");
-	hVertDiffRealsc -> Draw("same");
-
-	cVertDiff_allCh -> cd(4);
-	nice_canv1(gPad);
-	hVertDiffMtdRealsc -> SetTitle("Distance between ksi and lambda VERT - after MTD_X, real #Xi and #Lambda, scaled");
-	hVertDiffMtdRealsc -> GetXaxis() -> SetTitle("dist [mm]");
-	hVertDiffMtdRealsc -> GetYaxis() -> SetTitle("counts*#sigma");
-	hVertDiffMtdRealsc -> Draw("same");
-	*/
 	//no cuts
 	TH1F *hLall1 = (TH1F*)hLall -> Clone("hLall1_c");
 	TH1F *hLall1sc = (TH1F*)hLall -> Clone("hLall1sc_c");
 	TH1F *hrealL1 = (TH1F*)hrealL -> Clone("hrealL1_c");
 	TH1F *hrealL1sc = (TH1F*)hrealL -> Clone("hrealL1sc_c");
-	//	TH1F *hXall1 = (TH1F*)hXall -> Clone("hXall1_c");
-	//	TH1F *hXall1sc = (TH1F*)hXall -> Clone("hXall1sc_c");
-	//	TH1F *hXrealLpim1 = (TH1F*)hXrealLpim -> Clone("hXrealLpim1_c");
-	//	TH1F *hXrealLpim1sc = (TH1F*)hXrealLpim -> Clone("hXrealLpim1sc_c");
 	TH1F *hrealX1 = (TH1F*)hrealX -> Clone("hrealX1_c");
 	TH1F *hrealX1sc = (TH1F*)hrealX -> Clone("hrealX1sc_c");
 
@@ -494,73 +279,33 @@ void anaBkgd2(){
 
       	hLall1sc -> Scale(cr_sec[i]);
 	hrealL1sc -> Scale(cr_sec[i]);
-	//	hXall1sc -> Scale(cr_sec[i]);
-	//	hXrealLpim1sc -> Scale(cr_sec[i]);
 	hrealX1sc -> Scale(cr_sec[i]);
 
 	hLallSum -> Add(hLall1);
 	hrealLSum -> Add(hrealL1);
-	//	hXallSum -> Add(hXall1);
-	//	hXrealLpimSum -> Add(hXrealLpim1);
 	hrealXSum -> Add(hrealX1);
 	
 	hLall1sc -> Sumw2();
 	hrealLSumSc -> Sumw2();
-	//	hXallSumSc -> Sumw2();
-	//	hXrealLpimSumSc -> Sumw2();
 	hrealXSumSc -> Sumw2();
 
 	hLallSumSc -> Add(hLall1sc);
 	hrealLSumSc -> Add(hrealL1sc);
-	//	hXallSumSc -> Add(hXall1sc);
-	//	hXrealLpimSumSc -> Add(hXrealLpim1sc);
 	hrealXSumSc -> Add(hrealX1sc);
 
 	clLambdaSc -> Scale(cr_sec[i]);
-	//clLambdaSc -> Rebin(2);
-	//clLambdaSc -> Sumw2();
 	hLmass_sc -> Add(clLambdaSc);
 	clLambdaSc -> SetLineColor(col);	
-	// clLambdaSc -> SetMarkerColor(col);
-	// clLambdaSc -> SetMarkerStyle(3);
-	// clLambdaSc -> SetMarkerSize(2);
-	// if(i==0){
-	//   clLambdaSc -> SetMarkerStyle(20);
-	//   clLambdaSc -> SetMarkerSize(1.5)
-	// }
-
+	
 	clXiSc -> Scale(cr_sec[i]);
-	//clXiSc -> Rebin(2);
-	//clXiSc -> Sumw2();
 	hXmass_sc -> Add(clXiSc);
 	clXiSc -> SetLineColor(col);	
-	// clXiSc -> SetMarkerColor(col);
-	// clXiSc -> SetMarkerStyle(3);
-	// clXiSc -> SetMarkerSize(2);
-	// if(i==0){
-	//   clXiSc -> SetMarkerStyle(20);
-	//   clXiSc -> SetMarkerSize(1.5);
-	// }
 
-	//MTD_L, Lmass
-	/*	TH1F *hLall1Lmass = (TH1F*)hLallLmass -> Clone("hLall1_cLmass");
-	TH1F *hLall1scLmass = (TH1F*)hLallLmass -> Clone("hLall1sc_cLmass");
-	TH1F *hrealL1Lmass = (TH1F*)hrealLLmass -> Clone("hrealL1_cLmass");
-	TH1F *hrealL1scLmass = (TH1F*)hrealLLmass -> Clone("hrealL1sc_cLmass");
-
-	hLall1scLmass -> Scale(cr_sec[i]);
-	hrealL1scLmass -> Scale(cr_sec[i]);
-	
-	hLallSumScLmass -> Add(hLall1scLmass);
-	hrealLSumScLmass -> Add(hrealL1scLmass);
-	*/
 	//MTD_L, Lmass, MTD_X
 	TH1F *hLall1Mtd = (TH1F*)hLallMtd -> Clone("hLall1_cMtd");
 	TH1F *hLall1scMtd = (TH1F*)hLallMtd -> Clone("hLall1sc_cMtd");
 	TH1F *hrealL1Mtd = (TH1F*)hrealLMtd -> Clone("hrealL1_cMtd");
 	TH1F *hrealL1scMtd = (TH1F*)hrealLMtd -> Clone("hrealL1sc_cMtd");
-	//	TH1F *hXall1Mtd = (TH1F*)hXallMtd -> Clone("hXall1_cMtd");
-	//	TH1F *hXall1scMtd = (TH1F*)hXallMtd -> Clone("hXall1sc_cMtd");
 	TH1F *hrealX1Mtd = (TH1F*)hrealXMtd -> Clone("hrealX1_cMtd");
       	TH1F *hrealX1scMtd = (TH1F*)hrealXMtd -> Clone("hrealX1sc_cMtd");
 
@@ -568,66 +313,40 @@ void anaBkgd2(){
 	
       	hLall1scMtd -> Scale(cr_sec[i]);
 	hrealL1scMtd -> Scale(cr_sec[i]);
-	//	hXall1scMtd -> Scale(cr_sec[i]);
-	//	hXrealLpim1sc -> Scale(cr_sec[i]);
 	hrealX1scMtd -> Scale(cr_sec[i]);
 
 	hLallSumMtd -> Add(hLall1Mtd);
 	hrealLSumMtd -> Add(hrealL1Mtd);
-	//	hXallSumMtd -> Add(hXall1Mtd);
 	hrealXSumMtd -> Add(hrealX1Mtd);
 
 	hLallSumScMtd -> Sumw2();
 	hrealLSumScMtd -> Sumw2();
-	//	hXallSumScMtd -> Sumw2();
 	hrealXSumScMtd -> Sumw2();
 	
 	hLallSumScMtd -> Add(hLall1scMtd);
 	hrealLSumScMtd -> Add(hrealL1scMtd);
-	//	hXallSumScMtd -> Add(hXall1scMtd);
 	hrealXSumScMtd -> Add(hrealX1scMtd);
 
 	clXiSc_fin -> Scale(cr_sec[i]);
-	//clXiSc_fin -> Rebin(2);
-	//clXiSc_fin -> Sumw2();
 	hXmass_sc_fin -> Add(clXiSc_fin);
 	clXiSc_fin -> SetLineColor(col);
-	//	clXiSc_fin -> SetMarkerColor(col);
-	//	clXiSc_fin -> SetMarkerStyle(3);
-	//	clXiSc_fin -> SetMarkerSize(2);
-	//	if(i==0){ 
-	//	  clXiSc_fin -> SetMarkerStyle(20);
-	//	  clXiSc_fin -> SetMarkerSize(1.5);
-	//	}
-	//***************************************************************
 
+	//***************************************************************
 	//spectrum Vertz_L
 	TH1F *hVertz_Lall1 = (TH1F*)hVertz_Lall -> Clone("hVertz_Lall_c");
 	TH1F *hVertz_Lreal1 = (TH1F*)hVertz_Lreal -> Clone("hVertz_Lreal_c");
 
 	//spectrum Vertz_X
-	//	TH1F *hVertz_Xall1 = (TH1F*)hVertz_Xall -> Clone("hVertz_Xall_c");
 	TH1F *hVertz_Xreal1 = (TH1F*)hVertz_Xreal -> Clone("hVertz_Xreal_c");
 
 	hVertz_Lall1 -> Scale(cr_sec[i]);
 	hVertz_Lreal1 -> Scale(cr_sec[i]);
-	//	hVertz_Xall1 -> Scale(cr_sec[i]);
 	hVertz_Xreal1 -> Scale(cr_sec[i]);
 
 	hVertz_Lall1 -> SetLineColor(col);
 	hVertz_Lreal1 -> SetLineColor(col);
-	//	hVertz_Lreal1 -> SetFillColor(col);
-	//	hVertz_Xall1 -> SetLineColor(col);
 	hVertz_Xreal1 -> SetLineColor(col);
-	//	hVertz_Xreal1 -> SetFillColor(col);
 
-	/*if(i>0){
-	  hVertz_Lall1 -> SetLineStyle(i+4);
-	  hVertz_Lreal1 -> SetLineStyle(i+4);
-	  hVertz_Xall1 -> SetLineStyle(i+4);
-	  hVertz_Xreal1 -> SetLineStyle(i+4);
-	  }*/
-	
 	cVertZ_L -> cd(i+1);
 	nice_canv1(gPad);
 	hVertz_Lall1 -> GetXaxis() -> SetTitle("z [mm]");
@@ -651,25 +370,15 @@ void anaBkgd2(){
 	TH1F *hMTD_Lreal1 = (TH1F*)hMTD_Lreal -> Clone("hMTD_Lreal_c");
 
 	//spectrum MTD_X
-	//	TH1F *hMTD_Xall1 = (TH1F*)hMTD_Xall -> Clone("hMTD_Xall_c");
 	TH1F *hMTD_Xreal1 = (TH1F*)hMTD_Xreal -> Clone("hMTD_Xreal_c");
 
 	hMTD_Lall1 -> Scale(cr_sec[i]);
 	hMTD_Lreal1 -> Scale(cr_sec[i]);
-	//	hMTD_Xall1 -> Scale(cr_sec[i]);
 	hMTD_Xreal1 -> Scale(cr_sec[i]);
 
 	hMTD_Lall1 -> SetLineColor(col);
 	hMTD_Lreal1 -> SetLineColor(col);
-	//	hMTD_Xall1 -> SetLineColor(col);
 	hMTD_Xreal1 -> SetLineColor(col);
-	/*
-	if(i>0){
-	  hMTD_Lall1 -> SetLineStyle(i+4);
-	  hMTD_Lreal1 -> SetLineStyle(i+4);
-	  hMTD_Xall1 -> SetLineStyle(i+4);
-	  hMTD_Xreal1 -> SetLineStyle(i+4);
-	  }*/
 
 	cMTDL -> cd(1);
 	gPad->SetLogy();
@@ -686,13 +395,6 @@ void anaBkgd2(){
 	hMTD_Lreal1 -> GetYaxis() -> SetTitle("counts*#sigma");
 	hMTD_Lreal1 -> Draw("same");
 
-	/*cMTDX -> cd(1);
-	gPad->SetLogy();
-	hMTD_Xall1 -> GetYaxis() -> SetRangeUser(1, 10000000);
-	hMTD_Xall1 -> SetTitle("MTD_X: all Xi candidates");
-	hMTD_Xall1 -> GetXaxis() -> SetTitle("MTD_X [mm]");
-	hMTD_Xall1 -> GetYaxis() -> SetTitle("counts*#sigma");
-	hMTD_Xall1 -> Draw("same");*/
 	cMTDX -> cd(2);
 	gPad->SetLogy();
 	hMTD_Xreal1 -> GetYaxis() -> SetRangeUser(1, 10000000);
@@ -718,15 +420,6 @@ void anaBkgd2(){
 	hVertz_Lreal1 -> Draw("same");
 	hLVertex_sigSum -> Add(hVertz_Lreal1);
 
-	/*cVERTX -> cd(1);
-	gPad->SetLogy();
-	hVertz_Xall1 -> GetYaxis() -> SetRangeUser(10, 5000000);
-	hVertz_Xall1 -> SetTitle("VERTz_X: all Xi candidates");
-	hVertz_Xall1 -> GetXaxis() -> SetTitle("VERTz_X [mm]");
-	hVertz_Xall1 -> GetYaxis() -> SetTitle("counts*#sigma");
-	hVertz_Xall1 -> Draw("same");
-	hXVertex_allSum -> Add(hVertz_Xall1);*/
-	cVERTX -> cd(2);
 	gPad->SetLogy();
 	hVertz_Xreal1 -> GetYaxis() -> SetRangeUser(10, 5000000);
 	hVertz_Xreal1 -> SetTitle("VERTz_X: real Xi");
@@ -735,177 +428,13 @@ void anaBkgd2(){
 	hVertz_Xreal1 -> Draw("same");
 	hXVertex_sigSum -> Add(hVertz_Xreal1);
 	
-	/*	//MTD scan
-	TH1F *hLall1MTDScan[20], *hLall1scMTDScan[20], *hrealL1MTDScan[20], *hrealL1scMTDScan[20];
-	char clNameLAllmtd[24], clNameLRealmtd[24];
-
-	for(int k = 0; k < 20; k++){
-	  sprintf(clNameLAllmtd, "hLall1sc_cMTD_%d", k);
-	  hLall1scMTDScan[k] = (TH1F*)hLallMTDScan[k] -> Clone(clNameLAllmtd);
-	  hLall1scMTDScan[k] -> Scale(cr_sec[i]);
-	  cMTD_LscanAll -> cd(k+1);
-	  nice_canv1(gPad);
-	  hLall1scMTDScan[k] -> SetLineColor(col);
-	  if(i==0){
-	    hLall1scMTDScan[k] -> GetXaxis() -> SetTitle("invM [MeV]");
-	    hLall1scMTDScan[k] -> GetYaxis() -> SetTitle("counts*#sigma");
-	    hLall1scMTDScan[k] -> Draw();
-	    hLall1scMTDScanSum[k] = hLall1scMTDScan[k];
-	  }else{
-	    hLall1scMTDScan[k] -> Draw("same");
-	    hLall1scMTDScanSum[k] -> Add(hLall1scMTDScan[k]);
-	  }
-	  
-	  sprintf(clNameLRealmtd, "hrealL1sc_cMTD_%d", k);
-	  hrealL1scMTDScan[k] = (TH1F*)hrealLMTDScan[k] -> Clone(clNameLRealmtd);
-	  hrealL1scMTDScan[k] -> Scale(cr_sec[i]);
-	  cMTD_LscanReal -> cd(k+1);
-	  nice_canv1(gPad);
-	  hrealL1scMTDScan[k] -> SetLineColor(col);
-	  if(i==0){
-	    hrealL1scMTDScan[k] -> GetXaxis() -> SetTitle("invM [MeV]");
-	    hrealL1scMTDScan[k] -> GetYaxis() -> SetTitle("counts*#sigma");
-	    hrealL1scMTDScan[k] -> Draw();
-	    hrealL1scMTDScanSum[k] = hrealL1scMTDScan[k];
-	  }else{
-	    hrealL1scMTDScan[k] -> Draw("same");
-	    hrealL1scMTDScanSum[k] -> Add(hrealL1scMTDScan[k]);
-	  }
-	}
-
-	TH1F *hXall1MTDScan[20], *hXall1scMTDScan[20], *hrealX1MTDScan[20], *hrealX1scMTDScan[20];
-	char clNameXAllmtd[24], clNameXRealmtd[24];
-
-	for(int k = 0; k < 20; k++){
-	  sprintf(clNameXAllmtd, "hXall1sc_cMTD_%d", k);
-	  hXall1scMTDScan[k] = (TH1F*)hXallMTDScan[k] -> Clone(clNameXAllmtd);
-	  hXall1scMTDScan[k] -> Scale(cr_sec[i]);
-	  cMTD_XscanAll -> cd(k+1);
-	  hXall1scMTDScan[k] -> SetLineColor(col);
-	  if(i==0){
-	    hXall1scMTDScan[k] -> GetXaxis() -> SetTitle("invM [MeV]");
-	    hXall1scMTDScan[k] -> GetYaxis() -> SetTitle("counts*#sigma");
-	    hXall1scMTDScan[k] -> Draw();
-	    hXall1scMTDScanSum[k] = hXall1scMTDScan[k];
-	  }else{
-	    hXall1scMTDScan[k] -> Draw("same");
-	    hXall1scMTDScanSum[k] -> Add(hXall1scMTDScan[k]);
-	  }
-	  
-	  sprintf(clNameXRealmtd, "hrealX1sc_cMTD_%d", k);
-	  hrealX1scMTDScan[k] = (TH1F*)hrealXMTDScan[k] -> Clone(clNameXRealmtd);
-	  hrealX1scMTDScan[k] -> Scale(cr_sec[i]);
-	  cMTD_XscanReal -> cd(k+1);
-	  hrealX1scMTDScan[k] -> SetLineColor(col);
-	  if(i==0){
-	    hrealX1scMTDScan[k] -> GetXaxis() -> SetTitle("invM [MeV]");
-	    hrealX1scMTDScan[k] -> GetYaxis() -> SetTitle("counts*#sigma");
-	    hrealX1scMTDScan[k] -> Draw();
-	    hrealX1scMTDScanSum[k] = hrealX1scMTDScan[k];
-	  }else{
-	    hrealX1scMTDScan[k] -> Draw("same");
-	    hrealX1scMTDScanSum[k] -> Add(hrealX1scMTDScan[k]);
-	  }
-	}//end MTD scan
-
-	//VERTz scan
-	TH1F *hLall1VertScan[30], *hLall1scVertScan[30], *hrealL1VertScan[30], *hrealL1scVertScan[30];
-	char clNameLAll[24], clNameLReal[24];
-
-	for(int k = -10; k < 20; k++){
-	  //sprintf(clNameLAll, "hLall1_cVert_%d", k);
-	  //hLall1VertScan[k] = (TH1F*)hLallVertScan[k] -> Clone(clNameLAll);
-	  sprintf(clNameLAll, "hLall1sc_cVert_%d", k);
-	  hLall1scVertScan[k+10] = (TH1F*)hLallVertScan[k+10] -> Clone(clNameLAll);
-	  hLall1scVertScan[k+10] -> Scale(cr_sec[i]);
-	  if(k < 5) cVertZ_LscanAll1 -> cd(k+11);
-	  else  cVertZ_LscanAll2 -> cd(k-4);
-	  nice_canv1(gPad);
-	  hLall1scVertScan[k+10] -> SetLineColor(col);
-	  if(i==0){
-	    hLall1scVertScan[k+10] -> GetXaxis() -> SetTitle("invM [MeV]");
-	    hLall1scVertScan[k+10] -> GetYaxis() -> SetTitle("counts*#sigma");
-	    hLall1scVertScan[k+10] -> Draw();
-	    hLall1scVertScanSum[k+10] = hLall1scVertScan[k+10];
-	  }else{
-	    hLall1scVertScan[k+10] -> Draw("same");
-	    hLall1scVertScanSum[k+10] -> Add(hLall1scVertScan[k+10]);
-	  }
-	  
-
-	  // sprintf(clNameLReal, "hrealL1_cVert_%d", k);
-	  //hrealL1VertScan[k] = (TH1F*)hrealLVertScan[k] -> Clone(clNameLReal);
-	  sprintf(clNameLReal, "hrealL1sc_cVert_%d", k);
-	  hrealL1scVertScan[k+10] = (TH1F*)hrealLVertScan[k+10] -> Clone(clNameLReal);
-	  hrealL1scVertScan[k+10] -> Scale(cr_sec[i]);
-	  if(k < 5) cVertZ_LscanReal1 -> cd(k+11);
-	  else  cVertZ_LscanReal2 -> cd(k-4);
-	  nice_canv1(gPad);
-	  hrealL1scVertScan[k+10] -> SetLineColor(col);
-	  if(i==0){
-	    hrealL1scVertScan[k+10] -> GetXaxis() -> SetTitle("invM [MeV]");
-	    hrealL1scVertScan[k+10] -> GetYaxis() -> SetTitle("counts*#sigma");
-	    hrealL1scVertScan[k+10] -> Draw();
-	    hrealL1scVertScanSum[k+10] = hrealL1scVertScan[k+10];
-	  }else{
-	    hrealL1scVertScan[k+10] -> Draw("same");
-	    hrealL1scVertScanSum[k+10] -> Add(hrealL1scVertScan[k+10]);
-	  }
-	}
-
-	
-	TH1F *hXall1VertScan[30], *hXall1scVertScan[30], *hrealX1VertScan[30], *hrealX1scVertScan[30];
-	char clNameAll[24], clNameReal[24];
-
-	for(int k = -10; k < 20; k++){
-	  // sprintf(clNameAll, "hXall1_cVert_%d", k);
-	  //hXall1VertScan[k] = (TH1F*)hXallVertScan[k] -> Clone(clNameAll);
-	  sprintf(clNameAll, "hXall1sc_cVert_%d", k);
-	  hXall1scVertScan[k+10] = (TH1F*)hXallVertScan[k+10] -> Clone(clNameAll);
-	  hXall1scVertScan[k+10] -> Scale(cr_sec[i]);
-	  if(k < 5) cVertZ_XscanAll1 -> cd(k+11);
-	  else  cVertZ_XscanAll2 -> cd(k-4);
-	  nice_canv1(gPad);
-	  hXall1scVertScan[k+10] -> SetLineColor(col);
-	  if(i==0){
-	    hXall1scVertScan[k+10] -> GetXaxis() -> SetTitle("invM [MeV]");
-	    hXall1scVertScan[k+10] -> GetYaxis() -> SetTitle("counts*#sigma");
-	    hXall1scVertScan[k+10] -> Draw();
-	    hXall1scVertScanSum[k+10] = hXall1scVertScan[k+10];
-	  }else{
-	    hXall1scVertScan[k+10] -> Draw("same");
-	    hXall1scVertScanSum[k+10] -> Add(hXall1scVertScan[k+10]);
-	  }
-
-	  //sprintf(clNameReal, "hrealX1_cVert_%d", k);
-	  // hrealX1VertScan[k] = (TH1F*)hrealXVertScan[k] -> Clone(clNameReal);
-	  sprintf(clNameReal, "hrealX1sc_cVert_%d", k);
-	  hrealX1scVertScan[k+10] = (TH1F*)hrealXVertScan[k+10] -> Clone(clNameReal);
-	  hrealX1scVertScan[k+10] -> Scale(cr_sec[i]);
-	  if(k < 5) cVertZ_XscanReal1 -> cd(k+11);
-	  else  cVertZ_XscanReal2 -> cd(k-4);
-	  nice_canv1(gPad);
-	  hrealX1scVertScan[k+10] -> SetLineColor(col);
-	  if(i==0){
-	    hrealX1scVertScan[k+10] -> GetXaxis() -> SetTitle("invM [MeV]");
-	    hrealX1scVertScan[k+10] -> GetYaxis() -> SetTitle("counts*#sigma");
-	    hrealX1scVertScan[k+10] -> Draw();
-	    hrealX1scVertScanSum[k+10] = hrealX1scVertScan[k+10];
-	  }else{
-	    hrealX1scVertScan[k+10] -> Draw("same");
-	    hrealX1scVertScanSum[k+10] -> Add(hrealX1scVertScan[k+10]);
-	  }
-	}
-	//end VERTz scan
-	*/
 
 	//MTD_L, Lmass, MTD_X, Vertz_X
 	TH1F *hLall1Vert = (TH1F*)hLallVert -> Clone("hLall1_cVert");
 	TH1F *hLall1scVert = (TH1F*)hLallVert -> Clone("hLall1sc_cVert");
 	TH1F *hrealL1Vert = (TH1F*)hrealLVert -> Clone("hrealL1_cVert");
 	TH1F *hrealL1scVert = (TH1F*)hrealLVert -> Clone("hrealL1sc_cVert");
-	//	TH1F *hXall1Vert = (TH1F*)hXallVert -> Clone("hXall1_cVert");
-	//	TH1F *hXall1scVert = (TH1F*)hXallVert -> Clone("hXall1sc_cVert");
+
 	TH1F *hrealX1Vert = (TH1F*)hrealXVert -> Clone("hrealX1_cVert");
 	TH1F *hrealX1scVert = (TH1F*)hrealXVert -> Clone("hrealX1sc_cVert");
 	
@@ -913,23 +442,19 @@ void anaBkgd2(){
 	
       	hLall1scVert -> Scale(cr_sec[i]);
 	hrealL1scVert -> Scale(cr_sec[i]);
-	//	hXall1scVert -> Scale(cr_sec[i]);
 	hrealX1scVert -> Scale(cr_sec[i]);
 
 	hLallSumVert -> Add(hLall1Vert);
 	hrealLSumVert -> Add(hrealL1Vert);
-	//	hXallSumVert -> Add(hXall1Vert);
 	hrealXSumVert -> Add(hrealX1Vert);
       
 	hLallSumScVert -> Sumw2();
 	hLallSumScVert -> Sumw2();
 	hrealLSumScVert -> Sumw2();
-	//	hXallSumScVert -> Sumw2();
 	hrealXSumScVert -> Sumw2();
 
 	hLallSumScVert -> Add(hLall1scVert);
 	hrealLSumScVert -> Add(hrealL1scVert);
-	//	hXallSumScVert -> Add(hXall1scVert);
 	hrealXSumScVert -> Add(hrealX1scVert);
 
 	clLambdaScVertrec -> Scale(cr_sec[i]);
@@ -937,33 +462,24 @@ void anaBkgd2(){
 	clLambdaScVertrec -> SetLineColor(col);
 
 	//*******************************************************
-	//		TH1F *hLall1 = (TH1F*)hLall -> Clone("hLall1_c");
 
 	if(i == 0){
 	  //no cuts
 	  hLall90 = (TH1F*)hLall1 -> Clone("hLall90");
 	  hrealL90 = (TH1F*)hrealL1 -> Clone("hrealL90");
-	  //	  TH1F *hXall90 = hXall1 -> Clone("hXall90");
-	  //	  TH1F *hXrealLpim90 = hXrealLpim1 -> Clone("hXrealLpim90");
 	  hrealX90 = (TH1F*)hrealX1 -> Clone("hrealX90");
 	
 	  hLall90Sc = (TH1F*)hLall1sc -> Clone("hLall90Sc");
 	  hrealL90Sc = (TH1F*)hrealL1sc -> Clone("hrealL90Sc");
-	  //	  TH1F *hXall90Sc = hXall1sc -> Clone("hXall90Sc");
-	  //	  TH1F *hXrealLpim90Sc = hXrealLpim1sc -> Clone("hXrealLpim90Sc");
 	  hrealX90Sc = (TH1F*)hrealX1sc -> Clone("hrealX90Sc");
 
 	  hLall90 -> SetLineColor(kBlack);
 	  hrealL90 -> SetLineColor(kBlack);
-	  //	  hXall90 -> SetLineColor(kBlack);
-	  //	  hXrealLpim90 -> SetLineColor(kBlack);
 	  hrealX90 -> SetLineColor(kBlack);
 	
 	  hLall90Sc -> SetLineColor(kBlack);
 	  hrealL90Sc -> SetLineColor(kBlack);
-	  //	  hXall90Sc -> SetLineColor(kBlack);
-	  //	  hXrealLpim90Sc -> SetLineColor(kBlack);
-	  hrealX90Sc -> SetLineColor(kBlack);
+	   hrealX90Sc -> SetLineColor(kBlack);
 
 	  clLambdaSc -> SetLineWidth(2);
 	  clXiSc -> SetLineWidth(2);
@@ -971,61 +487,40 @@ void anaBkgd2(){
 	  //MTD_L, Lmass, MTD_X
 	  hLall90Mtd = (TH1F*)hLall1Mtd -> Clone("hLall90Mtd");
 	  hrealL90Mtd = (TH1F*)hrealL1Mtd -> Clone("hrealL90Mtd");
-	  //	  TH1F *hXall90Mtd = hXall1Mtd -> Clone("hXall90Mtd");
 	  hrealX90Mtd = (TH1F*)hrealX1Mtd -> Clone("hrealX90Mtd");
 	
 	  hLall90ScMtd = (TH1F*)hLall1scMtd -> Clone("hLall90ScMtd");
 	  hrealL90ScMtd = (TH1F*)hrealL1scMtd -> Clone("hrealL90ScMtd");
-	  //	  TH1F *hXall90ScMtd = hXall1scMtd -> Clone("hXall90ScMtd");
 	  hrealX90ScMtd = (TH1F*)hrealX1scMtd -> Clone("hrealX90ScMtd");
 
 	  hLall90Mtd -> SetLineColor(kBlack);
 	  hrealL90Mtd -> SetLineColor(kBlack);
-	  //	  hXall90Mtd -> SetLineColor(kBlack);
 	  hrealX90Mtd -> SetLineColor(kBlack);
 	
 	  hLall90ScMtd -> SetLineColor(kBlack);
 	  hrealL90ScMtd -> SetLineColor(kBlack);
-	  //	  hXall90ScMtd -> SetLineColor(kBlack);
 	  hrealX90ScMtd -> SetLineColor(kBlack);
 
 	  clXiSc_fin -> SetLineWidth(2);
 	  	  
-	//MTD_L, Lmass, MTD_X, Vertz_X
+	  //MTD_L, Lmass, MTD_X, Vertz_X
 	  hLall90Vert = (TH1F*)hLall1Vert -> Clone("hLall90Vert");
 	  hrealL90Vert = (TH1F*)hrealL1Vert -> Clone("hrealL90Vert");
-	  //	  TH1F *hXall90Vert = hXall1Vert -> Clone("hXall90Vert");
 	  hrealX90Vert = (TH1F*)hrealX1Vert -> Clone("hrealX90Vert");
 	
 	  hLall90ScVert = (TH1F*)hLall1scVert -> Clone("hLall90ScVert");
 	  hrealL90ScVert = (TH1F*)hrealL1scVert -> Clone("hrealL90ScVert");
-	  //	  TH1F *hXall90ScVert = hXall1scVert -> Clone("hXall90ScVert");
 	  hrealX90ScVert = (TH1F*)hrealX1scVert -> Clone("hrealX90ScVert");
 
 	  hLall90Vert -> SetLineColor(kBlack);
 	  hrealL90Vert -> SetLineColor(kBlack);
-	  //	  hXall90Vert -> SetLineColor(kBlack);
 	  hrealX90Vert -> SetLineColor(kBlack);
 	
 	  hLall90ScVert -> SetLineColor(kBlack);
 	  hrealL90ScVert -> SetLineColor(kBlack);
-	  //	  hXall90ScVert -> SetLineColor(kBlack);
 	  hrealX90ScVert -> SetLineColor(kBlack);
 
           clLambdaScVertrec -> SetLineWidth(2);
-	  	  
-	  /*TH1F *hXall90Vert[20], *hrealX90Vert[20], *hXall90ScVert[20], *hrealX90ScVert[20];
-	  char clNameAll90[24], clNameReal90[24];
-	  for(int k = 0; k < 20; k++){
-	    sprintf(clNameAll90, "hXall90Vert_%d", k);
-	    hXall90Vert[k] = hXall1Vert -> Clone(clNameAll90);
-	    sprintf(clNameAll90, "hXall90ScVert_%d", k);
-	    hXall90ScVert[k] = hXall1scVert -> Clone(clNameAll90);
-	    sprintf(clNameReal90, "hrealX90Vert_%d", k);
-	    hrealX90Vert[k] = hrealX1Vert -> Clone(clNameReal90);
-	    sprintf(clNameReal90, "hrealX90ScVert_%d", k);
-	    hrealX90ScVert[k] = hrealX1scVert -> Clone(clNameReal90);
-	    }*/
 	}
 
     }//***********************************************************************************
@@ -1098,7 +593,6 @@ void anaBkgd2(){
 	kL++;
 	s_bg_vL[kL] = (hrealLSumPeak -> GetBinContent(j))/(hLallSumBG -> GetBinContent(j));
 	binL[kL] = (hrealLSumPeak -> GetBinLowEdge(j)) + (hrealLSumPeak -> GetBinWidth(j));
-	// cout << "kL:" << kL << " s_bg_vL[kL]:" << s_bg_vL[kL] << " S:" << hrealLSumPeak -> GetBinContent(j) << " B:" << hLallSumBG -> GetBinContent(j)  << endl;
       }
     }
     for(int j = 1; j <= nLSc; j++){
@@ -1106,7 +600,6 @@ void anaBkgd2(){
 	kLSc++;
 	s_bg_vLSc[kLSc] = (hrealLSumPeakSc -> GetBinContent(j))/(hLallSumBGSc -> GetBinContent(j));
 	binLSc[kLSc] = (hrealLSumPeakSc -> GetBinLowEdge(j)) + (hrealLSumPeakSc -> GetBinWidth(j));
-	// cout << "kL:" << kL << " s_bg_vL[kL]:" << s_bg_vL[kL] << " S:" << hrealLSumPeak -> GetBinContent(j) << " B:" << hLallSumBG -> GetBinContent(j)  << endl;
       }
     }
 
@@ -1148,8 +641,6 @@ void anaBkgd2(){
 
     TH1F *hrealXSumPeakCl = (TH1F*)hrealXSumPeak -> Clone();
     TH1F *hrealXSumPeakScCl = (TH1F*)hrealXSumPeakSc -> Clone();
-    //    hXallSumBG -> Add(hXallSum, hrealXSumPeakCl, 1, -1); 
-    //    hXallSumBGSc -> Add(hXallSumSc, hrealXSumPeakScCl, 1, -1);
     hXallSumBG -> Add(hrealXSum, hrealXSumPeakCl, 1, -1); 
     hXallSumBGSc -> Add(hrealXSumSc, hrealXSumPeakScCl, 1, -1); 
 
@@ -1168,7 +659,6 @@ void anaBkgd2(){
 	kX++;
 	s_bg_vX[kX] = (hrealXSumPeak -> GetBinContent(j))/(hXallSumBG -> GetBinContent(j));
 	binX[kX] = (hrealXSumPeak -> GetBinLowEdge(j)) + (hrealXSumPeak -> GetBinWidth(j));
-	// cout << "kL:" << kL << " s_bg_vL[kL]:" << s_bg_vL[kL] << " S:" << hrealLSumPeak -> GetBinContent(j) << " B:" << hLallSumBG -> GetBinContent(j)  << endl;
       }
     }
     for(int j = 1; j <= nXSc; j++){
@@ -1176,10 +666,8 @@ void anaBkgd2(){
 	kXSc++;
 	s_bg_vXSc[kXSc] = (hrealXSumPeakSc -> GetBinContent(j))/(hXallSumBGSc -> GetBinContent(j));
 	binXSc[kXSc] = (hrealXSumPeakSc -> GetBinLowEdge(j)) + (hrealXSumPeakSc -> GetBinWidth(j));
-	// cout << "kL:" << kL << " s_bg_vL[kL]:" << s_bg_vL[kL] << " S:" << hrealLSumPeak -> GetBinContent(j) << " B:" << hLallSumBG -> GetBinContent(j)  << endl;
       }
     }
-
 
     l1 -> AddEntry(hLallSum, "sum all channels", "L");
     l1 -> AddEntry(hLall90, "#Xi^{-}2K^{+}p", "L");
@@ -1328,26 +816,6 @@ void anaBkgd2(){
     lfin -> AddEntry(hrealLSumSc, "real signal");
     lfin -> AddEntry(hLallSumBGSc, "BG");
 
-    /*hLallSumSc -> Rebin(2);
-    hrealLSumSc -> Rebin(2);
-    hLallSumBGSc -> Rebin(2);
-    hLallSumScMtd -> Rebin(2);
-    hrealLSumScMtd -> Rebin(2);
-    hLallSumBGScMtd -> Rebin(2);
-    hLallSumScVert -> Rebin(2);
-    hrealLSumScVert -> Rebin(2);
-    hLallSumBGScVert -> Rebin(2);
-
-    hXallSumSc -> Rebin(2);
-    hrealXSumSc -> Rebin(2);
-    hXallSumBGSc -> Rebin(2);
-    hXallSumScMtd -> Rebin(2);
-    hrealXSumScMtd -> Rebin(2);
-    hXallSumBGScMtd -> Rebin(2);
-    hXallSumScVert -> Rebin(2);
-    hrealXSumScVert -> Rebin(2);
-    hXallSumBGScVert -> Rebin(2);
-    */
     //invM scaling
     TCanvas *cimLsAsc = new TCanvas("cimLsAsc", "cimLsAsc");
     TCanvas *cimLsRsc = new TCanvas("cimLsRsc", "cimLsRsc");
@@ -1373,9 +841,6 @@ void anaBkgd2(){
     hLallSumSc -> SetTitle("#pi^{-} in Hades - anything (p) in FwDet");
     hLallSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
     hLallSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-//    hLallSumSc -> SetMarkerStyle(20);
-//    hLallSumSc -> SetMarkerSize(.5);
-//    hLallSumSc -> SetMarkerColor(4);
     hLall90Sc -> SetMarkerStyle(20);
     hLall90Sc -> SetMarkerSize(.5);
     hLallSumSc -> Draw("pE1");
@@ -1434,16 +899,12 @@ void anaBkgd2(){
     hLallSumSc -> SetTitle("#Lambda reconstruction, no cuts");
     hLallSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
     hLallSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    // hLallSumSc -> SetMarkerStyle(34);
-    //hLallSumSc -> SetMarkerSize(1.7);
     hLallSumSc -> SetLineColor(4);
     hLallSumSc -> SetLineStyle(2);
     hLallSumSc -> SetLineWidth(2);
     hLallSumBGSc -> SetMarkerStyle(21);
     hLallSumBGSc -> SetMarkerSize(1);
     hLallSumBGSc -> SetMarkerColor(2);
-    //hrealLSumSc -> SetMarkerStyle(20);
-    //hrealLSumSc -> SetMarkerSize(1.2);
     hrealLSumSc -> SetLineColor(8);
     hLallSumSc -> Draw();
     hLallSumBGSc -> Draw("p same");
@@ -1535,13 +996,9 @@ void anaBkgd2(){
     hrealXSumSc -> SetTitle("#Xi reconstruction, MTD_L, VERTz_L, Lmass cuts");
     hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
     hrealXSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    //hrealXSumSc -> SetMarkerStyle(34);
-    //hrealXSumSc -> SetMarkerSize(1.7);
     hrealXSumSc -> SetLineColor(4);
-    hXallSumSc -> SetLineStyle(2);
-    hXallSumSc -> SetLineWidth(2);
-  //hrealXSumSc -> SetMarkerStyle(20);
-    //hrealXSumSc -> SetMarkerSize(1.2);
+    //hXallSumSc -> SetLineStyle(2);
+    //hXallSumSc -> SetLineWidth(2);
     hrealXSumSc -> SetLineColor(8);
     hXallSumBGSc -> SetMarkerStyle(21);
     hXallSumBGSc -> SetMarkerSize(.5);
@@ -1616,7 +1073,7 @@ void anaBkgd2(){
 
 
     //Lmass
-    int nLLmass = hrealLSumLmass -> GetNbinsX();
+    /*  int nLLmass = hrealLSumLmass -> GetNbinsX();
     int nLScLmass = hrealLSumScLmass -> GetNbinsX();
 
     hrealLSumLmass -> Fit(fit, "0");
@@ -1663,29 +1120,7 @@ void anaBkgd2(){
     cntBLscLmass = hLallSumBGScLmass -> Integral(a,b);
 
     cout << "cntSLscLmass: " << cntSLscLmass << " cntBLscLmass: " << cntBLscLmass << " s1: " << hrealLSumScLmass -> Integral() << " b1: " << hLallSumBGScLmass -> Integral(a,b) << endl;
-
-    /*
-    //MTD_L scan
-    int nLScMTDScan[20];
-    for(int k = 0; k < 20; k++){
-      nLScMTDScan[k] = hrealL1scMTDScanSum[k] -> GetNbinsX();
-      hrealLSumPeakScMTDScan[k] = new TH1F("hRLsigMTD", "hRLsigMTD", nLScMTDScan[k], minL, maxL);
-      hLallSumBGScMTDScan[k] = new TH1F("hLbgMTD", "hLbgMTD", nLScMTDScan[k], minL, maxL);
-      for(int j = 1; j <= nLScMTDScan[k]; j++){
-	massLSc = hrealL1scMTDScanSum[k] -> GetBinLowEdge(j);
-	if(massLSc < MassminL) continue;
-	else if(massLSc > MassmaxL) break;
-	else hrealLSumPeakScMTDScan[k] -> SetBinContent(j, hrealL1scMTDScanSum[k] -> GetBinContent(j));    
-	}
-      TH1F *hrealLSumPeakScClMTDScan = hrealLSumPeakScMTDScan[k] -> Clone();
-      hLallSumBGScMTDScan[k] -> Add(hLall1scMTDScanSum[k], hrealLSumPeakScClMTDScan, 1, -1); 
-      hLallSumBGScMTDScan[k] -> SetLineColor(kRed);
-      hrealLSumPeakScMTDScan[k] -> SetLineColor(8);
-    }
-    //end MTD_L scan
-
     */
-
     //SB L mtd
     for(int j = 1; j <= nLMtd; j++){
 	if(hrealLSumPeakMtd -> GetBinContent(j)){
@@ -1701,7 +1136,6 @@ void anaBkgd2(){
 	binLScMtd[kLScMtd] = (hrealLSumPeakScMtd -> GetBinLowEdge(j)) + (hrealLSumPeakScMtd -> GetBinWidth(j));
       }
     }
-
 
     //Xi
     int nXMtd = hrealXSumMtd -> GetNbinsX();
@@ -1747,8 +1181,7 @@ void anaBkgd2(){
 
     TH1F *hrealXSumPeakClMtd = (TH1F*)hrealXSumPeakMtd -> Clone();
     TH1F *hrealXSumPeakScClMtd = (TH1F*)hrealXSumPeakScMtd -> Clone();
-    //    hXallSumBGMtd -> Add(hXallSumMtd, hrealXSumPeakClMtd, 1, -1); 
-    //    hXallSumBGScMtd -> Add(hXallSumScMtd, hrealXSumPeakScClMtd, 1, -1);
+   
     hXallSumBGMtd -> Add(hrealXSumMtd, hrealXSumPeakClMtd, 1, -1); 
     hXallSumBGScMtd -> Add(hrealXSumScMtd, hrealXSumPeakScClMtd, 1, -1); 
 
@@ -1762,33 +1195,11 @@ void anaBkgd2(){
     cntSXscMtd = hrealXSumScMtd -> Integral(a,b);
     cntBXscMtd = hXallSumBGScMtd -> Integral(a,b);
 
-    /* //MTD_X scan
-    int nXScMTDScan[20];
-    for(int k = 0; k < 20; k++){
-      nXScMTDScan[k] = hrealX1scMTDScanSum[k] -> GetNbinsX();
-      hrealXSumPeakScMTDScan[k] = new TH1F("hRXsigMTD", "hRXsigMTD", nXScMTDScan[k], minX, maxX);
-      hXallSumBGScMTDScan[k] = new TH1F("hXbgMTD", "hXbgMTD", nXScMTDScan[k], minX, maxX);
-      for(int j = 1; j <= nXScMTDScan[k]; j++){
-	massXSc = hrealX1scMTDScanSum[k] -> GetBinLowEdge(j);
-	if(massXSc < MassminX) continue;
-	else if(massXSc > MassmaxX) break;
-	else hrealXSumPeakScMTDScan[k] -> SetBinContent(j, hrealX1scMTDScanSum[k] -> GetBinContent(j));    
-	}
-      TH1F *hrealXSumPeakScClMTDScan = hrealXSumPeakScMTDScan[k] -> Clone();
-      hXallSumBGScMTDScan[k] -> Add(hXall1scMTDScanSum[k], hrealXSumPeakScClMTDScan, 1, -1); 
-      hXallSumBGScMTDScan[k] -> SetLineColor(kRed);
-      hrealXSumPeakScMTDScan[k] -> SetLineColor(8);
-    }
-    //end MTD_X scan
-    */
-
-
     for(int j = 1; j <= nXMtd; j++){
       if(hrealXSumPeakMtd -> GetBinContent(j)){
 	kXMtd++;
 	s_bg_vXMtd[kXMtd] = (hrealXSumPeakMtd -> GetBinContent(j))/(hXallSumBGMtd -> GetBinContent(j));
 	binXMtd[kXMtd] = (hrealXSumPeakMtd -> GetBinLowEdge(j)) + (hrealXSumPeakMtd -> GetBinWidth(j));
-	// cout << "kL:" << kL << " s_bg_vL[kL]:" << s_bg_vL[kL] << " S:" << hrealLSumPeak -> GetBinContent(j) << " B:" << hLallSumBG -> GetBinContent(j)  << endl;
       }
     }
     for(int j = 1; j <= nXScMtd; j++){
@@ -1796,17 +1207,8 @@ void anaBkgd2(){
 	kXScMtd++;
 	s_bg_vXScMtd[kXScMtd] = (hrealXSumPeakScMtd -> GetBinContent(j))/(hXallSumBGScMtd -> GetBinContent(j));
 	binXScMtd[kXScMtd] = (hrealXSumPeakScMtd -> GetBinLowEdge(j)) + (hrealXSumPeakScMtd -> GetBinWidth(j));
-	// cout << "kL:" << kL << " s_bg_vL[kL]:" << s_bg_vL[kL] << " S:" << hrealLSumPeak -> GetBinContent(j) << " B:" << hLallSumBG -> GetBinContent(j)  << endl;
       }
     }
-
-
-
-    /*  l1Mtd -> AddEntry(hLallSumMtd, "sum all channels", "L");
-    l1Mtd -> AddEntry(hLall90Mtd, "#Xi^{-}2K^{+}p", "L");
-    l1Mtd -> AddEntry(hLallSumBGMtd, "BG", "L");
-    l1Mtd -> AddEntry(hrealLSumPeakMtd, "signal", "L");
-    */
 
     //invM no scaling MTD
     /*  TCanvas *cimLnsAmtd = new TCanvas("cimLnsAmtd", "cimLnsAmtd");
@@ -2017,13 +1419,9 @@ void anaBkgd2(){
     hLallSumScMtd -> SetTitle("#Lambda reconstruction, MTD_L cut");
     hLallSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
     hLallSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    //hLallSumScMtd -> SetMarkerStyle(34);
-    //hLallSumScMtd -> SetMarkerSize(1.7);
     hLallSumScMtd -> SetLineColor(4);
     hLallSumScMtd -> SetLineStyle(2);
     hLallSumScMtd -> SetLineWidth(2);
-//hrealLSumScMtd -> SetMarkerStyle(20);
-    //hrealLSumScMtd -> SetMarkerSize(1.2);
     hrealLSumScMtd -> SetLineColor(8);
     hLallSumBGScMtd -> SetMarkerStyle(21);
     hLallSumBGScMtd -> SetMarkerSize(1);
@@ -2110,13 +1508,9 @@ void anaBkgd2(){
     hrealXSumScMtd -> SetTitle("#Xi reconstruction, MTD_L, VERTz_L, Lmass, MTD_X cuts");
     hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
     hrealXSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    //hrealXSumScMtd -> SetMarkerStyle(34);
-    //hrealXSumScMtd -> SetMarkerSize(1.7);
     hrealXSumScMtd -> SetLineColor(4);
-    hXallSumScMtd -> SetLineStyle(2);
-    hXallSumScMtd -> SetLineWidth(2);
-    //hrealXSumScMtd -> SetMarkerStyle(20);
-    //hrealXSumScMtd -> SetMarkerSize(1.2);
+    //hXallSumScMtd -> SetLineStyle(2);
+    //hXallSumScMtd -> SetLineWidth(2);
     hrealXSumScMtd -> SetLineColor(8);
     hXallSumBGScMtd -> SetMarkerStyle(21);
     hXallSumBGScMtd -> SetMarkerSize(.5);
@@ -2128,53 +1522,6 @@ void anaBkgd2(){
     massX_max -> Draw("same");
     lfin -> Draw("same");//<<<<<<<<<<<<<<
 
-
-    /* //MTD scan
-    char mtdmax[24];
-
-    for(int k = 0; k < 20; k++){
-      cMTD_LscanSB -> cd(k+1);
-      nice_canv1(gPad);
-      hrealLSumPeakScMTDScan[k] -> SetTitle("Real #Lambda(1115) peak and BG");
-      hrealLSumPeakScMTDScan[k] -> GetXaxis() -> SetTitle("invM [MeV]");
-      hrealLSumPeakScMTDScan[k] -> GetYaxis() -> SetTitle("counts*#sigma");
-      hLallSumBGScMTDScan[k] -> SetTitle("Real #Lambda(1115) peak and BG");
-      hLallSumBGScMTDScan[k] -> GetXaxis() -> SetTitle("invM [MeV]");
-      hLallSumBGScMTDScan[k] -> GetYaxis() -> SetTitle("counts*#sigma");
-      if((hLallSumBGScMTDScan[k]->GetBinContent(hLallSumBGScMTDScan[k]->GetMaximumBin())) > (hrealLSumPeakScMTDScan[k]->GetBinContent(hrealLSumPeakScMTDScan[k]->GetMaximumBin()))){
-	hLallSumBGScMTDScan[k] -> Draw();
-	hrealLSumPeakScMTDScan[k] -> Draw("same");
-      }else{
-	hrealLSumPeakScMTDScan[k] -> Draw();
-	hLallSumBGScMTDScan[k] -> Draw("same");
-      }
-      sprintf(mtdmax, "MTD < %d", (k*5)+5);
-      TPaveText *ptmtd = new TPaveText(.25, .7, .4, .85, "NDC");
-      ptmtd -> Clear();
-      ptmtd -> SetFillColor(0);
-      ptmtd -> SetBorderSize(0);
-      ptmtd -> SetTextSize(0.07);
-      ptmtd -> AddText(mtdmax);
-      ptmtd -> Draw("same");
-
-      cMTD_XscanSB -> cd(k+1);
-      nice_canv1(gPad);
-      hrealXSumPeakScMTDScan[k] -> SetTitle("Real #Xi^{-} peak and BG");
-      hrealXSumPeakScMTDScan[k] -> GetXaxis() -> SetTitle("invM [MeV]");
-      hrealXSumPeakScMTDScan[k] -> GetYaxis() -> SetTitle("counts*#sigma");
-      hXallSumBGScMTDScan[k] -> SetTitle("Real #Xi^{-} peak and BG");
-      hXallSumBGScMTDScan[k] -> GetXaxis() -> SetTitle("invM [MeV]");
-      hXallSumBGScMTDScan[k] -> GetYaxis() -> SetTitle("counts*#sigma");
-      if((hXallSumBGScMTDScan[k]->GetBinContent(hXallSumBGScMTDScan[k]->GetMaximumBin())) > (hrealXSumPeakScMTDScan[k]->GetBinContent(hrealXSumPeakScMTDScan[k]->GetMaximumBin()))){
-	hXallSumBGScMTDScan[k] -> Draw();
-	hrealXSumPeakScMTDScan[k] -> Draw("same");
-      }else{
-	hrealXSumPeakScMTDScan[k] -> Draw();
-	hXallSumBGScMTDScan[k] -> Draw("same");
-      }
-      ptmtd -> Draw("same");
-    }//end MTD scan
-    */
     //MTD_L, Lmass, MTD_X, VERTZ_L, VERTZ_X
     //Lambda1115
     int nLVert = hrealLSumVert -> GetNbinsX();
@@ -2234,25 +1581,6 @@ void anaBkgd2(){
     cntSLscVert = hrealLSumScVert -> Integral(a,b);
     cntBLscVert = hLallSumBGScVert -> Integral(a,b);
 
-    /*    //VertzL scan
-    int nLScVertScan[30];
-    for(int k = -10; k < 20; k++){
-      nLScVertScan[k+10] = hrealL1scVertScanSum[k+10] -> GetNbinsX();
-      hrealLSumPeakScVertScan[k+10] = new TH1F("hRLsig", "hRLsig", nLScVertScan[k+10], minL, maxL);
-      hLallSumBGScVertScan[k+10] = new TH1F("hLbg", "hLbg", nLScVertScan[k+10], minL, maxL);
-      for(int j = 1; j <= nLScVertScan[k+10]; j++){
-	massLSc = hrealL1scVertScanSum[k+10] -> GetBinLowEdge(j);
-	if(massLSc < MassminL) continue;
-	else if(massLSc > MassmaxL) break;
-	else hrealLSumPeakScVertScan[k+10] -> SetBinContent(j, hrealL1scVertScanSum[k+10] -> GetBinContent(j));    
-	}
-      TH1F *hrealLSumPeakScClVertScan = hrealLSumPeakScVertScan[k+10] -> Clone();
-      hLallSumBGScVertScan[k+10] -> Add(hLall1scVertScanSum[k+10], hrealLSumPeakScClVertScan, 1, -1); 
-      hLallSumBGScVertScan[k+10] -> SetLineColor(kRed);
-      hrealLSumPeakScVertScan[k+10] -> SetLineColor(8);
-    }
-    //end VertzL scan
-    */
     //SB
     for(int j = 1; j <= nLVert; j++){
       if(hrealLSumPeakVert -> GetBinContent(j)){
@@ -2268,7 +1596,6 @@ void anaBkgd2(){
 	binLScVert[kLScVert] = (hrealLSumPeakScVert -> GetBinLowEdge(j)) + (hrealLSumPeakScVert -> GetBinWidth(j));
       }
     }
-
 
     //Xi
     int nXVert = hrealXSumVert -> GetNbinsX();
@@ -2314,8 +1641,7 @@ void anaBkgd2(){
 
     TH1F *hrealXSumPeakClVert = (TH1F*)hrealXSumPeakVert -> Clone();
     TH1F *hrealXSumPeakScClVert = (TH1F*)hrealXSumPeakScVert -> Clone();
-    //    hXallSumBGVert -> Add(hXallSumVert, hrealXSumPeakClVert, 1, -1); 
-    //    hXallSumBGScVert -> Add(hXallSumScVert, hrealXSumPeakScClVert, 1, -1);
+
     hXallSumBGVert -> Add(hrealXSumVert, hrealXSumPeakClVert, 1, -1); 
     hXallSumBGScVert -> Add(hrealXSumScVert, hrealXSumPeakScClVert, 1, -1); 
 
@@ -2329,36 +1655,12 @@ void anaBkgd2(){
     cntSXscVert = hrealXSumScVert -> Integral(a,b);
     cntBXscVert = hXallSumBGScVert -> Integral(a,b);
 
-
-    /*  //VertzX scan
-    int nXScVertScan[30];
-    for(int k = -10; k < 20; k++){
-      nXScVertScan[k+10] = hrealX1scVertScanSum[k+10] -> GetNbinsX();
-      hrealXSumPeakScVertScan[k+10] = new TH1F("hRXsig", "hRXsig", nXScVertScan[k+10], minX, maxX);
-      hXallSumBGScVertScan[k+10] = new TH1F("hXbg", "hXbg", nXScVertScan[k+10], minX, maxX);
-      for(int j = 1; j <= nXScVertScan[k+10]; j++){
-	massXSc = hrealX1scVertScanSum[k+10] -> GetBinLowEdge(j);
-	if(massXSc < MassminX) continue;
-	else if(massXSc > MassmaxX) break;
-	else hrealXSumPeakScVertScan[k+10] -> SetBinContent(j, hrealX1scVertScanSum[k+10] -> GetBinContent(j));    
-      }
-
-      TH1F *hrealXSumPeakScClVertScan = hrealXSumPeakScVertScan[k+10] -> Clone();
-      hXallSumBGScVertScan[k+10] -> Add(hXall1scVertScanSum[k+10], hrealXSumPeakScClVertScan, 1, -1); 
-
-      hXallSumBGScVertScan[k+10] -> SetLineColor(kRed);
-      hrealXSumPeakScVertScan[k+10] -> SetLineColor(8);
-    }
-    //end VertzX scan
-    */
-
     //SB
     for(int j = 1; j <= nXVert; j++){
       if(hrealXSumPeakVert -> GetBinContent(j)){
 	kXVert++;
 	s_bg_vXVert[kXVert] = (hrealXSumPeakVert -> GetBinContent(j))/(hXallSumBGVert -> GetBinContent(j));
 	binXVert[kXVert] = (hrealXSumPeakVert -> GetBinLowEdge(j)) + (hrealXSumPeakVert -> GetBinWidth(j));
-	// cout << "kL:" << kL << " s_bg_vL[kL]:" << s_bg_vL[kL] << " S:" << hrealLSumPeak -> GetBinContent(j) << " B:" << hLallSumBG -> GetBinContent(j)  << endl;
       }
     }
     for(int j = 1; j <= nXScVert; j++){
@@ -2366,16 +1668,8 @@ void anaBkgd2(){
 	kXScVert++;
 	s_bg_vXScVert[kXScVert] = (hrealXSumPeakScVert -> GetBinContent(j))/(hXallSumBGScVert -> GetBinContent(j));
 	binXScVert[kXScVert] = (hrealXSumPeakScVert -> GetBinLowEdge(j)) + (hrealXSumPeakScVert -> GetBinWidth(j));
-	// cout << "kL:" << kL << " s_bg_vL[kL]:" << s_bg_vL[kL] << " S:" << hrealLSumPeak -> GetBinContent(j) << " B:" << hLallSumBG -> GetBinContent(j)  << endl;
       }
     }
-
-
-    /*  l1Vert -> AddEntry(hLallSumVert, "sum all channels", "L");
-    l1Vert -> AddEntry(hLall90Vert, "#Xi^{-}2K^{+}p", "L");
-    l1Vert -> AddEntry(hLallSumBGVert, "BG", "L");
-    l1Vert -> AddEntry(hrealLSumPeakVert, "signal", "L");
-    */
 
     //invM no scaling MTD, Vert
     /* TCanvas *cimLnsAvert = new TCanvas("cimLnsAvert", "cimLnsAvert");
@@ -2596,13 +1890,9 @@ void anaBkgd2(){
     hLallSumScVert -> SetTitle("#Lambda reconstruction, MTD_L, VERTz_L cuts");
     hLallSumScVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
     hLallSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    //hLallSumScVert -> SetMarkerStyle(34);
-    //hLallSumScVert -> SetMarkerSize(1.7);
     hLallSumScVert -> SetLineColor(4);
     hLallSumScVert -> SetLineStyle(2);
     hLallSumScVert -> SetLineWidth(2);
-    //hrealLSumScVert -> SetMarkerStyle(20);
-    //hrealLSumScVert -> SetMarkerSize(1.2);
     hrealLSumScVert -> SetLineColor(8);
     hrealLSumScVert -> SetLineStyle(10);
     hLallSumBGScVert -> SetMarkerStyle(21);
@@ -2692,13 +1982,9 @@ void anaBkgd2(){
     hrealXSumScVert -> SetTitle("#Xi reconstruction, MTD_L, VERTz_L, Lmass, MTD_X, VERTz_X");
     hrealXSumScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
     hrealXSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    //hrealXSumScVert -> SetMarkerStyle(34);
-    //hrealXSumScVert -> SetMarkerSize(1.7);
     hrealXSumScVert -> SetLineColor(4);
-    hXallSumScVert -> SetLineStyle(2);
-    hXallSumScVert -> SetLineWidth(2);
-     //hrealXSumScVert -> SetMarkerStyle(20);
-    //hrealXSumScVert -> SetMarkerSize(1.2);
+    //hXallSumScVert -> SetLineStyle(2);
+    //hXallSumScVert -> SetLineWidth(2);
     hrealXSumScVert -> SetLineColor(8);
     hXallSumBGScVert -> SetMarkerStyle(21);
     hXallSumBGScVert -> SetMarkerSize(.5);
@@ -2710,64 +1996,6 @@ void anaBkgd2(){
     massX_max -> Draw("same");
     lfin -> Draw("same");//<<<<<<<<<<<<<<
 
-
-    //
-   
-    //
-    /* cVertZ_LscanAll -> cd(1);
-    nice_canv1(gPad);
-    lChan -> Draw("same");
-    cVertZ_LscanReal -> cd(1);
-    nice_canv1(gPad);
-    lChan -> Draw("same");
-    */
-    char vertzmin[24];
-    /*
-    for(int k = -10; k < 20; k++){
-      if(k < 5) cVertZ_LscanSB1 -> cd(k+11);
-      else cVertZ_LscanSB2 -> cd(k-4);
-      nice_canv1(gPad);
-      hrealLSumPeakScVertScan[k+10] -> SetTitle("Real #Lambda(1115) peak and BG");
-      hrealLSumPeakScVertScan[k+10] -> GetXaxis() -> SetTitle("invM [MeV]");
-      hrealLSumPeakScVertScan[k+10] -> GetYaxis() -> SetTitle("counts*#sigma");
-      hLallSumBGScVertScan[k+10] -> SetTitle("Real #Lambda(1115) peak and BG");
-      hLallSumBGScVertScan[k+10] -> GetXaxis() -> SetTitle("invM [MeV]");
-      hLallSumBGScVertScan[k+10] -> GetYaxis() -> SetTitle("counts*#sigma");
-      if((hLallSumBGScVertScan[k+10]->GetBinContent(hLallSumBGScVertScan[k+10]->GetMaximumBin())) > (hrealLSumPeakScVertScan[k+10]->GetBinContent(hrealLSumPeakScVertScan[k+10]->GetMaximumBin()))){
-	hLallSumBGScVertScan[k+10] -> Draw();
-	hrealLSumPeakScVertScan[k+10] -> Draw("same");
-      }else{
-	hrealLSumPeakScVertScan[k+10] -> Draw();
-	hLallSumBGScVertScan[k+10] -> Draw("same");
-      }
-      sprintf(vertzmin, "vertz > %d", k*10);
-      TPaveText *ptvert = new TPaveText(.25, .7, .4, .85, "NDC");
-      ptvert -> Clear();
-      ptvert -> SetFillColor(0);
-      ptvert -> SetBorderSize(0);
-      ptvert -> SetTextSize(0.07);
-      ptvert -> AddText(vertzmin);
-      ptvert -> Draw("same");
-
-      if(k < 5) cVertZ_XscanSB1 -> cd(k+11);
-      else cVertZ_XscanSB2 -> cd(k-4);
-      nice_canv1(gPad);
-      hrealXSumPeakScVertScan[k+10] -> SetTitle("Real #Xi^{-} peak and BG");
-      hrealXSumPeakScVertScan[k+10] -> GetXaxis() -> SetTitle("invM [MeV]");
-      hrealXSumPeakScVertScan[k+10] -> GetYaxis() -> SetTitle("counts*#sigma");
-      hXallSumBGScVertScan[k+10] -> SetTitle("Real #Xi^{-} peak and BG");
-      hXallSumBGScVertScan[k+10] -> GetXaxis() -> SetTitle("invM [MeV]");
-      hXallSumBGScVertScan[k+10] -> GetYaxis() -> SetTitle("counts*#sigma");
-      if((hXallSumBGScVertScan[k+10]->GetBinContent(hXallSumBGScVertScan[k+10]->GetMaximumBin())) > (hrealXSumPeakScVertScan[k+10]->GetBinContent(hrealXSumPeakScVertScan[k+10]->GetMaximumBin()))){
-	hXallSumBGScVertScan[k+10] -> Draw();
-	hrealXSumPeakScVertScan[k+10] -> Draw("same");
-      }else{
-	hrealXSumPeakScVertScan[k+10] -> Draw();
-	hXallSumBGScVertScan[k+10] -> Draw("same");
-      }
-      ptvert -> Draw("same");
-    }
-    */
     //
     ymax = 100000000;//hMTD_Lall1 -> GetMaximum();
     TLine *lim_min = new TLine(distcut_minL, 0, distcut_minL, ymax);
@@ -2847,13 +2075,7 @@ void anaBkgd2(){
     cVERTX1 -> cd();
     hXVertex_allSum -> Draw();
     hXVertex_sigSum -> Draw("same");    
-    /*
-    //Vert diff
-    cVertDiff_allCh -> cd(1);
-    lChan -> Draw("same");
-    */
-    //end Vert diff
-    
+       
     //S/B
     double SBL = cntSL/cntBL;
     double SBLsc = cntSLsc/cntBLsc;
@@ -2878,7 +2100,6 @@ void anaBkgd2(){
     printf("S/B:\nL: noCut: %f, noCutsc: %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f, Lmassc: %f\nX: noCut: %f, noCutsc: %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", SBL, SBLsc, SBLMtd, SBLMtdsc, SBLVert, SBLVertsc, SBLLmasssc, SBX, SBXsc, SBXMtd, SBXMtdsc, SBXVert, SBXVertsc);
 
     //significance
-    //VERTz in [5;300]????????????????
     double SgnL = cntSL/TMath::Sqrt(cntBL+cntSL);
     double SgnLsc = cntSLsc/TMath::Sqrt(cntBLsc+cntSLsc);
     double SgnLMtd = cntSLMtd/TMath::Sqrt(cntSLMtd+cntBLMtd);
@@ -2897,165 +2118,6 @@ void anaBkgd2(){
     
     printf("significance:\nL: noCut: %f, noCutsc: %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f, Lmasssc: %f\nX: noCut, %f, noCutsc %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", SgnL, SgnLsc, SgnLMtd, SgnLMtdsc, SgnLVert, SgnLVertsc, SgnLLmasssc, SgnX, SgnXsc, SgnXMtd, SgnXMtdsc, SgnXVert, SgnXVertsc);
 
-    /* //MTD scan
-    double SgnLMTDscScan[20];
-    double SgnXMTDscScan [20];
-    double cntSLscMTDscan, cntBLscMTDscan, cntSXscMTDscan, cntBXscMTDscan;
-    double mtdMax[20]; 
-    double lostSigMtdL[20], lostSigMtdX[20]; 
-
-    for(int k = 0; k < 20; k++){
-      hrealLSumPeakScMTDScan[k] -> Fit(fit, "0");
-      center_fit = fit -> GetParameter(1);
-      sigma_fit = fit -> GetParameter(2);
-      m3sigma = center_fit - 3*sigma_fit;
-      p3sigma = center_fit + 3*sigma_fit;
-      a = hrealLSumPeakScMTDScan[k] -> GetXaxis() -> FindBin(m3sigma);
-      b = hrealLSumPeakScMTDScan[k] -> GetXaxis() -> FindBin(p3sigma);
-      cntSLscMTDscan = hrealLSumPeakScMTDScan[k] -> Integral(a,b);
-      cntBLscMTDscan = hLallSumBGScMTDScan[k] -> Integral(a,b);
-
-      lostSigMtdL[k] = cntSLscMTDscan/cntSLsc;
-
-      hrealXSumPeakScMTDScan[k] -> Fit(fit, "0");
-      center_fit = fit -> GetParameter(1);
-      sigma_fit = fit -> GetParameter(2);
-      m3sigma = center_fit - 3*sigma_fit;
-      p3sigma = center_fit + 3*sigma_fit;
-      a = hrealXSumPeakScMTDScan[k] -> GetXaxis() -> FindBin(m3sigma);
-      b = hrealXSumPeakScMTDScan[k] -> GetXaxis() -> FindBin(p3sigma);
-      cntSXscMTDscan = hrealXSumPeakScMTDScan[k] -> Integral(a,b);
-      cntBXscMTDscan = hXallSumBGScMTDScan[k] -> Integral(a,b);
-
-      lostSigMtdX[k] = cntSXscMTDscan/cntSXsc;
-
-      SgnLMTDscScan[k] = cntSLscMTDscan/TMath::Sqrt(cntBLscMTDscan+cntSLscMTDscan);
-      SgnXMTDscScan[k] = cntSXscMTDscan/TMath::Sqrt(cntBXscMTDscan+cntSXscMTDscan);
-
-      mtdMax[k] = (k*5)+5;
-      cout << "k:" << k << " SgnLMTDscScan:" << SgnLMTDscScan[k] << " cntSLscMTDscan:" << cntSLscMTDscan << " cntBKscMTDscan:" << cntBLscMTDscan << endl;
-      cout << "k:" << k << " SgnXMTDscScan:" << SgnXMTDscScan[k] << " cntSXscMTDscan:" << cntSXscMTDscan << " cntBXscMTDscan:" << cntBXscMTDscan << endl;
-    }
-
-    ymax = 5500;
-    TLine *lim_min = new TLine(distcut_minL, 0, distcut_minL, ymax);
-
-    TCanvas *cSgnMTDL = new TCanvas("cSgnMTDL", "cSgnMTDL");
-    cSgnMTDL -> cd();
-    nice_canv1(gPad);
-    TGraph *sgnMTDLscan = new TGraph(20, mtdMax, SgnLMTDscScan);
-    sgnMTDLscan -> SetName("sgnMTDLscan");
-    sgnMTDLscan -> SetTitle("Significance for different MTD_L");
-    sgnMTDLscan -> GetXaxis() -> SetTitle("max MTD_L [mm]");
-    sgnMTDLscan -> GetYaxis() -> SetTitle("#alpha");
-    sgnMTDLscan -> GetYaxis() -> SetRangeUser(0,ymax);
-    sgnMTDLscan -> SetMarkerStyle(20);
-    sgnMTDLscan -> Draw("ap");
-    lim_min -> Draw("same");
-    *//*TGaxis *axis1 = new TGaxis(110,0,110,.95,0,1);
-    axis1 -> SetName("S_{MTD}/S_{nc}");
-    axis1 -> Draw("same");
-    TGraph *glostSigMTDL = new TGraph(20, mtdMax, lostSigMtdL);
-    glostSigMTDL -> GetXaxis() -> SetTitle("max MTD_L [mm]");
-    //glostSigMTDL -> GetYaxis() -> SetTitle("S_{MTD}/S_{nc}");
-    glostSigMTDL -> SetMarkerStyle(31);
-    glostSigMTDL -> SetMarkerColor(8);
-    glostSigMTDL -> Draw("same p");
-    */
-    /*
-    ymax = 1000;
-    TLine *lim_min = new TLine(distcut_minX, 0, distcut_minX, ymax);
-    
-    TCanvas *cSgnMTDX = new TCanvas("cSgnMTDX", "cSgnMTDX");
-    cSgnMTDX -> cd();
-    nice_canv1(gPad);
-    TGraph *sgnMTDXscan = new TGraph(20, mtdMax, SgnXMTDscScan);
-    sgnMTDXscan -> SetName("sgnMTDXscan");
-    sgnMTDXscan -> SetTitle("Significance for different MTD_X");
-    sgnMTDXscan -> GetXaxis() -> SetTitle("max MTD_X [mm]");
-    sgnMTDXscan -> GetYaxis() -> SetTitle("#alpha");
-    sgnMTDXscan -> GetYaxis() -> SetRangeUser(0,ymax);
-    sgnMTDXscan -> SetMarkerStyle(20);
-    sgnMTDXscan -> Draw("ap");
-    lim_min -> Draw("same");
-
-    //end MTD scan
-    *//*
-    //VERTz scan
-    double SgnLVertscScan[30];
-    double SgnXVertscScan [30];
-    double cntSLscVertscan, cntBLscVertscan, cntSXscVertscan, cntBXscVertscan;
-    double vertzMin[30]; 
-
-    for(int k = -10; k < 20; k++){
-      hrealLSumPeakScVertScan[k+10] -> Fit(fit, "0");
-      center_fit = fit -> GetParameter(1);
-      sigma_fit = fit -> GetParameter(2);
-      m3sigma = center_fit - 3*sigma_fit;
-      p3sigma = center_fit + 3*sigma_fit;
-      a = hrealLSumPeakScVertScan[k+10] -> GetXaxis() -> FindBin(m3sigma);
-      b = hrealLSumPeakScVertScan[k+10] -> GetXaxis() -> FindBin(p3sigma);
-      //cntSLscVertscan = hrealLSumPeakScVertScan[k+10] -> Integral(a,b);
-      //cntBLscVertscan = hrealLSumPeakScVertScan[k+10] -> Integral(a,b);
-      cntSLscVertscan = hrealLSumPeakScVertScan[k+10] -> Integral(a,b);
-      cntBLscVertscan = hLallSumBGScVertScan[k+10] -> Integral(a,b);
-
-      hrealXSumPeakScVertScan[k+10] -> Fit(fit, "0");
-      center_fit = fit -> GetParameter(1);
-      sigma_fit = fit -> GetParameter(2);
-      m3sigma = center_fit - 3*sigma_fit;
-      p3sigma = center_fit + 3*sigma_fit;
-      a = hrealXSumPeakScVertScan[k+10] -> GetXaxis() -> FindBin(m3sigma);
-      b = hrealXSumPeakScVertScan[k+10] -> GetXaxis() -> FindBin(p3sigma);
-      // cntSXscVertscan = hrealXSumPeakScVertScan[k+10] -> Integral(a,b);
-      //cntBXscVertscan = hrealXSumPeakScVertScan[k+10] -> Integral(a,b);
-      cntSXscVertscan = hrealXSumPeakScVertScan[k+10] -> Integral(a,b);
-      cntBXscVertscan = hXallSumBGScVertScan[k+10] -> Integral(a,b);
-
-      SgnLVertscScan[k+10] = cntSLscVertscan/TMath::Sqrt(cntBLscVertscan+cntSLscVertscan);
-      SgnXVertscScan[k+10] = cntSXscVertscan/TMath::Sqrt(cntBXscVertscan+cntSXscVertscan);
-
-      vertzMin[k+10] = k*10;
-    }
-
-    ymax = 8500;
-    TLine *lim_min = new TLine(zlim_minL, 0, zlim_minL, ymax);
-    TLine *lim_max = new TLine(zlim_max, 0, zlim_max, ymax);
-    
-    TCanvas *cSgnVertL = new TCanvas("cSgnVertL", "cSgnVertL");
-    cSgnVertL -> cd();
-    nice_canv1(gPad);
-    TGraph *sgnVertzLscan = new TGraph(30, vertzMin, SgnLVertscScan);
-    sgnVertzLscan -> SetName("sgnVertzLscan");
-    sgnVertzLscan -> SetTitle("Significance for different VERTz_L");
-    sgnVertzLscan -> GetXaxis() -> SetTitle("min VERTz_L [mm]");
-    sgnVertzLscan -> GetYaxis() -> SetTitle("#alpha");
-    sgnVertzLscan -> GetYaxis() -> SetRangeUser(0,ymax);
-    sgnVertzLscan -> SetMarkerStyle(20);
-    sgnVertzLscan -> Draw("ap");
-    lim_max -> Draw("same");
-    lim_min -> Draw("same");
-
-    ymax = 1000;
-    TLine *lim_min = new TLine(zlim_minX, 0, zlim_minX, ymax);
-    TLine *lim_max = new TLine(zlim_max, 0, zlim_max, ymax);
-   
-    TCanvas *cSgnVertX = new TCanvas("cSgnVertX", "cSgnVertX");
-    cSgnVertX -> cd();
-    nice_canv1(gPad);
-    TGraph *sgnVertzXscan = new TGraph(30, vertzMin, SgnXVertscScan);
-    sgnVertzXscan -> SetName("sgnVertzXscan");
-    sgnVertzXscan -> SetTitle("Significance for different VERTz_X");
-    sgnVertzXscan -> GetXaxis() -> SetTitle("min VERTz_X [mm]");
-    sgnVertzXscan -> GetYaxis() -> SetTitle("#alpha");
-    sgnVertzXscan -> GetYaxis() -> SetRangeUser(0,ymax);
-    sgnVertzXscan -> SetMarkerStyle(20);
-    sgnVertzXscan -> Draw("ap");
-    lim_max -> Draw("same");
-    lim_min -> Draw("same");
-
-    //end VERTz scan
-    */
     //effi
     int nall = 50000; //n evt*100 -> [%]
     double brLxchn = 0.64*5; //BR for Lambda->p pim * number of simulated channels with real Lambda1115
@@ -3116,21 +2178,13 @@ void anaBkgd2(){
     lChan -> Draw("same");
 
         
-    TFile *f = new TFile("./out_ana/out_anaBkgd_all5.root", "RECREATE");
+    TFile *f = new TFile("./out_ana/out_anaBkgd_test5.root", "RECREATE");
     cLambdaXiMass -> Write();
     cLambdaXiMassSc -> Write();
-    // cSBL -> Write();
-    // cSBLSc -> Write();
-    // cSBX -> Write();
-    // cSBXSc -> Write();
     cLambdaXiMassMtd -> Write();
     cLambdaXiMassScMtd -> Write();
     cLambdaXiMassVert -> Write();
     cLambdaXiMassScVert -> Write();
-    // cSBLMtd -> Write();
-    // cSBLScMtd -> Write();
-    // cSBXMtd -> Write();
-    // cSBXScMtd -> Write();
     cMTDL -> Write();
     cMTDX -> Write();
     cVERTL -> Write();
@@ -3139,28 +2193,7 @@ void anaBkgd2(){
     cVERTX1 -> Write();
     cVertZ_L -> Write();
     cVertZ_X -> Write();
-   // cVertDiff_allCh -> Write();
-    //cMTD_LscanAll -> Write();
-    //cMTD_LscanReal -> Write();
-    //    cMTD_LscanSB -> Write();
-    //    cMTD_XscanSB -> Write();
-    //cVertZ_LscanAll1 -> Write();
-    //cVertZ_LscanReal1 -> Write();
-    //cVertZ_LscanSB1 -> Write();
-    //cVertZ_XscanSB1 -> Write();
-    //cVertZ_LscanAll2 -> Write();
-    //cVertZ_LscanReal2 -> Write();
-    //cVertZ_LscanSB2 -> Write();
-    //cVertZ_XscanSB2 -> Write();
-    //    cSgnMTDL -> Write();
-    //    cSgnMTDX -> Write();
-    //    cSgnVertL -> Write();
-    //    cSgnVertX -> Write();
-
-    //    sgnMTDLscan -> Write();
-    //    sgnMTDXscan -> Write();
-    //    sgnVertzLscan -> Write();
-    //    sgnVertzXscan -> Write();
+  
     /*cimLsAsc -> Write();
     cimLsRsc -> Write();
     cimLsBGsc -> Write();
