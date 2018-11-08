@@ -274,7 +274,7 @@ void anaBkgd2(){
 	TH1F *hrealX1 = (TH1F*)hrealX -> Clone("hrealX1_c");
 	TH1F *hrealX1sc = (TH1F*)hrealX -> Clone("hrealX1sc_c");
 
-	TH1F *clLambdaSc = (TH1F*)hLall -> Clone("hLall_chan");
+	TH1F *clLambdaSc = (TH1F*)hrealL -> Clone("hLall_chan");
 	TH1F *clXiSc = (TH1F*)hrealX -> Clone("hrealX_chan");
 
       	hLall1sc -> Scale(cr_sec[i]);
@@ -438,7 +438,7 @@ void anaBkgd2(){
 	TH1F *hrealX1Vert = (TH1F*)hrealXVert -> Clone("hrealX1_cVert");
 	TH1F *hrealX1scVert = (TH1F*)hrealXVert -> Clone("hrealX1sc_cVert");
 	
-        TH1F *clLambdaScVertrec = (TH1F*)hLallVert -> Clone("hLallVert_chan");
+        TH1F *clLambdaScVertrec = (TH1F*)hrealLVert -> Clone("hLallVert_chan");
 	
       	hLall1scVert -> Scale(cr_sec[i]);
 	hrealL1scVert -> Scale(cr_sec[i]);
@@ -479,7 +479,7 @@ void anaBkgd2(){
 	
 	  hLall90Sc -> SetLineColor(kBlack);
 	  hrealL90Sc -> SetLineColor(kBlack);
-	   hrealX90Sc -> SetLineColor(kBlack);
+	  hrealX90Sc -> SetLineColor(kBlack);
 
 	  clLambdaSc -> SetLineWidth(2);
 	  clXiSc -> SetLineWidth(2);
