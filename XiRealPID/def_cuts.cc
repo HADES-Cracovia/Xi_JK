@@ -628,10 +628,13 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		      //float tof_h_Xi = ksicand -> getTof();
 
 		      // PID
-		      if(beta_h!=-1 && mass_h > 0)
-			  ksicandID = mass2PIDfit(fitpar, mass2_h_Xi, pq_h_Xi, nPartSpec);
+		      if(beta_h_Xi!=-1 && mass_h_Xi > 0)
+			  ksicandID = mass2PIDfit(fitpar, mass2_h_Xi, charge_h_Xi, nPartSpec);
 		      else break;
-		      hPpid -> Fill(ksicandID);
+		      // cout << "ksicandID: " << ksicandID << endl;
+		      // cout << "mass2ksicand: " << mass2_h_Xi << endl;
+		      // cout << "qksicand: " << charge_h_Xi << endl;
+		      hPpid -> Fill(ksicandID+20);
 		      
 		      if(!ksicandID){
 			  cout << "break: invalid ksicandID: " << ksicandID << endl;
