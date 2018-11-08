@@ -206,7 +206,6 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     //FwDet only
     TH1F *hdE_fd = new TH1F("hdE_fd", "hdE_fd", nbins1, dex1, dex2);
     TH2F *hBeta_fd = new TH2F("hBeta_fd", "hBeta_fd", 400, -2000, 2000, 200, 0, 1);
-    // TH2F *hBeta_q_fd = new TH2F("hBeta_q_fd", "hBeta_q_fd", 400, -2000, 2000, 200, 0, 1);
     TH2F *hM22_fd = new TH2F("hM22_fd", "hM22_fd", nbins2, mom1, mom2 , nbins1, mas21, mas22);
     // TCanvas *cBetaPID_fd = new TCanvas("cBetaPID_fd", "cBetaPID_fd");
 
@@ -281,25 +280,25 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     //no cuts
     TCanvas* cMassLambda=new TCanvas("cMassLambda","Reconstructed lambda mass");
     TH1F* hMLAll=new TH1F("hMLAll","reconstraced mass of all particles combination",imres,immin,immax);
-    TH1F* hMLPiHades=new TH1F("hMLPiHades","reconstraced mass of all combination, pion in HADES",imres,immin,immax);
-    TH1F* hMLPiHpF=new TH1F("hMLPiHpF","reconstraced mass of all combination, pion in HADES, proton in FD",imres,immin,immax);
+    TH1F* hMLPiHades=new TH1F("hMLPiHades","reconstraced mass of all combinations: pion in HADES",imres,immin,immax);
+    TH1F* hMLPiHpF=new TH1F("hMLPiHpF","reconstraced mass of all combinations: pion in HADES, proton in FD",imres,immin,immax);
     //MTD_L
-    TH1F* hMLPiHadesMTD=new TH1F("hMLPiHadesMTD","Pion in Hades, distance between tracks <x",imres,immin,immax);
-    TH1F* hMLPiHpFMTD=new TH1F("hMLPiHpFMTD","reconstraced mass of pion in HADES, proton in FD, distance between tracks <x",imres,immin,immax);
+    TH1F* hMLPiHadesMTD=new TH1F("hMLPiHadesMTD","reconstraced mass of all combinations: pion in Hades, distance between tracks <x",imres,immin,immax);
+    TH1F* hMLPiHpFMTD=new TH1F("hMLPiHpFMTD","reconstraced mass of all combinations: pion in HADES, proton in FD, distance between tracks <x",imres,immin,immax);
     //VERTz_L
-    TH1F* hMLPiHadesMTDVert=new TH1F("hMLPiHadesMTDVert","Pion in Hades, distance between tracks <x, Vertz_L in range",imres,immin,immax);
-    TH1F* hMLPiHpFMTDVert=new TH1F("hMLPiHpFMTDVert","reconstraced mass of pion in HADES, proton in FD, distance between tracks <x, Vertz_L in range",imres,immin,immax);
+    TH1F* hMLPiHadesMTDVert=new TH1F("hMLPiHadesMTDVert","reconstraced mass of all combinations: pion in Hades, distance between tracks <x, Vertz_L in range",imres,immin,immax);
+    TH1F* hMLPiHpFMTDVert=new TH1F("hMLPiHpFMTDVert","reconstraced mass of all combinations: pion in HADES, proton in FD, distance between tracks <x, Vertz_L in range",imres,immin,immax);
 
     //Xi
     immin=1200;
     immax=1400;
     imres=200;
     //m lambda
-    TH1F* hMXAll=new TH1F("hMXAll","Mass reconstructed from 2 pions and proton",imres,immin,immax);
+    TH1F* hMXAll=new TH1F("hMXAll","Mass reconstructed from Lambda and proton",imres,immin,immax);
     //MTD_X
-    TH1F* hMXPiLMTD=new TH1F("hMXPiLMTD","Mass reconstructed from 2 pions and proton, dist <x",imres,immin,immax);
+    TH1F* hMXPiLMTD=new TH1F("hMXPiLMTD","Mass reconstructed from Lambda and proton, dist <x",imres,immin,immax);
     //VERTz_L
-    TH1F* hMXPiLMTDVert=new TH1F("hMXPiLMTDVert","Mass reconstructed from 2 pion and proton, dist <x, #Xi_{Vert_z}",imres,immin,immax);
+    TH1F* hMXPiLMTDVert=new TH1F("hMXPiLMTDVert","Mass reconstructed from Lambda and proton, dist <x, #Xi_{Vert_z}",imres,immin,immax);
     
 
     //cuts
@@ -338,9 +337,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	HParticleCandSim* ksicand =nullptr;  //candidate for pion to Xi reconstr
 	HFwDetCandSim* fwdetstrawvec = nullptr;
 	HFwDetStrawCalSim* fwdetstrawcal = nullptr;
-	// HParticleCand* particlecand =nullptr;
-	// HParticleCand* ksicand =nullptr;  //candidate for pion to Xi reconstr
-	// HFwDetCand* fwdetstrawvec = nullptr;
+
 	HParticleTool particle_tool;
        	//vector candidate reconstraction
 	Int_t vcnt=fCatFwDetCandSim->getEntries();
@@ -353,8 +350,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	for(int l=0;l<pcnt;l++)//particle candidates from HADES--------------------------------------------------
 	{ 
 	    particlecand = HCategoryManager::getObject(particlecand, fCatParticleCandSim,l);
-	    //  particlecand = HCategoryManager::getObject(particlecand, fCatParticleCand,i);
-	    if(!particlecand->isFlagBit(kIsUsed)) continue; //<<<<<??????????<<<<<<<<<
+	    if(!particlecand->isFlagBit(kIsUsed)) continue; //only the best tracks
 	    
 	    float mom_h = particlecand -> getMomentum();
 	    float charge_h = particlecand -> getCharge();
@@ -369,7 +365,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    float tofRec_h = particlecand -> getTofRec();
 	    float tof_h = particlecand -> getTof();
 
-	    //this PID not used now -> use mass2PID() or mass2PIDfit() below
+/*	    //this PID not used now -> use mass2PID() or mass2PIDfit() below
 	    if(beta_h!=-1){
 		for(int npid = 0; npid < partN; npid++){
 		    if(gCut[npid] -> GetName() == "CUTG_00") continue;
@@ -381,7 +377,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 //	    	cout << "break: invalid particle ID: " << particleID << endl;
 	     	continue;
 		}
-
+*/
 	    // PID	    
 	    if(beta_h!=-1 && mass_h > 0)
 //		particleID = mass2PID(mass2_h, charge_h); //PID as ranges in m2(pq) spectrum
@@ -489,14 +485,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    {
 		fwdetstrawvec=HCategoryManager::getObject(fwdetstrawvec, fCatFwDetCandSim, j);
 		fwdetstrawcal=HCategoryManager::getObject(fwdetstrawcal, fCatFwDetCandSim, j);
-//		if(!fwdetstrawcal->isFlagBit(kIsUsed)) continue; //<<<<<??????????<<<<<<<<<
 
 		float tof_v = fwdetstrawvec -> getTof();
-//		float dE_v = fwdetstrawcal -> getEloss(); //E loss in the straw
+		float dE_v = fwdetstrawcal -> getEloss(); //E loss in the straw
 //		float dE_v = fwdetstrawcal -> getEloss(); //drift radius loss in the straw
-		// float beta_v = fwdetstrawvec -> getBeta();
-		// float mom_v = fwdetstrawvec -> getMomentum();
-		// float charge_v = fwdetstrawvec -> getCharge();
 	
 		vectorcandID = tofPID(tof_v);
 //		vectorcandID = 14;
@@ -510,7 +502,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    hdE_fd -> Fill(dE_v);
 		}
 */
-		
+		if(tof_v != -1){
+		    hdE_fd -> Fill(dE_v);
+		}
+
 		if(tof_v != -1){
 		    //	cout << "tofRec_v: " << tofRec_v << " tof_v: " << tof_v << endl;
 		    hTof_all_fd -> Fill(tof_v);
@@ -612,7 +607,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			continue;//skip pion from lambda decay
 
 		      ksicand = HCategoryManager::getObject(ksicand, fCatParticleCandSim,f);
-		      if(!ksicand->isFlagBit(kIsUsed)) continue; //<<<<<??????????<<<<<<<<<
+		      if(!ksicand->isFlagBit(kIsUsed)) continue; // only the best tracks
 		      ksicandGeantID = ksicand -> getGeantPID();
 		      
 		      float mom_h_Xi = ksicand -> getMomentum();
@@ -624,7 +619,6 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		      float mass2_h_Xi = mass_h_Xi*mass_h_Xi;
 		      //float ener_h_Xi = .5*mom_h*mom_h/mass_h;
 		      float pq_h_Xi = mom_h_Xi*charge_h_Xi;
-		      //float tofRec_h_Xi = ksicand -> getTofRec();
 		      //float tof_h_Xi = ksicand -> getTof();
 
 		      // PID
@@ -838,9 +832,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     cBetaPID_rpc -> Write();
     
     //FwDet only
-    /*hdE_fd -> GetXaxis() -> SetTitle("dE [MeV]");
+    hdE_fd -> GetXaxis() -> SetTitle("dE in straws [MeV]");
     hdE_fd -> GetYaxis() -> SetTitle("#");
-    hdE_fd -> Write();*/
+    hdE_fd -> Write();
     /*hBeta_fd -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hBeta_fd -> GetYaxis() -> SetTitle("#beta");
     hBeta_fd -> Write();
