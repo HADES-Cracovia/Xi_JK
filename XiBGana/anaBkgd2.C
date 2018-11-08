@@ -50,6 +50,7 @@ void anaBkgd2(){
     cLambdaXiMassSc -> Divide(3,2);
 
     THStack *hLmass_sc = new THStack(); //Lambda scaled with cr_sec, no cuts
+    THStack *hLmass_sc_rec = new THStack(); //Lambda scaled with cr_sec, all L cuts
     THStack *hXmass_sc = new THStack(); //Xi, scaled with cr_sec, no cuts
     THStack *hXmass_sc_fin = new THStack(); //Xi, scaled with cr_sec, up to MTD_X cut
 
@@ -301,7 +302,7 @@ void anaBkgd2(){
     lChan -> SetTextSize(.04);
 
     for(int i = 0; i < 7; i++){
-      sprintf(chanNo, "/u/jkubos/analiza/hades/pp45sim/Xi_rec/outputs_ch/output_%03d_all5.root", chan[i]);
+      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_all5.root", chan[i]);
       	TFile *f1 = TFile::Open(chanNo, "READ");
 
 	TPaveText *ptch = new TPaveText(.5, .7, .8, .85, "NDC");
@@ -525,7 +526,7 @@ void anaBkgd2(){
 	// clLambdaSc -> SetMarkerSize(2);
 	// if(i==0){
 	//   clLambdaSc -> SetMarkerStyle(20);
-	//   clLambdaSc -> SetMarkerSize(1.5);
+	//   clLambdaSc -> SetMarkerSize(1.5)
 	// }
 
 	clXiSc -> Scale(cr_sec[i]);
@@ -930,6 +931,11 @@ void anaBkgd2(){
 	hrealLSumScVert -> Add(hrealL1scVert);
 	//	hXallSumScVert -> Add(hXall1scVert);
 	hrealXSumScVert -> Add(hrealX1scVert);
+
+	clLambdaScVertrec -> Scale(cr_sec[i]);
+	hLmass_sc_rec -> Add(clLambdaScVertrec);
+	clLambdaScVertrec -> SetLineColor(col);
+
 	//*******************************************************
 	//		TH1F *hLall1 = (TH1F*)hLall -> Clone("hLall1_c");
 
@@ -2113,7 +2119,7 @@ void anaBkgd2(){
     //hrealXSumScMtd -> SetMarkerSize(1.2);
     hrealXSumScMtd -> SetLineColor(8);
     hXallSumBGScMtd -> SetMarkerStyle(21);
-    hXallSumBGScMtd -> SetMarkerSize(.5;
+    hXallSumBGScMtd -> SetMarkerSize(.5);
     hXallSumBGScMtd -> SetMarkerColor(2);
     hrealXSumScMtd -> Draw();
     hXallSumBGScMtd -> Draw("p same");
@@ -3051,7 +3057,7 @@ void anaBkgd2(){
     //end VERTz scan
     */
     //effi
-    int nall = 500000; //n evt*100 -> [%]
+    int nall = 50000; //n evt*100 -> [%]
     double brLxchn = 0.64*5; //BR for Lambda->p pim * number of simulated channels with real Lambda1115
     printf("Effi rec.:\nL: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\nX: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", cntSLMtd/nall/brLxchn, cntSLscMtd/nall/brLxchn, cntSLVert/nall/brLxchn, cntSLscVert/nall/brLxchn, cntSXMtd/nall, cntSXscMtd/nall, cntSXVert/nall, cntSXscVert/nall);
 
