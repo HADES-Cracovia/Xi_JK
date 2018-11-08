@@ -204,7 +204,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TCanvas *cBetaPID_rpc = new TCanvas("cBetaPID_rpc", "cBetaPID_rpc");
     
     //FwDet only
-    TH1F *hdE_fd = new TH1F("hdE_fd", "hdE_fd", nbins1, dex1, dex2);
+    TH1F *hdE_fd = new TH1F("hdE_fd", "hdE_fd", 200, 0, 10000);
+    TH1F *hr_fd = new TH1F("hr_fd", "hr_fd", 60, 0, 6);
     TH2F *hBeta_fd = new TH2F("hBeta_fd", "hBeta_fd", 400, -2000, 2000, 200, 0, 1);
     TH2F *hM22_fd = new TH2F("hM22_fd", "hM22_fd", nbins2, mom1, mom2 , nbins1, mas21, mas22);
     // TCanvas *cBetaPID_fd = new TCanvas("cBetaPID_fd", "cBetaPID_fd");
@@ -488,7 +489,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 
 		float tof_v = fwdetstrawvec -> getTof();
 		float dE_v = fwdetstrawcal -> getEloss(); //E loss in the straw
-//		float dE_v = fwdetstrawcal -> getEloss(); //drift radius loss in the straw
+		float r_v = fwdetstrawcal -> getDriftRadius(); //drift radius
 	
 		vectorcandID = tofPID(tof_v);
 //		vectorcandID = 14;
@@ -497,13 +498,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		fwdetstrawvec -> calc4vectorProperties(HPhysicsConstants::mass(vectorcandID));
 		vectorcandGeantID = fwdetstrawvec -> getGeantPID();
 
-/*		if(vectorcandID == 14){
-		    cout << "dE: " << dE_v << endl;
-		    hdE_fd -> Fill(dE_v);
-		}
-*/
 		if(tof_v != -1){
-		    hdE_fd -> Fill(dE_v);
+		    //cout << "dE: " << dE_v << " r: " << r_v << endl;
+		    hdE_fd -> Fill(dE_v/r_v);
+		    hr_fd -> Fill(r_v);
 		}
 
 		if(tof_v != -1){
@@ -832,10 +830,13 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     cBetaPID_rpc -> Write();
     
     //FwDet only
-    hdE_fd -> GetXaxis() -> SetTitle("dE in straws [MeV]");
+    hdE_fd -> GetXaxis() -> SetTitle("dE/dx in straws [MeV/mm?]");
     hdE_fd -> GetYaxis() -> SetTitle("#");
     hdE_fd -> Write();
-    /*hBeta_fd -> GetXaxis() -> SetTitle("p*q [MeV/c]");
+    hr_fd -> GetXaxis() -> SetTitle("drift radius [mm?]");
+    hr_fd -> GetYaxis() -> SetTitle("#");
+    hr_fd -> Write();
+ /*hBeta_fd -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hBeta_fd -> GetYaxis() -> SetTitle("#beta");
     hBeta_fd -> Write();
 
