@@ -757,10 +757,10 @@ void anaBkgd2(){
     TCanvas *cimXsAsc = new TCanvas("cimXsAsc", "cimXsAsc");
     TCanvas *cimXsRsc = new TCanvas("cimXsRsc", "cimXsRsc");
     TCanvas *cimXsBGsc = new TCanvas("cimXsBGsc", "cimXsBGsc");
-
+    */
     TCanvas *cimLNoCutsSc = new TCanvas("cimLNoCutsSc","cimLNoCutsSc"); //inv mass Lambda spectrum, no cuts, cr sec scaling
     TCanvas *cimXMtdlVertlMlSc = new TCanvas("cimXMtdlVerlMlSc","cimXMtdlVerlMlSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass cuts, cr sec scaling
-    *///>>>>>>>>>>>>>>>>>
+    //>>>>>>>>>>>>>>>>>
     cLambdaXiMassSc -> cd(1);
     nice_canv1(gPad);
     hLallSumSc -> SetTitle("#pi^{-} in Hades + anything in FD");
@@ -1202,9 +1202,9 @@ void anaBkgd2(){
     TCanvas *cimXsRmtdsc = new TCanvas("cimXsRmtdsc", "cimXsRmtdsc");
     TCanvas *cimXsBGmtdsc = new TCanvas("cimXsBGmtdsc", "cimXsBGmtdsc");
 */
-/*    TCanvas *cimLMtdlSc = new TCanvas("cimLMtdlSc","cimLMtdlSc"); //inv mass Lambda spectrum, MTD_L cut, cr sec scaling
+    TCanvas *cimLMtdlSc = new TCanvas("cimLMtdlSc","cimLMtdlSc"); //inv mass Lambda spectrum, MTD_L cut, cr sec scaling
     TCanvas *cimXMtdlVertlMlMtdxSc = new TCanvas("cimXMtdlVerlMlMtdxSc","cimXMtdlVerlMlMtdxSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X cuts, cr sec scaling
-											      */
+    
     cLambdaXiMassScMtd -> cd(1);
     nice_canv1(gPad);
     hLallSumScMtd -> SetTitle("#pi^{-} in Hades + anything in FD");
@@ -1495,10 +1495,10 @@ void anaBkgd2(){
     TCanvas *cimXsAvertsc = new TCanvas("cimXsAvertsc", "cimXsAvertsc");
     TCanvas *cimXsRvertsc = new TCanvas("cimXsRvertsc", "cimXsRvertsc");
     TCanvas *cimXsBGvertsc = new TCanvas("cimXsBGvertsc", "cimXsBGvertsc");
-    
+*/    
     TCanvas *cimLMtdlVertlSc = new TCanvas("cimLMtdlVertlSc","cimLMtdlVertlSc"); //inv mass Lambda spectrum, MTD_L, VERTz_L cuts, cr sec scaling
     TCanvas *cimXMtdlVertlMlMtdxVertxSc = new TCanvas("cimXMtdlVerlMlMtdxVertxSc","cimXMtdlVerlMlMtdxVertxSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X, VERTz_X cuts, cr sec scaling
- */
+ 
     Double_t ymax;
     ymax = 2300000;
     massL_min = new TLine(MassminL, 0, MassminL, ymax);
@@ -1822,14 +1822,14 @@ void anaBkgd2(){
     cimXsRvertsc -> Write();
     cimXsBGvertsc -> Write();
     */
-    /*
+    
     cimLNoCutsSc -> Write();
     cimXMtdlVertlMlSc -> Write();
     cimLMtdlSc -> Write();
     cimXMtdlVertlMlMtdxSc -> Write();
     cimLMtdlVertlSc -> Write();
     cimXMtdlVertlMlMtdxVertxSc -> Write();
-								      */
+								      
     cL_nocuts_sc -> Write();
     cL_rec_sc -> Write();
     cX_nocuts_sc -> Write();
