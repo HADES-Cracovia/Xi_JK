@@ -617,6 +617,21 @@ void anaBkgd2(){
     double binXSc[150];
     int kXSc = -1;
 
+    hrealXSum -> Fit(fit, "0");
+    center_fit = fit -> GetParameter(1);
+    sigma_fit = fit -> GetParameter(2);
+    m3sigma = center_fit - 3*sigma_fit;
+    p3sigma = center_fit + 3*sigma_fit;
+    a = hrealXSum -> GetXaxis() -> FindBin(m3sigma);
+    b = hrealXSum -> GetXaxis() -> FindBin(p3sigma);
+    MassminX = m3sigma;
+    MassmaxX = p3sigma;
+    for(int j = 1; j <= nX; j++){
+      massX = hrealXSum -> GetBinLowEdge(j);
+      if(massX < MassminX) continue;
+      else if(massX > MassmaxX) break;
+      else hrealXSumPeak -> SetBinContent(j, hrealXSum -> GetBinContent(j));
+    }
     hrealXSumSc -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
@@ -626,17 +641,11 @@ void anaBkgd2(){
     b = hrealXSumSc -> GetXaxis() -> FindBin(p3sigma);
     MassminX = m3sigma;
     MassmaxX = p3sigma;
-    for(int j = 1; j <= nX; j++){
-      massX = hrealXSum -> GetBinLowEdge(j);
-      if(massX < MassminX) continue;
-      else if(massX > MassmaxX) break;
-      else hrealXSumPeak -> SetBinContent(j, hrealXSum -> GetBinContent(j));
-    }
     for(int j = 1; j <= nXSc; j++){
-      massXSc = hrealXSumSc -> GetBinLowEdge(j);
-      if(massXSc < MassminX) continue;
-      else if(massXSc > MassmaxX) break;
-      else hrealXSumPeakSc -> SetBinContent(j, hrealXSumSc -> GetBinContent(j));
+	massXSc = hrealXSumSc -> GetBinLowEdge(j);
+	if(massXSc < MassminX) continue;
+	else if(massXSc > MassmaxX) break;
+	else hrealXSumPeakSc -> SetBinContent(j, hrealXSumSc -> GetBinContent(j));
     }
 
     TH1F *hrealXSumPeakCl = (TH1F*)hrealXSumPeak -> Clone();
@@ -669,135 +678,60 @@ void anaBkgd2(){
       }
     }
 
-    l1 -> AddEntry(hLallSum, "sum all channels", "L");
-    l1 -> AddEntry(hLall90, "#Xi^{-}2K^{+}p", "L");
-    l1a -> AddEntry(hLallSumBG, "BG", "L");
-    l1a -> AddEntry(hrealLSumPeak, "signal", "L");
+    l1 -> AddEntry(hLallSumSc, "sum all channels", "L");
+    l1 -> AddEntry(hLall90Sc, "#Xi^{-}2K^{+}p", "L");
+    l1a -> AddEntry(hLallSumBGSc, "BG", "L");
+    l1a -> AddEntry(hrealLSumSc, "p#pi^{-}", "L");
+    l1a -> AddEntry(hrealLSumPeakSc, "#Lambda cand. (peak)", "L");
 
      //invM no scaling
-    /*   TCanvas *cimLnsA = new TCanvas("cimLnsA", "cimLnsA");
-    TCanvas *cimLnsR = new TCanvas("cimLnsR", "cimLnsR");
-    TCanvas *cimLnsBG = new TCanvas("cimLnsBG", "cimLnsBG");
-    TCanvas *cimXnsA = new TCanvas("cimXnsA", "cimXnsA");
-    TCanvas *cimXnsR = new TCanvas("cimXnsR", "cimXnsR");
-    TCanvas *cimXnsBG = new TCanvas("cimXnsBG", "cimXnsBG");*/
-
     cLambdaXiMass -> cd(1);
     nice_canv1(gPad);
-    hLallSum -> SetTitle("#pi^{-} in Hades + anything (p) in FwDet");
-    hLallSum -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSum -> SetTitle("#pi^{-} in Hades + anything in FD");
+    hLallSum -> GetXaxis() -> SetTitle("M_{FD#pi^{-}} [MeV]");
     hLallSum -> GetYaxis() -> SetTitle("counts");
     hLallSum -> Draw();
     hLall90 -> Draw("same");
     l1 -> Draw("same");
 
-    /*  cimLnsA -> cd();
-    nice_canv1(gPad);
-    hLallSum -> SetTitle("#pi^{-} in Hades + anything (p) in FwDet");
-    hLallSum -> GetXaxis() -> SetTitle("invM [MeV]");
-    hLallSum -> GetYaxis() -> SetTitle("counts");
-    hLallSum -> Draw();
-    hLall90 -> Draw("same");
-    l1 -> Draw("same");
-    */
     cLambdaXiMass -> cd(2);
     nice_canv1(gPad);
-    hrealLSum -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSum -> GetXaxis() -> SetTitle("M_{#pi_{-}} [MeV]");
+    hrealLSum -> SetTitle("#pi^{-} in Hades + p in FD");
+    hrealLSum -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hrealLSum -> GetYaxis() -> SetTitle("counts");
     hrealLSum -> Draw();
     hrealL90 -> Draw("same");
     l1 -> Draw("same");
-    /*
-    cimLnsR -> cd();
-    nice_canv1(gPad);
-    hrealLSum -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSum -> GetXaxis() -> SetTitle("invM [MeV]");
-    hrealLSum -> GetYaxis() -> SetTitle("counts");
-    hrealLSum -> Draw();
-    hrealL90 -> Draw("same");
-    l1 -> Draw("same");
-    */
+    
     cLambdaXiMass -> cd(3);
     nice_canv1(gPad);
-    hLallSumBG -> SetTitle("Real #Lambda peak and BG");
+    hLallSumBG -> SetTitle("p#pi^{-}: all, peak and BG");
     hLallSumBG -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
     hLallSumBG -> GetYaxis() -> SetTitle("counts");
     hLallSumBG -> Draw();
     hrealLSumPeak -> Draw("same");
+    hrealLSum -> Draw("same");
     l1a -> Draw("same");
-    /*
-    cimLnsBG -> cd();
-    nice_canv1(gPad);
-    hLallSumBG -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBG -> GetXaxis() -> SetTitle("invM [MeV]");
-    hLallSumBG -> GetYaxis() -> SetTitle("counts");
-    hLallSumBG -> Draw();
-    hrealLSumPeak -> Draw("same");
-    l1a -> Draw("same");
-    */
+    
     cLambdaXiMass -> cd(4);
     nice_canv1(gPad);
-    hrealXSum -> SetTitle("2#pi^{-} in Hades + anything (p) in FwDet");
-    hrealXSum -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hrealXSum -> SetTitle("#Lambda + #pi^{-}");
+    hrealXSum -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSum -> GetYaxis() -> SetTitle("counts");
     hrealXSum -> Draw();
     hrealX90 -> Draw("same");
     l1 -> Draw("same");
-    /*
-    cimXnsA -> cd();
-    nice_canv1(gPad);
-    hXallSum -> SetTitle("2#pi^{-} in Hades + anything (p) in FwDet");
-    hXallSum -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXallSum -> GetYaxis() -> SetTitle("counts");
-    hXallSum -> Draw();
-    hXall90 -> Draw("same");
-    l1 -> Draw("same");
-    */
-    /*  cLambdaXiMass -> cd(5);
-    nice_canv1(gPad);
-    hXrealLpimSum -> SetTitle("#pi^{-} and p from #Lambda(1115) + #pi^{-} in Hades");
-    hXrealLpimSum -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXrealLpimSum -> GetYaxis() -> SetTitle("counts");
-    hXrealLpimSum -> Draw();
-    hXrealLpim90 -> Draw("same");
-    */
+    
     cLambdaXiMass -> cd(5);
     nice_canv1(gPad);
-    hrealXSum -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSum -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSum -> GetYaxis() -> SetTitle("counts");
-    hrealXSum -> Draw();
-    hrealX90 -> Draw("same");
-    l1 -> Draw("same");
-    /*
-    cimXnsR -> cd();
-    nice_canv1(gPad);
-    hrealXSum -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSum -> GetXaxis() -> SetTitle("invM [MeV]");
-    hrealXSum -> GetYaxis() -> SetTitle("counts");
-    hrealXSum -> Draw();
-    hrealX90 -> Draw("same");
-    */
-    cLambdaXiMass -> cd(6);
-    nice_canv1(gPad);
-    hXallSumBG -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBG -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hXallSumBG -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hXallSumBG -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hXallSumBG -> GetYaxis() -> SetTitle("counts");
     hXallSumBG -> Draw();
     hrealXSumPeak -> Draw("same");
+    hrealXSum -> Draw("same");
     l1a -> Draw("same");
-    /*
-    cimXnsBG -> cd();
-    nice_canv1(gPad);
-    hXallSumBG -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBG -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXallSumBG -> GetYaxis() -> SetTitle("counts");
-    hXallSumBG -> Draw();
-    hrealXSumPeak -> Draw("same");
-    l1a -> Draw("same");
-    */
-
+    //
     TLine *massL_min = new TLine(MassminL, 0, MassminL, 80000000);
     TLine *massL_max = new TLine(MassmaxL, 0, MassmaxL, 80000000);
     TLine *massX_min = new TLine(MassminX, 0, MassminX, 16000000);
@@ -817,7 +751,7 @@ void anaBkgd2(){
     lfin -> AddEntry(hLallSumBGSc, "BG");
 
     //invM scaling
-    TCanvas *cimLsAsc = new TCanvas("cimLsAsc", "cimLsAsc");
+    /*TCanvas *cimLsAsc = new TCanvas("cimLsAsc", "cimLsAsc");
     TCanvas *cimLsRsc = new TCanvas("cimLsRsc", "cimLsRsc");
     TCanvas *cimLsBGsc = new TCanvas("cimLsBGsc", "cimLsBGsc");
     TCanvas *cimXsAsc = new TCanvas("cimXsAsc", "cimXsAsc");
@@ -826,17 +760,17 @@ void anaBkgd2(){
 
     TCanvas *cimLNoCutsSc = new TCanvas("cimLNoCutsSc","cimLNoCutsSc"); //inv mass Lambda spectrum, no cuts, cr sec scaling
     TCanvas *cimXMtdlVertlMlSc = new TCanvas("cimXMtdlVerlMlSc","cimXMtdlVerlMlSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass cuts, cr sec scaling
-    //>>>>>>>>>>>>>>>>>
+    *///>>>>>>>>>>>>>>>>>
     cLambdaXiMassSc -> cd(1);
     nice_canv1(gPad);
-    hLallSumSc -> SetTitle("#pi^{-} in Hades - anything (p) in FwDet");
-    hLallSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumSc -> SetTitle("#pi^{-} in Hades + anything in FD");
+    hLallSumSc -> GetXaxis() -> SetTitle("M_{FD#pi^{-}} [MeV]");
     hLallSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumSc -> Draw("pE1");
-    hLall90Sc -> Draw("p same");
+    hLallSumSc -> Draw();
+    hLall90Sc -> Draw(" same");
     l1 -> Draw("same");
     
-    cimLsAsc -> cd();
+    /*cimLsAsc -> cd();
     nice_canv1(gPad);
     hLallSumSc -> SetTitle("#pi^{-} in Hades - anything (p) in FwDet");
     hLallSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
@@ -846,17 +780,17 @@ void anaBkgd2(){
     hLallSumSc -> Draw("pE1");
     hLall90Sc -> Draw("p same");
     l1 -> Draw("same");
-    
+    */
     cLambdaXiMassSc -> cd(2);
     nice_canv1(gPad);
-    hrealLSumSc -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hrealLSumSc -> SetTitle("#pi^{-} in Hades + p in FD");
+    hrealLSumSc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hrealLSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumSc -> Draw("pE1");
-    hrealL90Sc -> Draw("p same");
+    hrealLSumSc -> Draw();
+    hrealL90Sc -> Draw("same");
     l1 -> Draw("same");
     
-    cimLsRsc -> cd();
+/*    cimLsRsc -> cd();
     nice_canv1(gPad);
     hrealLSumSc -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
     hrealLSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
@@ -869,17 +803,18 @@ void anaBkgd2(){
     hrealLSumSc -> Draw("pE1");
     hrealL90Sc -> Draw("p same");
     l1 -> Draw("same");
-
+*/
     cLambdaXiMassSc -> cd(3);
     nice_canv1(gPad);
-    hLallSumBGSc -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumBGSc -> SetTitle("p#pi^{-}: all, peak and BG");
+    hLallSumBGSc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumBGSc -> Draw("pE1");
-    hrealLSumPeakSc -> Draw("p same");
+    hLallSumBGSc -> Draw();
+    hrealLSumPeakSc -> Draw("same");
+    hrealLSumSc -> Draw("same");
     l1a -> Draw("same");
     
-    cimLsBGsc -> cd();
+/*    cimLsBGsc -> cd();
     nice_canv1(gPad);
     hLallSumBGSc -> SetTitle("Real #Lambda peak and BG");
     hLallSumBGSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
@@ -893,17 +828,17 @@ void anaBkgd2(){
     hLallSumBGSc -> Draw("pE1");
     hrealLSumPeakSc -> Draw("p same");
     l1a -> Draw("same");
-
+*/
     cimLNoCutsSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hLallSumSc -> SetTitle("#Lambda reconstruction, no cuts");
-    hLallSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumSc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
     hLallSumSc -> SetLineColor(4);
     hLallSumSc -> SetLineStyle(2);
     hLallSumSc -> SetLineWidth(2);
     hLallSumBGSc -> SetMarkerStyle(21);
-    hLallSumBGSc -> SetMarkerSize(1);
+    hLallSumBGSc -> SetMarkerSize(.5);
     hLallSumBGSc -> SetMarkerColor(2);
     hrealLSumSc -> SetLineColor(8);
     hLallSumSc -> Draw();
@@ -915,14 +850,14 @@ void anaBkgd2(){
 
     cLambdaXiMassSc -> cd(4);
     nice_canv1(gPad);
-    hrealXSumSc -> SetTitle("2#pi^{-} in Hades - anything (p) in FwDet");
-    hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hrealXSumSc -> SetTitle("#Lambda + #pi^{-}");
+    hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumSc -> Draw("pE1");
-    hrealX90Sc -> Draw("p same");
+    hrealXSumSc -> Draw();
+    hrealX90Sc -> Draw("same");
     l1 -> Draw("same");
     
-    cimXsAsc -> cd();
+/*    cimXsAsc -> cd();
     nice_canv1(gPad);
     hrealXSumSc -> SetTitle("2#pi^{-} in Hades - anything (p) in FwDet");
     hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
@@ -935,7 +870,7 @@ void anaBkgd2(){
     hrealXSumSc -> Draw("pE1");
     hrealX90Sc -> Draw("p same");
     l1 -> Draw("same");
-    
+		     */  
     /* cLambdaXiMassSc -> cd(5);
     nice_canv1(gPad);
     hXrealLpimSumSc -> SetTitle("#pi^{-} and p from #Lambda(1115) + #pi^{-} in Hades");
@@ -944,7 +879,7 @@ void anaBkgd2(){
     hXrealLpimSumSc -> Draw();
     hXrealLpim90Sc -> Draw("same");
     */
-    cLambdaXiMassSc -> cd(5);
+/*    cLambdaXiMassSc -> cd(5);
     nice_canv1(gPad);
     hrealXSumSc -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
     hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
@@ -952,7 +887,7 @@ void anaBkgd2(){
     hrealXSumSc -> Draw("pE1");
     hrealX90Sc -> Draw("p same");
     l1 -> Draw("same");
-    
+		     *//*  
     cimXsRsc -> cd();
     nice_canv1(gPad);
     hrealXSumSc -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
@@ -966,17 +901,18 @@ void anaBkgd2(){
     hrealXSumSc -> Draw("pE1");
     hrealX90Sc -> Draw("p same");
     l1 -> Draw("same");
-
-    cLambdaXiMassSc -> cd(6);
+		     */
+    cLambdaXiMassSc -> cd(5);
     nice_canv1(gPad);
-    hXallSumBGSc -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hXallSumBGSc -> SetTitle("#Xi^{-}: #lambda#pi^{-} all, peak and BG");
+    hXallSumBGSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hXallSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGSc -> Draw("pE1");
-    hrealXSumPeakSc -> Draw("p same");
+    hXallSumBGSc -> Draw();
+    hrealXSumPeakSc -> Draw("same");
+    hrealXSumSc -> Draw("same");
     l1a -> Draw("same");
     
-    cimXsBGsc -> cd();
+    /*cimXsBGsc -> cd();
     nice_canv1(gPad);
     hXallSumBGSc -> SetTitle("Real #Xi^{-} peak and BG");
     hXallSumBGSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
@@ -990,7 +926,7 @@ void anaBkgd2(){
     hXallSumBGSc -> Draw("pE1");
     hrealXSumPeakSc -> Draw("p same");
     l1a -> Draw("same");
-    
+		      */
     cimXMtdlVertlMlSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hrealXSumSc -> SetTitle("#Xi reconstruction, MTD_L, VERTz_L, Lmass cuts");
@@ -1211,208 +1147,92 @@ void anaBkgd2(){
     }
 
     //invM no scaling MTD
-    /*  TCanvas *cimLnsAmtd = new TCanvas("cimLnsAmtd", "cimLnsAmtd");
-    TCanvas *cimLnsRmtd = new TCanvas("cimLnsRmtd", "cimLnsRmtd");
-    TCanvas *cimLnsBGmtd = new TCanvas("cimLnsBGmtd", "cimLnsBGmtd");
-    TCanvas *cimXnsAmtd = new TCanvas("cimXnsAmtd", "cimXnsAmtd");
-    TCanvas *cimXnsRmtd = new TCanvas("cimXnsRmtd", "cimXnsRmtd");
-    TCanvas *cimXnsBGmtd = new TCanvas("cimXnsBGmtd", "cimXnsBGmtd");
-    */
     cLambdaXiMassMtd -> cd(1);
     nice_canv1(gPad);
-    hLallSumMtd -> SetTitle("#pi^{-} in Hades + anything (p) in FwDet");
-    hLallSumMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumMtd -> SetTitle("#pi^{-} in Hades + anything in FD");
+    hLallSumMtd -> GetXaxis() -> SetTitle("M_{FD#pi^{-}} [MeV]");
     hLallSumMtd -> GetYaxis() -> SetTitle("counts");
     hLallSumMtd -> Draw();
     hLall90Mtd -> Draw("same");
     l1 -> Draw("same");
-    /*
-    cimLnsAmtd -> cd();
-    nice_canv1(gPad);
-    hLallSumMtd -> SetTitle("#pi^{-} in Hades + anything (p) in FwDet");
-    hLallSumMtd -> GetXaxis() -> SetTitle("invM [MeV]");
-    hLallSumMtd -> GetYaxis() -> SetTitle("counts");
-    hLallSumMtd -> Draw();
-    hLall90Mtd -> Draw("same");
-    l1 -> Draw("same");
-    */
+    
     cLambdaXiMassMtd -> cd(2);
     nice_canv1(gPad);
-    hrealLSumMtd -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hrealLSumMtd -> SetTitle("#pi^{-} in Hades + p in FD");
+    hrealLSumMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hrealLSumMtd -> GetYaxis() -> SetTitle("counts");
     hrealLSumMtd -> Draw();
     hrealL90Mtd -> Draw("same");
     l1 -> Draw("same");
-    /*
-    cimLnsRmtd -> cd();
-    nice_canv1(gPad);
-    hrealLSumMtd -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumMtd -> GetXaxis() -> SetTitle("invM [MeV]");
-    hrealLSumMtd -> GetYaxis() -> SetTitle("counts");
-    hrealLSumMtd -> Draw();
-    hrealL90Mtd -> Draw("same");
-    */
+
     cLambdaXiMassMtd -> cd(3);
     nice_canv1(gPad);
-    hLallSumBGMtd -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumBGMtd -> SetTitle("p#pi^{-}: all, peak and BG");
+    hLallSumBGMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumBGMtd -> GetYaxis() -> SetTitle("counts");
     hrealLSumPeakMtd -> Draw();
     hLallSumBGMtd -> Draw("same");
+    hrealLSumMtd -> Draw("same");
     l1a -> Draw("same");
-    /*
-    cimLnsBGmtd -> cd();
-    nice_canv1(gPad);
-    hLallSumBGMtd -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGMtd -> GetXaxis() -> SetTitle("invM [MeV]");
-    hLallSumBGMtd -> GetYaxis() -> SetTitle("counts");
-    hrealLSumPeakMtd -> Draw();
-    hLallSumBGMtd -> Draw("same");
-    l1a -> Draw("same");
-    */
+
     cLambdaXiMassMtd -> cd(4);
     nice_canv1(gPad);
-    hrealXSumMtd -> SetTitle("2#pi^{-} in Hades + anything (p) in FwDet");
-    hrealXSumMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hrealXSumMtd -> SetTitle("#Lambda + #pi^{-}");
+    hrealXSumMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSumMtd -> GetYaxis() -> SetTitle("counts");
     hrealXSumMtd -> Draw();
     hrealX90Mtd -> Draw("same");
     l1 -> Draw("same");
-    /*
-    cimXnsAmtd -> cd();
-    nice_canv1(gPad);
-    hXallSumMtd -> SetTitle("2#pi^{-} in Hades + anything (p) in FwDet");
-    hXallSumMtd -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXallSumMtd -> GetYaxis() -> SetTitle("counts");
-    hXallSumMtd -> Draw();
-    hXall90Mtd -> Draw("same");
-    l1 -> Draw("same");
-    */
-    /*  cLambdaXiMass -> cd(5);
-    nice_canv1(gPad);
-    hXrealLpimSum -> SetTitle("#pi^{-} and p from #Lambda(1115) + #pi^{-} in Hades");
-    hXrealLpimSum -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXrealLpimSum -> GetYaxis() -> SetTitle("counts");
-    hXrealLpimSum -> Draw();
-    hXrealLpim90 -> Draw("same");
-    */
+
     cLambdaXiMassMtd -> cd(5);
     nice_canv1(gPad);
-    hrealXSumMtd -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumMtd -> GetYaxis() -> SetTitle("counts");
-    hrealXSumMtd -> Draw();
-    hrealX90Mtd -> Draw("same");
-    l1 -> Draw("same");
-    /*
-    cimXnsRmtd -> cd();
-    nice_canv1(gPad);
-    hrealXSumMtd -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumMtd -> GetXaxis() -> SetTitle("invM [MeV]");
-    hrealXSumMtd -> GetYaxis() -> SetTitle("counts");
-    hrealXSumMtd -> Draw();
-    hrealX90Mtd -> Draw("same");
-    */
-    cLambdaXiMassMtd -> cd(6);
-    nice_canv1(gPad);
-    hXallSumBGMtd -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hXallSumBGMtd -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hXallSumBGMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hXallSumBGMtd -> GetYaxis() -> SetTitle("counts");
     hrealXSumPeakMtd -> Draw();
     hXallSumBGMtd -> Draw("same");
+    hrealXSumMtd -> Draw("same");
     l1a -> Draw("same");
-    /*
-    cimXnsBGmtd -> cd();
-    nice_canv1(gPad);
-    hXallSumBGMtd -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGMtd -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXallSumBGMtd -> GetYaxis() -> SetTitle("counts");
-    hrealXSumPeakMtd -> Draw();
-    hXallSumBGMtd -> Draw("same");
-    l1a -> Draw("same");
-    */
+
     //invM scaling MTD
-    TCanvas *cimLsAmtdsc = new TCanvas("cimLsAmtdsc", "cimLsAmtdsc");
+/*    TCanvas *cimLsAmtdsc = new TCanvas("cimLsAmtdsc", "cimLsAmtdsc");
     TCanvas *cimLsRmtdsc = new TCanvas("cimLsRmtdsc", "cimLsRmtdsc");
     TCanvas *cimLsBGmtdsc = new TCanvas("cimLsBGmtdsc", "cimLsBGmtdsc");
     TCanvas *cimXsAmtdsc = new TCanvas("cimXsAmtdsc", "cimXsAmtdsc");
     TCanvas *cimXsRmtdsc = new TCanvas("cimXsRmtdsc", "cimXsRmtdsc");
     TCanvas *cimXsBGmtdsc = new TCanvas("cimXsBGmtdsc", "cimXsBGmtdsc");
-    
-
-    TCanvas *cimLMtdlSc = new TCanvas("cimLMtdlSc","cimLMtdlSc"); //inv mass Lambda spectrum, MTD_L cut, cr sec scaling
+*/
+/*    TCanvas *cimLMtdlSc = new TCanvas("cimLMtdlSc","cimLMtdlSc"); //inv mass Lambda spectrum, MTD_L cut, cr sec scaling
     TCanvas *cimXMtdlVertlMlMtdxSc = new TCanvas("cimXMtdlVerlMlMtdxSc","cimXMtdlVerlMlMtdxSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X cuts, cr sec scaling
-
+											      */
     cLambdaXiMassScMtd -> cd(1);
     nice_canv1(gPad);
-    hLallSumScMtd -> SetTitle("#pi^{-} in Hades - anything (p) in FwDet");
-    hLallSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumScMtd -> SetTitle("#pi^{-} in Hades + anything in FD");
+    hLallSumScMtd -> GetXaxis() -> SetTitle("M_{FD#pi^{-}} [MeV]");
     hLallSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
     hLallSumScMtd -> Draw();
     hLall90ScMtd -> Draw("same");
     l1 -> Draw("same");
-    
-    cimLsAmtdsc -> cd();
-    nice_canv1(gPad);
-    hLallSumScMtd -> SetTitle("#pi^{-} in Hades - anything (p) in FwDet");
-    hLallSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hLallSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumScMtd -> SetMarkerStyle(20);
-    hLallSumScMtd -> SetMarkerSize(.5);
-    hLallSumScMtd -> SetMarkerColor(4);
-    hLall90ScMtd -> SetMarkerStyle(20);
-    hLall90ScMtd -> SetMarkerSize(.5);
-    hLallSumScMtd -> Draw("pE1");
-    hLall90ScMtd -> Draw("p same");
-    l1 -> Draw("same");
-    
+        
     cLambdaXiMassScMtd -> cd(2);
     nice_canv1(gPad);
-    hrealLSumScMtd -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hrealLSumScMtd -> SetTitle("#pi^{-} in Hades + p in FD");
+    hrealLSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hrealLSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumScMtd -> Draw("pE1");
-    hrealL90ScMtd -> Draw("p same");
-    l1 -> Draw("same");
-    
-    cimLsRmtdsc -> cd();
-    nice_canv1(gPad);
-    hrealLSumScMtd -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hrealLSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumScMtd -> SetMarkerStyle(20);
-    hrealLSumScMtd -> SetMarkerSize(.5);
-    hrealLSumScMtd -> SetMarkerColor(4);
-    hrealL90ScMtd -> SetMarkerStyle(20);
-    hrealL90ScMtd -> SetMarkerSize(.5);
-    hrealLSumScMtd -> Draw("pE1");
+    hrealLSumScMtd -> Draw();
     hrealL90ScMtd -> Draw("p same");
     l1 -> Draw("same");
     
     cLambdaXiMassScMtd -> cd(3);
     nice_canv1(gPad);
-    hLallSumBGScMtd -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGScMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumBGScMtd -> SetTitle("p#pi^{-}: all, peak and BG");
+    hLallSumBGScMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumBGScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumBGScMtd -> Draw("p");
+    hLallSumBGScMtd -> Draw();
     hrealLSumPeakScMtd -> Draw("same");
+    hrealLSumScMtd -> Draw("same");
     l1a -> Draw("same");
     
-    cimLsBGmtdsc -> cd();
-    nice_canv1(gPad);
-    hLallSumBGScMtd -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGScMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hLallSumBGScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumBGScMtd -> SetMarkerStyle(20);
-    hLallSumBGScMtd -> SetMarkerSize(.5);
-    hLallSumBGScMtd -> SetMarkerColor(2);
-    hrealLSumPeakScMtd -> SetMarkerStyle(20);
-    hrealLSumPeakScMtd -> SetMarkerSize(.5);
-    hrealLSumPeakScMtd -> SetMarkerColor(8);
-    hLallSumBGScMtd -> Draw("p");
-    hrealLSumPeakScMtd -> Draw("same");
-    l1a -> Draw("same");
     
     cimLMtdlSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
@@ -1435,72 +1255,21 @@ void anaBkgd2(){
 
     cLambdaXiMassScMtd -> cd(4);
     nice_canv1(gPad);
-    hrealXSumScMtd -> SetTitle("2#pi^{-} in Hades - anything (p) in FwDet");
-    hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hrealXSumScMtd -> SetTitle("#Lambda + #pi^{-}");
+    hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScMtd -> Draw("pE1");
-    hrealX90ScMtd -> Draw("p same");
-    l1 -> Draw("same");
-    
-    cimXsAmtdsc -> cd();
-    nice_canv1(gPad);
-    hrealXSumScMtd -> SetTitle("2#pi^{-} in Hades - anything (p) in FwDet");
-    hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScMtd -> SetMarkerStyle(20);
-    hrealXSumScMtd -> SetMarkerSize(.5);
-    hrealXSumScMtd -> SetMarkerColor(4);
-    hrealX90ScMtd -> SetMarkerStyle(20);
-    hrealX90ScMtd -> SetMarkerSize(.5);
-    hrealXSumScMtd -> Draw("pE1");
+    hrealXSumScMtd -> Draw();
     hrealX90ScMtd -> Draw("p same");
     l1 -> Draw("same");
     
     cLambdaXiMassScMtd -> cd(5);
     nice_canv1(gPad);
-    hrealXSumScMtd -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScMtd -> Draw("pE1");
-    hrealX90ScMtd -> Draw("p same");
-    l1 -> Draw("same");
-    
-    cimXsRmtdsc -> cd();
-    nice_canv1(gPad);
-    hrealXSumScMtd -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScMtd -> SetMarkerStyle(20);
-    hrealXSumScMtd -> SetMarkerSize(.5);
-    hrealXSumScMtd -> SetMarkerColor(4);
-    hrealX90ScMtd -> SetMarkerStyle(20);
-    hrealX90ScMtd -> SetMarkerSize(.5);
-    hrealXSumScMtd -> Draw("pE1");
-    hrealX90ScMtd -> Draw("p same");
-    l1 -> Draw("same");
-    
-    cLambdaXiMassScMtd -> cd(6);
-    nice_canv1(gPad);
-    hXallSumBGScMtd -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hXallSumBGScMtd -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hXallSumBGScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hXallSumBGScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGScMtd -> Draw("p");
+    hXallSumBGScMtd -> Draw();
     hrealXSumPeakScMtd -> Draw("same");
-    l1a -> Draw("same");
-    
-    cimXsBGmtdsc -> cd();
-    nice_canv1(gPad);
-    hXallSumBGScMtd -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hXallSumBGScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGScMtd -> SetMarkerStyle(20);
-    hXallSumBGScMtd -> SetMarkerSize(.5);
-    hXallSumBGScMtd -> SetMarkerColor(2);
-    hrealXSumPeakScMtd -> SetMarkerStyle(20);
-    hrealXSumPeakScMtd -> SetMarkerSize(.5);
-    hrealXSumPeakScMtd -> SetMarkerColor(8);
-    hXallSumBGScMtd -> Draw("p");
-    hrealXSumPeakScMtd -> Draw("same");
+    hrealXSumScMtd -> Draw("same");
     l1a -> Draw("same");
     
     cimXMtdlVertlMlMtdxSc -> cd();//<<<<<<<<<<<<<<
@@ -1672,122 +1441,55 @@ void anaBkgd2(){
     }
 
     //invM no scaling MTD, Vert
-    /* TCanvas *cimLnsAvert = new TCanvas("cimLnsAvert", "cimLnsAvert");
-    TCanvas *cimLnsRvert = new TCanvas("cimLnsRvert", "cimLnsRvert");
-    TCanvas *cimLnsBGvert = new TCanvas("cimLnsBGvert", "cimLnsBGvert");
-    TCanvas *cimXnsAvert = new TCanvas("cimXnsAvert", "cimXnsAvert");
-    TCanvas *cimXnsRvert = new TCanvas("cimXnsRvert", "cimXnsRvert");
-    TCanvas *cimXnsBGvert = new TCanvas("cimXnsBGvert", "cimXnsBGvert");
-    */
     cLambdaXiMassVert -> cd(1);
     nice_canv1(gPad);
-    hLallSumVert -> SetTitle("#pi^{-} in Hades + anything (p) in FwDet");
-    hLallSumVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumVert -> SetTitle("#pi^{-} in Hades + anything in FD");
+    hLallSumVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumVert -> GetYaxis() -> SetTitle("counts");
     hLallSumVert -> Draw();
     hLall90Vert -> Draw("same");
     l1 -> Draw("same");
     
-    /*cimLnsAvert -> cd();
-    nice_canv1(gPad);
-    hLallSumVert -> SetTitle("#pi^{-} in Hades + anything (p) in FwDet");
-    hLallSumVert -> GetXaxis() -> SetTitle("invM [MeV]");
-    hLallSumVert -> GetYaxis() -> SetTitle("counts");
-    hLallSumVert -> Draw();
-    hLall90Vert -> Draw("same");
-    l1 -> Draw("same");
-    */
     cLambdaXiMassVert -> cd(2);
     nice_canv1(gPad);
-    hrealLSumVert -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hrealLSumVert -> SetTitle("#pi^{-} in Hades + p in FD");
+    hrealLSumVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hrealLSumVert -> GetYaxis() -> SetTitle("counts");
     hrealLSumVert -> Draw();
     hrealL90Vert -> Draw("same");
     l1 -> Draw("same");
-    /*
-    cimLnsRvert -> cd();
-    nice_canv1(gPad);
-    hrealLSumVert -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumVert -> GetXaxis() -> SetTitle("invM [MeV]");
-    hrealLSumVert -> GetYaxis() -> SetTitle("counts");
-    hrealLSumVert -> Draw();
-    hrealL90Vert -> Draw("same");
-    */
+
     cLambdaXiMassVert -> cd(3);
     nice_canv1(gPad);
-    hLallSumBGVert -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumBGVert -> SetTitle("p#pi^{-}: all, peak and BG");
+    hLallSumBGVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumBGVert -> GetYaxis() -> SetTitle("counts");
     hrealLSumPeakVert -> Draw();
     hLallSumBGVert -> Draw("same");
+    hrealLSumVert -> Draw("same");
     l1a -> Draw("same");
-    /*
-    cimLnsBGvert -> cd();
-    nice_canv1(gPad);
-    hLallSumBGVert -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGVert -> GetXaxis() -> SetTitle("invM [MeV]");
-    hLallSumBGVert -> GetYaxis() -> SetTitle("counts");
-    hrealLSumPeakVert -> Draw();
-    hLallSumBGVert -> Draw("same");
-    l1a -> Draw("same");
-    */
+
     cLambdaXiMassVert -> cd(4);
     nice_canv1(gPad);
-    hrealXSumVert -> SetTitle("2#pi^{-} in Hades + anything (p) in FwDet");
-    hrealXSumVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hrealXSumVert -> SetTitle("#Lambda + #pi^{-}");
+    hrealXSumVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSumVert -> GetYaxis() -> SetTitle("counts");
     hrealXSumVert -> Draw();
     hrealX90Vert -> Draw("same");
     l1 -> Draw("same");
-    /*
-    cimXnsAvert -> cd();
-    nice_canv1(gPad);
-    hXallSumVert -> SetTitle("2#pi^{-} in Hades + anything (p) in FwDet");
-    hXallSumVert -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXallSumVert -> GetYaxis() -> SetTitle("counts");
-    hXallSumVert -> Draw();
-    hXall90Vert -> Draw("same");
-    l1 -> Draw("same");
-    */
+
     cLambdaXiMassVert -> cd(5);
     nice_canv1(gPad);
-    hrealXSumVert -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumVert -> GetYaxis() -> SetTitle("counts");
-    hrealXSumVert -> Draw();
-    hrealX90Vert -> Draw("same");
-    l1 -> Draw("same");
-    /*
-    cimXnsRvert -> cd();
-    nice_canv1(gPad);
-    hrealXSumVert -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumVert -> GetXaxis() -> SetTitle("invM [MeV]");
-    hrealXSumVert -> GetYaxis() -> SetTitle("counts");
-    hrealXSumVert -> Draw();
-    hrealX90Vert -> Draw("same");
-    */
-    cLambdaXiMassVert -> cd(6);
-    nice_canv1(gPad);
-    hXallSumBGVert -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hXallSumBGVert -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hXallSumBGVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hXallSumBGVert -> GetYaxis() -> SetTitle("counts");
     hrealXSumPeakVert -> Draw();
     hXallSumBGVert -> Draw("same");
+    hrealXSumVert -> Draw("same");
     l1a -> Draw("same");
-    /*
-    cimXnsBGvert -> cd();
-    nice_canv1(gPad);
-    hXallSumBGVert -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGVert -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXallSumBGVert -> GetYaxis() -> SetTitle("counts");
-    hrealXSumPeakVert -> Draw();
-    hXallSumBGVert -> Draw("same");
-    l1a -> Draw("same");
-    */
 
     //invM scaling MTD, Vert
-    TCanvas *cimLsAvertsc = new TCanvas("cimLsAvertsc", "cimLsAvertsc");
+/*    TCanvas *cimLsAvertsc = new TCanvas("cimLsAvertsc", "cimLsAvertsc");
     TCanvas *cimLsRvertsc = new TCanvas("cimLsRvertsc", "cimLsRvertsc");
     TCanvas *cimLsBGvertsc = new TCanvas("cimLsBGvertsc", "cimLsBGvertsc");
     TCanvas *cimXsAvertsc = new TCanvas("cimXsAvertsc", "cimXsAvertsc");
@@ -1796,7 +1498,7 @@ void anaBkgd2(){
     
     TCanvas *cimLMtdlVertlSc = new TCanvas("cimLMtdlVertlSc","cimLMtdlVertlSc"); //inv mass Lambda spectrum, MTD_L, VERTz_L cuts, cr sec scaling
     TCanvas *cimXMtdlVertlMlMtdxVertxSc = new TCanvas("cimXMtdlVerlMlMtdxVertxSc","cimXMtdlVerlMlMtdxVertxSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X, VERTz_X cuts, cr sec scaling
-
+ */
     Double_t ymax;
     ymax = 2300000;
     massL_min = new TLine(MassminL, 0, MassminL, ymax);
@@ -1815,74 +1517,32 @@ void anaBkgd2(){
 
     cLambdaXiMassScVert -> cd(1);
     nice_canv1(gPad);
-    hLallSumScVert -> SetTitle("#pi^{-} in Hades - anything (p) in FwDet");
-    hLallSumScVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumScVert -> SetTitle("#pi^{-} in Hades + anything in FD");
+    hLallSumScVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumScVert -> Draw("pE1");
-    hLall90ScVert -> Draw("p same");
-    l1 -> Draw("same");
-   
-    cimLsAvertsc -> cd();
-    nice_canv1(gPad);
-    hLallSumScVert -> SetTitle("#pi^{-} in Hades - anything (p) in FwDet");
-    hLallSumScVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hLallSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumScVert -> SetMarkerStyle(20);
-    hLallSumScVert -> SetMarkerSize(.5);
-    hLallSumScVert -> SetMarkerColor(4);
-    hLall90ScVert -> SetMarkerStyle(20);
-    hLall90ScVert -> SetMarkerSize(.5);
-    hLallSumScVert -> Draw("pE1");
-    hLall90ScVert -> Draw("p same");
+    hLallSumScVert -> Draw();
+    hLall90ScVert -> Draw("same");
     l1 -> Draw("same");
     
     cLambdaXiMassScVert -> cd(2);
     nice_canv1(gPad);
-    hrealLSumScVert -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumScVert -> GetXaxis() -> SetTitle("M_{#pi_{-}} [MeV]");
+    hrealLSumScVert -> SetTitle("#pi^{-} in Hades + p in FD");
+    hrealLSumScVert -> GetXaxis() -> SetTitle("M_{#pi^{-}} [MeV]");
     hrealLSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
     hrealLSumScVert -> Draw();
-    hrealL90ScVert -> Draw("p same");
+    hrealL90ScVert -> Draw("same");
     massL_min -> Draw("same");
     massL_max -> Draw("same");
     l1 -> Draw("same");
     
-    cimLsRvertsc -> cd();
-    nice_canv1(gPad);
-    hrealLSumScVert -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumScVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hrealLSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumScVert -> SetMarkerStyle(20);
-    hrealLSumScVert -> SetMarkerSize(.5);
-    hrealLSumScVert -> SetMarkerColor(8);
-    hrealL90ScVert -> SetMarkerStyle(20);
-    hrealL90ScVert -> SetMarkerSize(.5);
-    hrealLSumScVert -> Draw("p E1");
-    hrealL90ScVert -> Draw("p same");
-    l1 -> Draw("same");
-    
     cLambdaXiMassScVert -> cd(3);
     nice_canv1(gPad);
-    hrealLSumPeakScVert -> SetTitle("Real #Lambda peak and BG");
-    hrealLSumPeakScVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hrealLSumPeakScVert -> SetTitle("p#pi^{-}: all, peak and BG");
+    hrealLSumPeakScVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hrealLSumPeakScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumBGScVert -> Draw("p");
-    hrealLSumPeakScVert -> Draw("pE1 same");
-    l1a -> Draw("same");
-    
-    cimLsBGvertsc -> cd();
-    nice_canv1(gPad);
-    hLallSumBGScVert -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGScVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hLallSumBGScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumPeakScVert -> SetMarkerStyle(20);
-    hrealLSumPeakScVert -> SetMarkerSize(.5);
-    hrealLSumPeakScVert -> SetMarkerColor(8);
-    hLallSumBGScVert -> SetMarkerStyle(20);
-    hLallSumBGScVert -> SetMarkerSize(.5);
-    hLallSumBGScVert -> SetMarkerColor(2);
-    hLallSumBGScVert -> Draw("p");
-    hrealLSumPeakScVert -> Draw("pE1 same");
+    hLallSumBGScVert -> Draw();
+    hrealLSumPeakScVert -> Draw("same");
+    hrealLSumScVert -> Draw("same");
     l1a -> Draw("same");
     
     cimLMtdlVertlSc -> cd();//<<<<<<<<<<<<<<
@@ -1907,76 +1567,23 @@ void anaBkgd2(){
 
     cLambdaXiMassScVert -> cd(4);
     nice_canv1(gPad);
-    hrealXSumScVert -> SetTitle("2#pi^{-} in Hades - anything (p) in FwDet");
-    hrealXSumScVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hrealXSumScVert -> SetTitle("#Lambda + #pi^{-}");
+    hrealXSumScVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hrealXSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScVert -> Draw("pE1");
-    hrealX90ScVert -> Draw("p same");
-    l1 -> Draw("same");
-    
-    cimXsAvertsc -> cd();
-    nice_canv1(gPad);
-    hrealXSumScVert -> SetTitle("2#pi^{-} in Hades - anything (p) in FwDet");
-    hrealXSumScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScVert -> SetMarkerStyle(20);
-    hrealXSumScVert -> SetMarkerSize(.5);
-    hrealXSumScVert -> SetMarkerColor(4);
-    hrealX90ScVert -> SetMarkerStyle(20);
-    hrealX90ScVert -> SetMarkerSize(.5);
-    hrealXSumScVert -> Draw("pE1");
-    hrealX90ScVert -> Draw("p same");
+    hrealXSumScVert -> Draw();
+    hrealX90ScVert -> Draw("same");
     l1 -> Draw("same");
     
     cLambdaXiMassScVert -> cd(5);
     nice_canv1(gPad);
-    hrealXSumScVert -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScVert -> Draw("pE1");
-    hrealX90ScVert -> Draw("p same");
-    massX_min -> Draw("same");
-    massX_max -> Draw("same");
-    l1 -> Draw("same");
-    
-    cimXsRvertsc-> cd();
-    nice_canv1(gPad);
-    hrealXSumScVert -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScVert -> SetMarkerStyle(20);
-    hrealXSumScVert -> SetMarkerSize(.5);
-    hrealXSumScVert -> SetMarkerColor(4);
-    hrealX90ScVert -> SetMarkerStyle(20);
-    hrealX90ScVert -> SetMarkerSize(.5);
-    hrealXSumScVert -> Draw("pE1");
-    hrealX90ScVert -> Draw("p same");
-    l1 -> Draw("same");
-    
-    cLambdaXiMassScVert -> cd(6);
-    nice_canv1(gPad);
-    hrealXSumPeakScVert -> SetTitle("Real #Xi^{-} peak and BG");
-    hrealXSumPeakScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hrealXSumPeakScVert -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hrealXSumPeakScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSumPeakScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGScVert -> Draw("p");
-    hrealXSumPeakScVert -> Draw("pE1 same");
+    hXallSumBGScVert -> Draw();
+    hrealXSumPeakScVert -> Draw("same");
+    hrealXSumScVert -> Draw("same");
     l1a -> Draw("same");
     
-    cimXsBGvertsc -> cd();
-    nice_canv1(gPad);
-    hXallSumBGScVert -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hXallSumBGScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGScVert -> SetMarkerStyle(20);
-    hXallSumBGScVert -> SetMarkerSize(.5);
-    hXallSumBGScVert -> SetMarkerColor(2);
-    hrealXSumPeakScVert -> SetMarkerStyle(20);
-    hrealXSumPeakScVert -> SetMarkerSize(.5);
-    hrealXSumPeakScVert -> SetMarkerColor(8);
-    hXallSumBGScVert -> Draw("pE1");
-    hrealXSumPeakScVert -> Draw("p same");
-    l1a -> Draw("same");
-
     cimXMtdlVertlMlMtdxVertxSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hrealXSumScVert -> SetTitle("#Xi reconstruction, MTD_L, VERTz_L, Lmass, MTD_X, VERTz_X");
@@ -2133,7 +1740,7 @@ void anaBkgd2(){
     nice_canv1(gPad);
     hLmass_sc -> Add(hLallSumSc);
     hLmass_sc -> Draw("nostack");
-    hLmass_sc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLmass_sc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLmass_sc -> GetYaxis() -> SetTitle("counts*#sigma");
     hLmass_sc -> GetYaxis() -> SetRangeUser(0, 100000000);
     //hLallSumSc -> Draw("same");
@@ -2146,7 +1753,7 @@ void anaBkgd2(){
     nice_canv1(gPad);
     hLmass_sc_rec -> Add(hLallSumScVert);//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     hLmass_sc_rec -> Draw("nostack");
-    hLmass_sc_rec -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLmass_sc_rec -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLmass_sc_rec -> GetYaxis() -> SetTitle("counts*#sigma");
     hLmass_sc_rec -> GetYaxis() -> SetRangeUser(0, 100000000);
     //hLallSumSc -> Draw("same");
@@ -2215,14 +1822,14 @@ void anaBkgd2(){
     cimXsRvertsc -> Write();
     cimXsBGvertsc -> Write();
     */
-    
+    /*
     cimLNoCutsSc -> Write();
     cimXMtdlVertlMlSc -> Write();
     cimLMtdlSc -> Write();
     cimXMtdlVertlMlMtdxSc -> Write();
     cimLMtdlVertlSc -> Write();
     cimXMtdlVertlMlMtdxVertxSc -> Write();
-
+								      */
     cL_nocuts_sc -> Write();
     cL_rec_sc -> Write();
     cX_nocuts_sc -> Write();
