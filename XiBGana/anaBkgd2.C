@@ -209,8 +209,8 @@ void anaBkgd2(){
     lChan -> SetTextSize(.04);
 
     for(int i = 0; i < 7; i++){
-      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_test5.root", chan[i]);
-      	TFile *f1 = TFile::Open(chanNo, "READ");
+      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_test5a.root", chan[i]);
+      	TFilef1 = TFile::Open(chanNo, "READ");
 
 	TPaveText *ptch = new TPaveText(.5, .7, .8, .85, "NDC");
 	ptch -> SetFillColor(0);
@@ -1726,7 +1726,7 @@ void anaBkgd2(){
     printf("significance:\nL: noCut: %f, noCutsc: %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f, Lmasssc: %f\nX: noCut, %f, noCutsc %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", SgnL, SgnLsc, SgnLMtd, SgnLMtdsc, SgnLVert, SgnLVertsc, SgnLLmasssc, SgnX, SgnXsc, SgnXMtd, SgnXMtdsc, SgnXVert, SgnXVertsc);
 
     //effi
-    int nall = 50000; //n evt*100 -> [%]
+    int nall = 5000; //n evt*100 -> [%]
     double brLxchn = 0.64*5; //BR for Lambda->p pim * number of simulated channels with real Lambda1115
     printf("Effi rec.:\nL: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\nX: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", cntSLMtd/nall/brLxchn, cntSLscMtd/nall/brLxchn, cntSLVert/nall/brLxchn, cntSLscVert/nall/brLxchn, cntSXMtd/nall, cntSXscMtd/nall, cntSXVert/nall, cntSXscVert/nall);
 
@@ -1785,7 +1785,7 @@ void anaBkgd2(){
     lChan -> Draw("same");
 
         
-    TFile *f = new TFile("./out_ana/out_anaBkgd_test5.root", "RECREATE");
+    TFile *f = new TFile("./out_ana/out_anaBkgd_test5a.root", "RECREATE");
     cLambdaXiMass -> Write();
     cLambdaXiMassSc -> Write();
     cLambdaXiMassMtd -> Write();
