@@ -469,7 +469,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		Int_t particlecand_geanttrack=particlecand->getGeantTrack();
 		double max_distanceL = 25; // !!
 		double max_distanceX = 20; // !!
-		double cut_vertex_z_minL = 0; // !!
+		double cut_vertex_z_minL = -20; // !!
 		double cut_vertex_z_minX = -50; // !!
 		double cut_vertex_z_max = 300; // !!
 		double cutVert;

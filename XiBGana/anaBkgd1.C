@@ -7,7 +7,7 @@ void nice_canv1(TVirtualPad * c)
     gStyle -> SetTitleOffset(1.1, "xy");
 }
 
-void anaBkgd2(){
+void anaBkgd1(){
     TGaxis::SetMaxDigits(3);
     
     int nbinsL = 125;
@@ -294,7 +294,7 @@ void anaBkgd2(){
     lChan -> SetTextSize(.04);
 
     for(int i = 0; i < 7; i++){
-	sprintf(chanNo, "/u/jkubos/analiza/hades/pp45sim/Xi_rec/outputs_ch/output_%03d_all5.root", chan[i]);
+	sprintf(chanNo, "../outputs_ch/output_%03d_all5new.root", chan[i]);
       	TFile *f1 = TFile::Open(chanNo, "READ");
 
 	TPaveText *ptch = new TPaveText(.5, .7, .8, .85, "NDC");
@@ -2874,7 +2874,6 @@ void anaBkgd2(){
     printf("S/B:\nL: noCut: %f, noCutsc: %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f, Lmassc: %f\nX: noCut: %f, noCutsc: %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", SBL, SBLsc, SBLMtd, SBLMtdsc, SBLVert, SBLVertsc, SBLLmasssc, SBX, SBXsc, SBXMtd, SBXMtdsc, SBXVert, SBXVertsc);
 
     //significance
-    //VERTz in [5;300]????????????????
     double SgnL = cntSL/TMath::Sqrt(cntBL+cntSL);
     double SgnLsc = cntSLsc/TMath::Sqrt(cntBLsc+cntSLsc);
     double SgnLMtd = cntSLMtd/TMath::Sqrt(cntSLMtd+cntBLMtd);
@@ -3112,7 +3111,7 @@ void anaBkgd2(){
     lChan -> Draw("same");
 
         
-    TFile *f = new TFile("./out_ana/out_anaBkgd_all5__.root", "RECREATE");
+    TFile *f = new TFile("./out_ana/out_anaBkgd_all5new.root", "RECREATE");
     cLambdaXiMass -> Write();
     cLambdaXiMassSc -> Write();
     // cSBL -> Write();
