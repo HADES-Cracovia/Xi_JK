@@ -28,17 +28,27 @@ void anaBkgd2(){
     TH1F *hrealXSumSc = new TH1F("hrealXSumSc", "hrealXSumSc", nbinsX, minX, maxX);
 
     TH1F *hLallSumBG = new TH1F("hLallSumBG", "hLallSumBG", nbinsL, minL, maxL);
+    TH1F *hrealLSumBG = new TH1F("hrealLSumBG", "hrealLSumBG", nbinsL, minL, maxL);
     TH1F *hrealLSumPeak = new TH1F("hrealLSumPeak", "hrealLSumPeak", nbinsL, minL, maxL);
     TH1F *hLallSumBGSc = new TH1F("hLallSumBGSc", "hLallSumBGSc", nbinsL, minL, maxL);
+    TH1F *hrealLSumBGSc = new TH1F("hrealLSumBGSc", "hrealLSumBGSc", nbinsL, minL, maxL);
     TH1F *hrealLSumPeakSc = new TH1F("hrealLSumPeakSc", "hrealLSumPeakSc", nbinsL, minL, maxL);
 
     TH1F *hXallSumBG = new TH1F("hXallSumBG", "hXallSumBG", nbinsX, minX, maxX);
+    TH1F *hrealXSumBG = new TH1F("hrealXSumBG", "hrealXSumBG", nbinsX, minX, maxX);
     TH1F *hrealXSumPeak = new TH1F("hrealXSumPeak", "hrealXSumPeak", nbinsX, minX, maxX);
     TH1F *hXallSumBGSc = new TH1F("hXallSumBGSc", "hXallSumBGSc", nbinsX, minX, maxX);
+    TH1F *hrealXSumBGSc = new TH1F("hrealXSumBGSc", "hrealXSumBGSc", nbinsX, minX, maxX);
     TH1F *hrealXSumPeakSc = new TH1F("hrealXSumPeakSc", "hrealXSumPeakSc", nbinsX, minX, maxX);
 
     //only signal channel 090
     TH1F *hLall90, *hrealL90, *hrealX90, *hLall90Sc, *hrealL90Sc, *hrealX90Sc;
+    TH1F *hLall90Peak = new TH1F("hLall90Peak", "hLall90Peak", nbinsL, minL, maxL);
+    TH1F *hrealL90Peak = new TH1F("hrealL90Peak", "hrealL90Peak", nbinsL, minL, maxL);
+    TH1F *hrealX90Peak = new TH1F("hrealX90Peak", "hrealX90Peak", nbinsX, minX, maxX);
+    TH1F *hLall90ScPeak = new TH1F("hLall90ScPeak", "hLall90ScPeak", nbinsL, minL, maxL);
+    TH1F *hrealL90ScPeak = new TH1F("hrealL90ScPeak", "hrealL90ScPeak", nbinsL, minL, maxL);
+    TH1F *hrealX90ScPeak = new TH1F("hrealX90ScPeak", "hrealX90ScPeak", nbinsX, minX, maxX);
     
     TCanvas *cLambdaXiMass = new TCanvas("cLambdaXiMass", "Lambda & Xi invariant mass", 1800, 1000); //M_inv for Lambda & Xi reconstruction from all simulated channels
     TCanvas *cLambdaXiMassSc = new TCanvas("cLambdaXiMassSc", "Lambda & Xi invariant mass (cr sc)", 1800, 1000); //M_inv for Lambda & Xi reconstruction from all simulated channels with crsec
@@ -62,21 +72,32 @@ void anaBkgd2(){
     TH1F *hrealXSumScMtd = new TH1F("hrealXSumScMtd", "hrealXSumScMtd", nbinsX, minX, maxX);
 
     TH1F *hLallSumBGMtd = new TH1F("hLallSumBGMtd", "hLallSumBGMtd", nbinsL, minL, maxL);
+    TH1F *hrealLSumBGMtd = new TH1F("hrealLSumBGMtd", "hrealLSumBGMtd", nbinsL, minL, maxL);
     TH1F *hrealLSumPeakMtd = new TH1F("hrealLSumPeakMtd", "hrealLSumPeakMtd", nbinsL, minL, maxL);
     TH1F *hLallSumBGScMtd = new TH1F("hLallSumBGScMtd", "hLallSumBGScMtd", nbinsL, minL, maxL);
+    TH1F *hrealLSumBGScMtd = new TH1F("hrealLSumBGScMtd", "hrealLSumBGScMtd", nbinsL, minL, maxL);
     TH1F *hrealLSumPeakScMtd = new TH1F("hrealLSumPeakScMtd", "hrealLSumPeakScMtd", nbinsL, minL, maxL);
+
     TH1F *hLallSumBGLmass = new TH1F("hLallSumBGLmass", "hLallSumBGLmass", nbinsL, minL, maxL);
-     TH1F *hrealLSumPeakLmass = new TH1F("hrealLSumPeakLmass", "hrealLSumPeakLmass", nbinsL, minL, maxL);
-     TH1F *hLallSumBGScLmass = new TH1F("hLallSumBGScLmass", "hLallSumBGScLmass", nbinsL, minL, maxL);
-     TH1F *hrealLSumPeakScLmass = new TH1F("hrealLSumPeakScLmass", "hrealLSumPeakScLmass", nbinsL, minL, maxL);
+    TH1F *hrealLSumPeakLmass = new TH1F("hrealLSumPeakLmass", "hrealLSumPeakLmass", nbinsL, minL, maxL);
+    TH1F *hLallSumBGScLmass = new TH1F("hLallSumBGScLmass", "hLallSumBGScLmass", nbinsL, minL, maxL);
+    TH1F *hrealLSumPeakScLmass = new TH1F("hrealLSumPeakScLmass", "hrealLSumPeakScLmass", nbinsL, minL, maxL);
 
      TH1F *hXallSumBGMtd = new TH1F("hXallSumBGMtd", "hXallSumBGMtd", nbinsX, minX, maxX);
+     TH1F *hrealXSumBGMtd = new TH1F("hrealXSumBGMtd", "hrealXSumBGMtd", nbinsX, minX, maxX);
      TH1F *hrealXSumPeakMtd = new TH1F("hrealXSumPeakMtd", "hrealXSumPeakMtd", nbinsX, minX,maxX);
      TH1F *hXallSumBGScMtd = new TH1F("hXallSumBGScMtd", "hXallSumBGScMtd", nbinsX, minX, maxX);
+     TH1F *hrealXSumBGScMtd = new TH1F("hrealXSumBGScMtd", "hrealXSumBGScMtd", nbinsX, minX, maxX);
      TH1F *hrealXSumPeakScMtd = new TH1F("hrealXSumPeakScMtd", "hrealXSumPeakScMtd", nbinsX, minX, maxX);
     
     //only signal channel 090
     TH1F *hLall90Mtd, *hrealL90Mtd, *hrealX90Mtd, *hLall90ScMtd, *hrealL90ScMtd, *hrealX90ScMtd;
+    TH1F *hLall90MtdPeak = new TH1F("hLall90MtdPeak", "hLall90MtdPeak", nbinsL, minL, maxL);
+    TH1F *hrealL90MtdPeak = new TH1F("hrealL90MtdPeak", "hrealL90MtdPeak", nbinsL, minL, maxL);
+    TH1F *hrealX90MtdPeak = new TH1F("hrealX90MtdPeak", "hrealX90MtdPeak", nbinsX, minX,maxX);
+    TH1F *hLall90ScMtdPeak = new TH1F("hLall90ScMtdPeak", "hLall90ScMtdPeak", nbinsL, minL, maxL);
+    TH1F *hrealL90ScMtdPeak = new TH1F("hrealL90ScMtdPeak", "hrealL90ScMtdPeak", nbinsL, minL, maxL);
+    TH1F *hrealX90ScMtdPeak = new TH1F("hrealX90ScMtdPeak", "hrealX90ScMtdPeak", nbinsX, minX,maxX);;
 
     TCanvas *cLambdaXiMassMtd = new TCanvas("cLambdaXiMassMtd", "Lambda & Xi invariant mass, MTD_L, Lmass, MTD_X", 1800, 1000); //M_inv for Lambda & Xi recnstruction from all simulated channels
     TCanvas *cLambdaXiMassScMtd = new TCanvas("cLambdaXiMassScMtd", "Lambda & Xi invariant mass (cr sc), MTD_L, Lmass, MTD_X", 1800, 1000); //M_inv for Lambda & Xi recnstruction from all simulated channels with crsec
@@ -97,17 +118,27 @@ void anaBkgd2(){
     TH1F *hrealXSumScVert = new TH1F("hrealXSumScVert", "hrealXSumScVert", nbinsX, minX, maxX);
 
     TH1F *hLallSumBGVert = new TH1F("hLallSumBGVert", "hLallSumBGVert", nbinsL, minL, maxL);
+    TH1F *hrealLSumBGVert = new TH1F("hrealLSumBGVert", "hrealLSumBGVert", nbinsL, minL, maxL);
     TH1F *hrealLSumPeakVert = new TH1F("hrealLSumPeakVert", "hrealLSumPeakVert", nbinsL, minL, maxL);
     TH1F *hLallSumBGScVert = new TH1F("hLallSumBGScVert", "hLallSumBGScVert", nbinsL, minL, maxL);
+    TH1F *hrealLSumBGScVert = new TH1F("hrealLSumBGScVert", "hrealLSumBGScVert", nbinsL, minL, maxL);
     TH1F *hrealLSumPeakScVert = new TH1F("hrealLSumPeakScVert", "hrealLSumPeakScVert", nbinsL, minL, maxL);
 
     TH1F *hXallSumBGVert = new TH1F("hXallSumBGVert", "hXallSumBGVert", nbinsX, minX, maxX);
+    TH1F *hrealXSumBGVert = new TH1F("hrealXSumBGVert", "hrealXSumBGVert", nbinsX, minX, maxX);
     TH1F *hrealXSumPeakVert = new TH1F("hrealXSumPeakVert", "hrealXSumPeakVert", nbinsX, minX, maxX);
     TH1F *hXallSumBGScVert = new TH1F("hXallSumBGScVert", "hXallSumBGScVert", nbinsX, minX, maxX);
+    TH1F *hrealXSumBGScVert = new TH1F("hrealXSumBGScVert", "hrealXSumBGScVert", nbinsX, minX, maxX);
     TH1F *hrealXSumPeakScVert = new TH1F("hrealXSumPeakScVert", "hrealXSumPeakScVert", nbinsX, minX, maxX);
 
     //only signal channel 090
     TH1F *hLall90Vert, *hrealL90Vert, *hrealX90Vert, *hLall90ScVert, *hrealL90ScVert, *hrealX90ScVert;
+    TH1F *hLall90VertPeak = new TH1F("hLall90VertPeak", "hLall90VertPeak", nbinsL, minL, maxL);
+    TH1F *hrealL90VertPeak = new TH1F("hrealL90VertPeak", "hrealL90VertPeak", nbinsL, minL, maxL);
+    TH1F *hrealX90VertPeak = new TH1F("hrealX90VertPeak", "hrealX90VertPeak", nbinsX, minX, maxX);
+    TH1F *hLall90ScVertPeak  = new TH1F("hLall90ScVertPeak", "hLall90ScVertPeak", nbinsL, minL, maxL);
+    TH1F *hrealL90ScVertPeak = new TH1F("hLall90ScVertPeak", "hLall90ScVertPeak", nbinsL, minL, maxL);
+    TH1F *hrealX90ScVertPeak = new TH1F("hrealX90ScVertPeak", "hrealX90ScVertPeak", nbinsX, minX, maxX);
     
     TCanvas *cLambdaXiMassVert = new TCanvas("cLambdaXiMassVert", "Lambda & Xi invariant mass, MTD, Vert", 1800, 1000); //M_inv for Lambda & Xi recnstruction from all simulated channels after MTD_L, MassL, MTD_X, 
     TCanvas *cLambdaXiMassScVert = new TCanvas("cLambdaXiMassScVert", "Lambda & Xi invariant mass (cr sc), MTD, Vert", 1800, 1000); //M_inv for Lambda & Xi recnstruction from all simulated channels
@@ -166,7 +197,7 @@ void anaBkgd2(){
     TF1 *fit = new TF1("fit", "gaus");
     double mmax, center_fit, sigma_fit, s_b, m3sigma, p3sigma;
     int a, b;
-    double cntSL, cntSLsc, cntBL, cntBLsc, cntSX, cntSXsc, cntBX, cntBXsc, cntSLMtd, cntSLscMtd, cntSLLmass, cntSLscLmass, cntBLscLmass, cntSXMtd, cntSXscMtd, cntBLMtd, cntBLscMtd, cntBXMtd, cntBXscMtd, cntSLVert, cntSLscVert, cntSXVert, cntSXscVert, cntBLVert, cntBLscVert, cntBXVert, cntBXscVert;
+    double cntSL, cntSLsc, cntBL, cntBLsc, cntSX, cntSXsc, cntBX, cntBXsc, cntSLMtd, cntSLscMtd, cntSLLmass, cntSLscLmass, cntBLscLmass, cntSXMtd, cntSXscMtd, cntBLMtd, cntBLscMtd, cntBXMtd, cntBXscMtd, cntSLVert, cntSLscVert, cntSXVert, cntSXscVert, cntBLVert, cntBLscVert, cntBXVert, cntBXscVert, cntSXMtd90;
 
     //channels
     char chanNo[64];
@@ -209,8 +240,8 @@ void anaBkgd2(){
     lChan -> SetTextSize(.04);
 
     for(int i = 0; i < 7; i++){
-      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_test5a.root", chan[i]);
-      	TFilef1 = TFile::Open(chanNo, "READ");
+      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_test5.root", chan[i]);
+      	TFile *f1 = TFile::Open(chanNo, "READ");
 
 	TPaveText *ptch = new TPaveText(.5, .7, .8, .85, "NDC");
 	ptch -> SetFillColor(0);
@@ -224,7 +255,7 @@ void anaBkgd2(){
 	TH1F *hrealL = (TH1F*)f1->Get("hMLPiHpF"); //pion in H, p in FD
 	TH1F *hrealX = (TH1F*)f1->Get("hMXAll"); //Lambda and pion in H, in mL range
 
-	hAllHFd -> Rebin(2)
+	hAllHFd -> Rebin(2);
 	hLall -> Rebin(2);
 	hrealL -> Rebin(2);
 	hrealX -> Rebin(2);
@@ -285,10 +316,6 @@ void anaBkgd2(){
 	hrealLSum -> Add(hrealL1);
 	hrealXSum -> Add(hrealX1);
 	
-	hLall1sc -> Sumw2();
-	hrealLSumSc -> Sumw2();
-	hrealXSumSc -> Sumw2();
-
 	hLallSumSc -> Add(hLall1sc);
 	hrealLSumSc -> Add(hrealL1sc);
 	hrealXSumSc -> Add(hrealX1sc);
@@ -319,10 +346,6 @@ void anaBkgd2(){
 	hrealLSumMtd -> Add(hrealL1Mtd);
 	hrealXSumMtd -> Add(hrealX1Mtd);
 
-	hLallSumScMtd -> Sumw2();
-	hrealLSumScMtd -> Sumw2();
-	hrealXSumScMtd -> Sumw2();
-	
 	hLallSumScMtd -> Add(hLall1scMtd);
 	hrealLSumScMtd -> Add(hrealL1scMtd);
 	hrealXSumScMtd -> Add(hrealX1scMtd);
@@ -447,11 +470,6 @@ void anaBkgd2(){
 	hLallSumVert -> Add(hLall1Vert);
 	hrealLSumVert -> Add(hrealL1Vert);
 	hrealXSumVert -> Add(hrealX1Vert);
-      
-	hLallSumScVert -> Sumw2();
-	hLallSumScVert -> Sumw2();
-	hrealLSumScVert -> Sumw2();
-	hrealXSumScVert -> Sumw2();
 
 	hLallSumScVert -> Add(hLall1scVert);
 	hrealLSumScVert -> Add(hrealL1scVert);
@@ -523,12 +541,12 @@ void anaBkgd2(){
           clLambdaScVertrec -> SetLineWidth(2);
 	}
 
-    }//***********************************************************************************
 
+    }//***********************************************************************************
     //no cuts
     //Lambda1115
-    double MassminL;// = 1105;
-    double MassmaxL;// = 1125;
+    double MassminL = 1105;
+    double MassmaxL = 1125;
     double massL, massLSc;
     int nL = hrealLSum -> GetNbinsX();
     int nLSc = hrealLSumSc -> GetNbinsX();
@@ -540,72 +558,94 @@ void anaBkgd2(){
     double binLSc[150];
     int kLSc = -1;
 
-    hrealLSum -> Fit(fit, "0");
+    /*hrealLSum -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealLSum -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealLSum -> GetXaxis() -> FindBin(p3sigma);
-    MassminL = m3sigma;
-    MassmaxL = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealLSum -> GetXaxis() -> FindBin(MassminL);
+    b = hrealLSum -> GetXaxis() -> FindBin(MassmaxL);
+/*    MassminL = m3sigma;
+    MassmaxL = p3sigma;*/
+    
     for(int j = 1; j <= nL; j++){
       massL = hrealLSum -> GetBinLowEdge(j);
       if(massL < MassminL) continue;
       else if(massL > MassmaxL) break;
-      else
+      else{
 	hrealLSumPeak -> SetBinContent(j, hrealLSum -> GetBinContent(j));
+	hrealL90Peak -> SetBinContent(j, hrealL90 -> GetBinContent(j));
+      }
     }
 
-    hrealLSumSc -> Fit(fit, "0");
+    /*hrealLSumSc -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealLSumSc -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealLSumSc -> GetXaxis() -> FindBin(p3sigma);
-    MassminL = m3sigma;
-    MassmaxL = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealLSumSc -> GetXaxis() -> FindBin(MassminL);
+    b = hrealLSumSc -> GetXaxis() -> FindBin(MassmaxL);
+/*    MassminL = m3sigma;
+    MassmaxL = p3sigma;*/
     for(int j = 1; j <= nLSc; j++){
       massLSc = hrealLSumSc -> GetBinLowEdge(j);
       if(massLSc < MassminL) continue;
       else if(massLSc > MassmaxL) break;
-      else hrealLSumPeakSc -> SetBinContent(j, hrealLSumSc -> GetBinContent(j));    
+      else{
+	  hrealLSumPeakSc -> SetBinContent(j, hrealLSumSc -> GetBinContent(j));
+	  hrealL90ScPeak -> SetBinContent(j, hrealL90Sc -> GetBinContent(j));
+      }
     }
-
+    cout << "peak made" << endl;
     TH1F *hrealLSumPeakCl = (TH1F*)hrealLSumPeak -> Clone();
     TH1F *hrealLSumPeakScCl = (TH1F*)hrealLSumPeakSc -> Clone();
+
     hLallSumBG -> Add(hLallSum, hrealLSumPeakCl, 1, -1); 
     hLallSumBGSc -> Add(hLallSumSc, hrealLSumPeakScCl, 1, -1); 
+    hrealLSumBG -> Add(hrealLSum, hrealL90Peak, 1, -1);
+    hrealLSumBGSc -> Add(hrealLSumSc, hrealL90ScPeak, 1, -1);
 
-    hLallSumBG -> SetLineColor(kRed);
-    hLallSumBGSc -> SetLineColor(kRed);
+    
+    hLallSumBG -> SetLineColor(5);
+    hLallSumBGSc -> SetLineColor(5);
+    hrealLSumBG -> SetLineColor(kRed);
+    hrealLSumBGSc -> SetLineColor(kRed);
     hrealLSumPeak -> SetLineColor(8);
     hrealLSumPeakSc -> SetLineColor(8);
-
+    hrealL90Peak -> SetLineColor(1);
+    hrealL90ScPeak -> SetLineColor(1);
+    hLallSum -> SetLineColor(4);
+    hLallSumSc -> SetLineColor(4);
+    hrealLSum -> SetLineColor(46);
+    hrealLSumSc -> SetLineColor(46);
+       
+    cout << "nc: MassminL: " << MassminL << " " << a << " MassmaxL: " << MassmaxL << " " << b << endl;
+    
     cntSL = hrealLSum -> Integral(a,b);
-    cntBL = hLallSumBG -> Integral(a,b);
+    cntBL = hrealLSumBG -> Integral(a,b);
+//    cntBL = hLallSumBG -> Integral(a,b);
     cntSLsc = hrealLSumSc -> Integral(a,b);
-    cntBLsc = hLallSumBGSc -> Integral(a,b);
+    cntBLsc = hrealLSumBGSc -> Integral(a,b);
+//    cntBLsc = hLallSumBGSc -> Integral(a,b);
 
     for(int j = 1; j <= nL; j++){
       if(hrealLSumPeak -> GetBinContent(j)){
 	kL++;
-	s_bg_vL[kL] = (hrealLSumPeak -> GetBinContent(j))/(hLallSumBG -> GetBinContent(j));
+	s_bg_vL[kL] = (hrealLSumPeak -> GetBinContent(j))/(hrealLSumBG -> GetBinContent(j));
 	binL[kL] = (hrealLSumPeak -> GetBinLowEdge(j)) + (hrealLSumPeak -> GetBinWidth(j));
       }
     }
     for(int j = 1; j <= nLSc; j++){
       if(hrealLSumPeakSc -> GetBinContent(j)){
 	kLSc++;
-	s_bg_vLSc[kLSc] = (hrealLSumPeakSc -> GetBinContent(j))/(hLallSumBGSc -> GetBinContent(j));
+	s_bg_vLSc[kLSc] = (hrealLSumPeakSc -> GetBinContent(j))/(hrealLSumBGSc -> GetBinContent(j));
 	binLSc[kLSc] = (hrealLSumPeakSc -> GetBinLowEdge(j)) + (hrealLSumPeakSc -> GetBinWidth(j));
       }
     }
 
     //Xi
-    double MassminX;// = 1305;
-    double MassmaxX;// = 1335;
+    double MassminX = 1305;
+    double MassmaxX = 1335;
     double massX, massXSc;
     int nX = hrealXSum -> GetNbinsX();
     int nXSc = hrealXSumSc -> GetNbinsX();
@@ -616,73 +656,97 @@ void anaBkgd2(){
     double s_bg_vXSc[150];
     double binXSc[150];
     int kXSc = -1;
-
+/*
     hrealXSum -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealXSum -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealXSum -> GetXaxis() -> FindBin(p3sigma);
-    MassminX = m3sigma;
-    MassmaxX = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealXSum -> GetXaxis() -> FindBin(MassminX);
+    b = hrealXSum -> GetXaxis() -> FindBin(MassmaxX);
+/*    MassminX = m3sigma;
+    MassmaxX = p3sigma;*/
+
     for(int j = 1; j <= nX; j++){
       massX = hrealXSum -> GetBinLowEdge(j);
       if(massX < MassminX) continue;
       else if(massX > MassmaxX) break;
-      else hrealXSumPeak -> SetBinContent(j, hrealXSum -> GetBinContent(j));
-    }
+      else{
+	  hrealXSumPeak -> SetBinContent(j, hrealXSum -> GetBinContent(j));
+	  hrealX90Peak -> SetBinContent(j, hrealX90 -> GetBinContent(j));
+      }
+    }/*
     hrealXSumSc -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealXSumSc -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealXSumSc -> GetXaxis() -> FindBin(p3sigma);
-    MassminX = m3sigma;
-    MassmaxX = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealXSumSc -> GetXaxis() -> FindBin(MassminX);
+    b = hrealXSumSc -> GetXaxis() -> FindBin(MassmaxX);
+/*    MassminX = m3sigma;
+    MassmaxX = p3sigma;*/
     for(int j = 1; j <= nXSc; j++){
 	massXSc = hrealXSumSc -> GetBinLowEdge(j);
 	if(massXSc < MassminX) continue;
 	else if(massXSc > MassmaxX) break;
-	else hrealXSumPeakSc -> SetBinContent(j, hrealXSumSc -> GetBinContent(j));
+	else{
+	    hrealXSumPeakSc -> SetBinContent(j, hrealXSumSc -> GetBinContent(j));
+	    hrealX90ScPeak -> SetBinContent(j, hrealX90Sc -> GetBinContent(j));
+	}
     }
 
     TH1F *hrealXSumPeakCl = (TH1F*)hrealXSumPeak -> Clone();
     TH1F *hrealXSumPeakScCl = (TH1F*)hrealXSumPeakSc -> Clone();
     hXallSumBG -> Add(hrealXSum, hrealXSumPeakCl, 1, -1); 
     hXallSumBGSc -> Add(hrealXSumSc, hrealXSumPeakScCl, 1, -1); 
+    hrealXSumBG -> Add(hrealXSum, hrealX90Peak, 1, -1); 
+    hrealXSumBGSc -> Add(hrealXSumSc, hrealX90ScPeak, 1, -1); 
 
-    hXallSumBG -> SetLineColor(kRed);
-    hXallSumBGSc -> SetLineColor(kRed);
+    hXallSumBG -> SetLineColor(5);
+    hXallSumBGSc -> SetLineColor(5);
+    hrealXSumBG -> SetLineColor(kRed);
+    hrealXSumBGSc -> SetLineColor(kRed);
     hrealXSumPeak -> SetLineColor(8);
     hrealXSumPeakSc -> SetLineColor(8);
+    hrealX90Peak -> SetLineColor(1);
+    hrealX90ScPeak -> SetLineColor(1);
+    hrealXSum -> SetLineColor(4);
+    hrealXSumSc -> SetLineColor(4);
 
+    cout << "MassminX: " << MassminX  << " " << a << " MassmaxX: " << MassmaxX << " " << b << endl;
+    
     cntSX = hrealXSum -> Integral(a,b);
-    cntBX = hXallSumBG -> Integral(a,b);
+    cntBX = hrealXSumBG -> Integral(a,b);
+//    cntBX = hXallSumBG -> Integral(a,b);
     cntSXsc = hrealXSumSc -> Integral(a,b);
-    cntBXsc = hXallSumBGSc -> Integral(a,b);
+    cntBXsc = hrealXSumBGSc -> Integral(a,b);
+//    cntBXsc = hXallSumBGSc -> Integral(a,b);
 
     for(int j = 1; j <= nX; j++){
       if(hrealXSumPeak -> GetBinContent(j)){
 	kX++;
-	s_bg_vX[kX] = (hrealXSumPeak -> GetBinContent(j))/(hXallSumBG -> GetBinContent(j));
+	s_bg_vX[kX] = (hrealXSumPeak -> GetBinContent(j))/(hrealXSumBG -> GetBinContent(j));
 	binX[kX] = (hrealXSumPeak -> GetBinLowEdge(j)) + (hrealXSumPeak -> GetBinWidth(j));
       }
     }
     for(int j = 1; j <= nXSc; j++){
       if(hrealXSumPeakSc -> GetBinContent(j)){
 	kXSc++;
-	s_bg_vXSc[kXSc] = (hrealXSumPeakSc -> GetBinContent(j))/(hXallSumBGSc -> GetBinContent(j));
+	s_bg_vXSc[kXSc] = (hrealXSumPeakSc -> GetBinContent(j))/(hrealXSumBGSc -> GetBinContent(j));
 	binXSc[kXSc] = (hrealXSumPeakSc -> GetBinLowEdge(j)) + (hrealXSumPeakSc -> GetBinWidth(j));
       }
     }
 
-    l1 -> AddEntry(hLallSumSc, "sum all channels", "L");
-    l1 -> AddEntry(hLall90Sc, "#Xi^{-}2K^{+}p", "L");
-    l1a -> AddEntry(hLallSumBGSc, "BG", "L");
-    l1a -> AddEntry(hrealLSumSc, "p#pi^{-}", "L");
-    l1a -> AddEntry(hrealLSumPeakSc, "#Lambda cand. (peak)", "L");
+    l1 -> AddEntry(hLallSumSc, "sum all ch. (#pi^{-}-FD)", "L");
+    l1 -> AddEntry(hrealLSumSc, "sum all ch. (#pi^{-}p)", "L");
+    l1 -> AddEntry(hrealL90Sc, "#Xi^{-}2K^{+}p", "L");
+    l1 -> AddEntry(hLallSumBGSc, "BG all", "L");
+    l1 -> AddEntry(hrealLSumBGSc, "BG real", "L");
+//    l1 -> AddEntry(hLallSumSc, "p#pi^{-} all", "L");
+    l1 -> AddEntry(hrealL90ScPeak, "#Lambda cand. (peak 90)", "L");
+//    l1a -> AddEntry(hLallSumBGSc, "BG", "L");
+//    l1a -> AddEntry(hLallSumSc, "p#pi^{-}", "L");
+//    l1a -> AddEntry(hrealLSumPeakSc, "#Lambda cand. (peak)", "L");
 
      //invM no scaling
     cLambdaXiMass -> cd(1);
@@ -691,27 +755,29 @@ void anaBkgd2(){
     hLallSum -> GetXaxis() -> SetTitle("M_{FD#pi^{-}} [MeV]");
     hLallSum -> GetYaxis() -> SetTitle("counts");
     hLallSum -> Draw();
-    hLall90 -> Draw("same");
-    l1 -> Draw("same");
+    hrealLSum -> Draw("same");
+    hrealL90 -> Draw("same");
+//    l1 -> Draw("same");
 
     cLambdaXiMass -> cd(2);
     nice_canv1(gPad);
-    hrealLSum -> SetTitle("#pi^{-} in Hades + p in FD");
-    hrealLSum -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
-    hrealLSum -> GetYaxis() -> SetTitle("counts");
-    hrealLSum -> Draw();
-    hrealL90 -> Draw("same");
-    l1 -> Draw("same");
+    hLallSumBG -> SetTitle("p#pi^{-}: all, peak and BG");
+    hLallSumBG -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hLallSumBG -> GetYaxis() -> SetTitle("counts");
+    hLallSum -> Draw();
+    hrealLSumPeak -> Draw("same");
+    hLallSumBG -> Draw("same");
+//    l1a -> Draw("same");
     
     cLambdaXiMass -> cd(3);
     nice_canv1(gPad);
-    hLallSumBG -> SetTitle("p#pi^{-}: all, peak and BG");
-    hLallSumBG -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hLallSumBG -> GetYaxis() -> SetTitle("counts");
-    hLallSumBG -> Draw();
-    hrealLSumPeak -> Draw("same");
-    hrealLSum -> Draw("same");
-    l1a -> Draw("same");
+    hrealLSumBG -> SetTitle("p#pi^{-}: real, peak90 and BG");
+    hrealLSumBG -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hrealLSumBG -> GetYaxis() -> SetTitle("counts");
+    hrealLSum -> Draw();
+    hrealL90Peak -> Draw("same");
+    hrealLSumBG -> Draw("same");
+//    l1a -> Draw("same");
     
     cLambdaXiMass -> cd(4);
     nice_canv1(gPad);
@@ -720,17 +786,20 @@ void anaBkgd2(){
     hrealXSum -> GetYaxis() -> SetTitle("counts");
     hrealXSum -> Draw();
     hrealX90 -> Draw("same");
-    l1 -> Draw("same");
+//    l1 -> Draw("same");
     
     cLambdaXiMass -> cd(5);
     nice_canv1(gPad);
-    hXallSumBG -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
-    hXallSumBG -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
-    hXallSumBG -> GetYaxis() -> SetTitle("counts");
-    hXallSumBG -> Draw();
-    hrealXSumPeak -> Draw("same");
-    hrealXSum -> Draw("same");
-    l1a -> Draw("same");
+    hrealXSumBG -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hrealXSumBG -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
+    hrealXSumBG -> GetYaxis() -> SetTitle("counts");
+    hrealXSum -> Draw();
+    hrealX90Peak -> Draw("same");
+    hrealXSumBG -> Draw("same");
+
+    cLambdaXiMass -> cd(6);
+    l1 -> Draw("same");
+
     //
     TLine *massL_min = new TLine(MassminL, 0, MassminL, 80000000);
     TLine *massL_max = new TLine(MassmaxL, 0, MassmaxL, 80000000);
@@ -746,10 +815,11 @@ void anaBkgd2(){
     massX_max -> SetLineColor(kRed);
     
     TLegend *lfin = new TLegend(.2,.35,.5,.8);
-    lfin -> AddEntry(hLallSumSc, "sum of all channels");
-    lfin -> AddEntry(hrealLSumSc, "real signal");
+/*    lfin -> AddEntry(hLallSumSc, "sum of all channels");
+    lfin -> AddEntry(hrealLSumPeakSc, "peak from all channels");
+    lfin -> AddEntry(hLall90Sc, "real signal: #Xi^{-}2K^{+}p");
     lfin -> AddEntry(hLallSumBGSc, "BG");
-
+*/
     //invM scaling
     /*TCanvas *cimLsAsc = new TCanvas("cimLsAsc", "cimLsAsc");
     TCanvas *cimLsRsc = new TCanvas("cimLsRsc", "cimLsRsc");
@@ -767,8 +837,9 @@ void anaBkgd2(){
     hLallSumSc -> GetXaxis() -> SetTitle("M_{FD#pi^{-}} [MeV]");
     hLallSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
     hLallSumSc -> Draw();
-    hLall90Sc -> Draw(" same");
-    l1 -> Draw("same");
+    hrealLSumSc -> Draw(" same");
+    hrealL90Sc -> Draw(" same");
+//    l1 -> Draw("same");
     
     /*cimLsAsc -> cd();
     nice_canv1(gPad);
@@ -783,14 +854,15 @@ void anaBkgd2(){
     */
     cLambdaXiMassSc -> cd(2);
     nice_canv1(gPad);
-    hrealLSumSc -> SetTitle("#pi^{-} in Hades + p in FD");
-    hrealLSumSc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
-    hrealLSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumSc -> Draw();
-    hrealL90Sc -> Draw("same");
-    l1 -> Draw("same");
-    
-/*    cimLsRsc -> cd();
+    hLallSumBGSc -> SetTitle("p#pi^{-}: all, peak and BG");
+    hLallSumBGSc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hLallSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
+    hLallSumSc -> Draw();
+    hrealLSumPeakSc -> Draw("same");
+    hLallSumBGSc -> Draw("same");
+//    l1a -> Draw("same");
+
+    /*    cimLsRsc -> cd();
     nice_canv1(gPad);
     hrealLSumSc -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
     hrealLSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
@@ -806,13 +878,13 @@ void anaBkgd2(){
 */
     cLambdaXiMassSc -> cd(3);
     nice_canv1(gPad);
-    hLallSumBGSc -> SetTitle("p#pi^{-}: all, peak and BG");
-    hLallSumBGSc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
-    hLallSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumBGSc -> Draw();
-    hrealLSumPeakSc -> Draw("same");
-    hrealLSumSc -> Draw("same");
-    l1a -> Draw("same");
+    hrealLSumBGSc -> SetTitle("p#pi^{-}: all, peak and BG");
+    hrealLSumBGSc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hrealLSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
+    hrealLSumSc -> Draw();
+    hrealL90ScPeak -> Draw("same");
+    hrealLSumBGSc -> Draw("same");
+//    l1a -> Draw("same");
     
 /*    cimLsBGsc -> cd();
     nice_canv1(gPad);
@@ -834,18 +906,30 @@ void anaBkgd2(){
     hLallSumSc -> SetTitle("#Lambda reconstruction, no cuts");
     hLallSumSc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumSc -> SetLineColor(4);
-    hLallSumSc -> SetLineStyle(2);
+    hLallSumSc -> SetLineColor(40);
+//    hLallSumSc -> SetLineStyle(2);
     hLallSumSc -> SetLineWidth(2);
-    hLallSumBGSc -> SetMarkerStyle(21);
-    hLallSumBGSc -> SetMarkerSize(.5);
-    hLallSumBGSc -> SetMarkerColor(2);
-    hrealLSumSc -> SetLineColor(8);
+    hrealLSumSc -> SetLineColor(46);
+//    hrealLSumSc -> SetLineStyle(2);
+    hrealLSumSc -> SetLineWidth(2);
+    hrealLSumBGSc -> SetMarkerStyle(21);
+    hrealLSumBGSc -> SetMarkerSize(.5);
+    hrealLSumBGSc -> SetMarkerColor(2);
+    hrealLSumPeakSc -> SetLineColor(8);
+    hrealL90ScPeak -> SetLineColor(1);
     hLallSumSc -> Draw();
-    hLallSumBGSc -> Draw("p same");
     hrealLSumSc -> Draw("same");
+    hrealLSumBGSc -> Draw("p same");
+//    hrealLSumPeakSc -> Draw("same");
+    hrealL90ScPeak -> Draw("same");
     massL_min -> Draw("same");
     massL_max -> Draw("same");
+
+    lfin -> AddEntry(hLallSumSc, "sum all ch. (#pi^{-}-FD)");
+    lfin -> AddEntry(hrealLSumSc, "sum all ch. (#pi^{-}p)");
+    lfin -> AddEntry(hrealLSumBGSc, "BG=all-S");
+    //  lfin -> AddEntry(hrealLSumPeakSc, "all-BG in mass range");
+    lfin -> AddEntry(hrealL90ScPeak, "S in mass range");
     lfin -> Draw("same");//<<<<<<<<<<<<<<
 
     cLambdaXiMassSc -> cd(4);
@@ -855,7 +939,7 @@ void anaBkgd2(){
     hrealXSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
     hrealXSumSc -> Draw();
     hrealX90Sc -> Draw("same");
-    l1 -> Draw("same");
+//    l1 -> Draw("same");
     
 /*    cimXsAsc -> cd();
     nice_canv1(gPad);
@@ -904,13 +988,15 @@ void anaBkgd2(){
 		     */
     cLambdaXiMassSc -> cd(5);
     nice_canv1(gPad);
-    hXallSumBGSc -> SetTitle("#Xi^{-}: #lambda#pi^{-} all, peak and BG");
-    hXallSumBGSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
-    hXallSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGSc -> Draw();
-    hrealXSumPeakSc -> Draw("same");
-    hrealXSumSc -> Draw("same");
-    l1a -> Draw("same");
+    hrealXSumBGSc -> SetTitle("#Xi^{-}: #lambda#pi^{-} all, peak and BG");
+    hrealXSumBGSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
+    hrealXSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
+    hrealXSumSc -> Draw();
+    hrealX90ScPeak -> Draw("same");
+    hrealXSumBGSc -> Draw("same");
+
+    cLambdaXiMassSc -> cd(6);
+    l1 -> Draw("same");
     
     /*cimXsBGsc -> cd();
     nice_canv1(gPad);
@@ -926,25 +1012,35 @@ void anaBkgd2(){
     hXallSumBGSc -> Draw("pE1");
     hrealXSumPeakSc -> Draw("p same");
     l1a -> Draw("same");
-		      */
+    */
+
+    TLegend *lfin1 = new TLegend(.2,.35,.5,.8);
+
     cimXMtdlVertlMlSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hrealXSumSc -> SetTitle("#Xi reconstruction, MTD_L, VERTz_L, Lmass cuts");
     hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
     hrealXSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumSc -> SetLineColor(4);
-    //hXallSumSc -> SetLineStyle(2);
-    //hXallSumSc -> SetLineWidth(2);
-    hrealXSumSc -> SetLineColor(8);
-    hXallSumBGSc -> SetMarkerStyle(21);
-    hXallSumBGSc -> SetMarkerSize(.5);
-    hXallSumBGSc -> SetMarkerColor(2);
+    hrealXSumSc -> SetLineColor(46);
+//    hrealXSumSc -> SetLineStyle(2);
+    hrealXSumSc -> SetLineWidth(2);
+    hrealXSumBGSc -> SetMarkerStyle(21);
+    hrealXSumBGSc -> SetMarkerSize(.5);
+    hrealXSumBGSc -> SetMarkerColor(2);
+//    hrealXSumPeakSc -> SetLineColor(8);
+    hrealX90ScPeak -> SetLineColor(1);
     hrealXSumSc -> Draw();
-    hXallSumBGSc -> Draw("p same");
-    hrealXSumSc -> Draw("same");
+    hrealXSumBGSc -> Draw("p same");
+    hrealXSumPeakSc -> Draw("same");
+    hrealX90ScPeak -> Draw("same");
     massX_min -> Draw("same");
     massX_max -> Draw("same");
-    lfin -> Draw("same");//<<<<<<<<<<<<<<
+
+    lfin1 -> AddEntry(hrealXSumSc, "sum all ch. (#Lambda#pi^{-})");
+    lfin1 -> AddEntry(hrealXSumBGSc, "BG=all-S");
+    //  lfin1 -> AddEntry(hrealXSumPeakSc, "all-BG in mass range");
+    lfin1 -> AddEntry(hrealX90ScPeak, "S in mass range");
+    lfin1 -> Draw("same");//<<<<<<<<<<<<<<
 
 
     //MTD_L, Lmass, MTD_X
@@ -959,53 +1055,72 @@ void anaBkgd2(){
     double binLScMtd[150]; 
     int kLScMtd = -1;
 
-    hrealLSumMtd -> Fit(fit, "0");
+/*    hrealLSumMtd -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealLSumMtd -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealLSumMtd -> GetXaxis() -> FindBin(p3sigma);	 
-    MassminL = m3sigma;
-    MassmaxL = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealLSumMtd -> GetXaxis() -> FindBin(MassminL);
+    b = hrealLSumMtd -> GetXaxis() -> FindBin(MassmaxL);	 
+/*    MassminL = m3sigma;
+    MassmaxL = p3sigma;*/
     for(int j = 1; j <= nLMtd; j++){
       massL = hrealLSumMtd -> GetBinLowEdge(j);
       if(massL < MassminL) continue;
       else if(massL > MassmaxL) break;
-      else
+      else{
 	hrealLSumPeakMtd -> SetBinContent(j, hrealLSumMtd -> GetBinContent(j));
+	hrealL90MtdPeak -> SetBinContent(j, hrealL90Mtd -> GetBinContent(j));
+      }
     }
-
+/*
     hrealLSumScMtd -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealLSumScMtd -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealLSumScMtd -> GetXaxis() -> FindBin(p3sigma);
-    MassminL = m3sigma;
-    MassmaxL = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealLSumScMtd -> GetXaxis() -> FindBin(MassminL);
+    b = hrealLSumScMtd -> GetXaxis() -> FindBin(MassmaxL);
+/*    MassminL = m3sigma;
+    MassmaxL = p3sigma;*/
     for(int j = 1; j <= nLScMtd; j++){
       massLSc = hrealLSumScMtd -> GetBinLowEdge(j);
       if(massLSc < MassminL) continue;
       else if(massLSc > MassmaxL) break;
-      else hrealLSumPeakScMtd -> SetBinContent(j, hrealLSumScMtd -> GetBinContent(j));    
+      else{
+	  hrealLSumPeakScMtd -> SetBinContent(j, hrealLSumScMtd -> GetBinContent(j));
+	  hrealL90ScMtdPeak -> SetBinContent(j, hrealL90ScMtd -> GetBinContent(j));
+      }
     }
 
     TH1F *hrealLSumPeakClMtd = (TH1F*)hrealLSumPeakMtd -> Clone();
     TH1F *hrealLSumPeakScClMtd = (TH1F*)hrealLSumPeakScMtd -> Clone();
     hLallSumBGMtd -> Add(hLallSumMtd, hrealLSumPeakClMtd, 1, -1); 
     hLallSumBGScMtd -> Add(hLallSumScMtd, hrealLSumPeakScClMtd, 1, -1); 
+    hrealLSumBGMtd -> Add(hrealLSumMtd, hrealL90MtdPeak, 1, -1); 
+    hrealLSumBGScMtd -> Add(hrealLSumScMtd, hrealL90ScMtdPeak, 1, -1); 
 
-    hLallSumBGMtd -> SetLineColor(kRed);
-    hLallSumBGScMtd -> SetLineColor(kRed);
+    hLallSumBGMtd -> SetLineColor(5);
+    hLallSumBGScMtd -> SetLineColor(5);
+    hrealLSumBGMtd -> SetLineColor(kRed);
+    hrealLSumBGScMtd -> SetLineColor(kRed);
     hrealLSumPeakMtd -> SetLineColor(8);
     hrealLSumPeakScMtd -> SetLineColor(8);
+    hrealL90MtdPeak -> SetLineColor(1);
+    hrealL90ScMtdPeak -> SetLineColor(1);
+    hLallSumMtd -> SetLineColor(4);
+    hLallSumScMtd -> SetLineColor(4);
+    hrealLSumMtd -> SetLineColor(46);
+    hrealLSumScMtd -> SetLineColor(46);
 
+    cout << "Mtd: MassminL: " << MassminL << " " << a << " MassmaxL: " << MassmaxL << " " << b << endl;
+    
     cntSLMtd = hrealLSumMtd -> Integral(a,b);
-    cntBLMtd = hLallSumBGMtd -> Integral(a,b);
+    cntBLMtd = hrealLSumBGMtd -> Integral(a,b);
+//    cntBLMtd = hLallSumBGMtd -> Integral(a,b);
     cntSLscMtd = hrealLSumScMtd -> Integral(a,b);
-    cntBLscMtd = hLallSumBGScMtd -> Integral(a,b);
+    cntBLscMtd = hrealLSumBGScMtd -> Integral(a,b);
+//    cntBLscMtd = hLallSumBGScMtd -> Integral(a,b);
 
 
     //Lmass
@@ -1061,14 +1176,14 @@ void anaBkgd2(){
     for(int j = 1; j <= nLMtd; j++){
 	if(hrealLSumPeakMtd -> GetBinContent(j)){
 	  kLMtd++;
-	  s_bg_vLMtd[kLMtd] = (hrealLSumPeakMtd -> GetBinContent(j))/(hLallSumBGMtd -> GetBinContent(j));
+	  s_bg_vLMtd[kLMtd] = (hrealLSumPeakMtd -> GetBinContent(j))/(hrealLSumBGMtd -> GetBinContent(j));
 	  binLMtd[kLMtd] = (hrealLSumPeakMtd -> GetBinLowEdge(j)) + (hrealLSumPeakMtd -> GetBinWidth(j));
       	}
     }
     for(int j = 1; j <= nLScMtd; j++){
       if(hrealLSumPeakScMtd -> GetBinContent(j)){
 	kLScMtd++;
-	s_bg_vLScMtd[kLScMtd] = (hrealLSumPeakScMtd -> GetBinContent(j))/(hLallSumBGScMtd -> GetBinContent(j));
+	s_bg_vLScMtd[kLScMtd] = (hrealLSumPeakScMtd -> GetBinContent(j))/(hrealLSumBGScMtd -> GetBinContent(j));
 	binLScMtd[kLScMtd] = (hrealLSumPeakScMtd -> GetBinLowEdge(j)) + (hrealLSumPeakScMtd -> GetBinWidth(j));
       }
     }
@@ -1084,35 +1199,42 @@ void anaBkgd2(){
     double binXScMtd[150];
     int kXScMtd = -1;
 
+/*
     hrealXSumMtd -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealXSumMtd -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealXSumMtd -> GetXaxis() -> FindBin(p3sigma);	
-    MassminX = m3sigma;
-    MassmaxX = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealXSumMtd -> GetXaxis() -> FindBin(MassminX);
+    b = hrealXSumMtd -> GetXaxis() -> FindBin(MassmaxX);	
+/*    MassminX = m3sigma;
+    MassmaxX = p3sigma;*/
     for(int j = 1; j <= nXMtd; j++){
       massX = hrealXSumMtd -> GetBinLowEdge(j);
       if(massX < MassminX) continue;
       else if(massX > MassmaxX) break;
-      else hrealXSumPeakMtd -> SetBinContent(j, hrealXSumMtd -> GetBinContent(j));
-    }
+      else{
+	  hrealXSumPeakMtd -> SetBinContent(j, hrealXSumMtd -> GetBinContent(j));
+	  hrealX90MtdPeak -> SetBinContent(j, hrealX90Mtd -> GetBinContent(j));
+      }
+    }/*
     hrealXSumScMtd -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealXSumScMtd -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealXSumScMtd -> GetXaxis() -> FindBin(p3sigma);
-    MassminX = m3sigma;
-    MassmaxX = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealXSumScMtd -> GetXaxis() -> FindBin(MassminX);
+    b = hrealXSumScMtd -> GetXaxis() -> FindBin(MassmaxX);
+/*    MassminX = m3sigma;
+    MassmaxX = p3sigma;*/
     for(int j = 1; j <= nXScMtd; j++){
       massXSc = hrealXSumScMtd -> GetBinLowEdge(j);
       if(massXSc < MassminX) continue;
       else if(massXSc > MassmaxX) break;
-      else hrealXSumPeakScMtd -> SetBinContent(j, hrealXSumScMtd -> GetBinContent(j));
+      else{
+	  hrealXSumPeakScMtd -> SetBinContent(j, hrealXSumScMtd -> GetBinContent(j));
+	  hrealX90ScMtdPeak -> SetBinContent(j, hrealX90ScMtd -> GetBinContent(j));
+      }
     }
 
     TH1F *hrealXSumPeakClMtd = (TH1F*)hrealXSumPeakMtd -> Clone();
@@ -1120,28 +1242,42 @@ void anaBkgd2(){
    
     hXallSumBGMtd -> Add(hrealXSumMtd, hrealXSumPeakClMtd, 1, -1); 
     hXallSumBGScMtd -> Add(hrealXSumScMtd, hrealXSumPeakScClMtd, 1, -1); 
+    hrealXSumBGMtd -> Add(hrealXSumMtd, hrealX90MtdPeak, 1, -1); 
+    hrealXSumBGScMtd -> Add(hrealXSumScMtd, hrealX90ScMtdPeak, 1, -1); 
 
-    hXallSumBGMtd -> SetLineColor(kRed);
-    hXallSumBGScMtd -> SetLineColor(kRed);
+    hXallSumBGMtd -> SetLineColor(5);
+    hXallSumBGScMtd -> SetLineColor(5);
+    hrealXSumBGMtd -> SetLineColor(kRed);
+    hrealXSumBGScMtd -> SetLineColor(kRed);
     hrealXSumPeakMtd -> SetLineColor(8);
     hrealXSumPeakScMtd -> SetLineColor(8);
+    hrealX90MtdPeak -> SetLineColor(1);
+    hrealX90ScMtdPeak -> SetLineColor(1);
+    hrealXSumMtd -> SetLineColor(4);
+    hrealXSumScMtd -> SetLineColor(4);
 
+    cout << "MassminX: " << MassminX << " " << a << " MassmaxX: " << MassmaxX << " " << b << endl;
+    
     cntSXMtd = hrealXSumMtd -> Integral(a,b);
-    cntBXMtd = hXallSumBGMtd -> Integral(a,b);
+    cntBXMtd = hrealXSumBGMtd -> Integral(a,b);
+//    cntBXMtd = hXallSumBGMtd -> Integral(a,b);
     cntSXscMtd = hrealXSumScMtd -> Integral(a,b);
-    cntBXscMtd = hXallSumBGScMtd -> Integral(a,b);
+    cntBXscMtd = hrealXSumBGScMtd -> Integral(a,b);
+//    cntBXscMtd = hXallSumBGScMtd -> Integral(a,b);
 
+    cntSXMtd90 = hrealX90MtdPeak -> Integral(a,b);
+    
     for(int j = 1; j <= nXMtd; j++){
       if(hrealXSumPeakMtd -> GetBinContent(j)){
 	kXMtd++;
-	s_bg_vXMtd[kXMtd] = (hrealXSumPeakMtd -> GetBinContent(j))/(hXallSumBGMtd -> GetBinContent(j));
+	s_bg_vXMtd[kXMtd] = (hrealXSumPeakMtd -> GetBinContent(j))/(hrealXSumBGMtd -> GetBinContent(j));
 	binXMtd[kXMtd] = (hrealXSumPeakMtd -> GetBinLowEdge(j)) + (hrealXSumPeakMtd -> GetBinWidth(j));
       }
     }
     for(int j = 1; j <= nXScMtd; j++){
       if(hrealXSumPeakScMtd -> GetBinContent(j)){
 	kXScMtd++;
-	s_bg_vXScMtd[kXScMtd] = (hrealXSumPeakScMtd -> GetBinContent(j))/(hXallSumBGScMtd -> GetBinContent(j));
+	s_bg_vXScMtd[kXScMtd] = (hrealXSumPeakScMtd -> GetBinContent(j))/(hrealXSumBGScMtd -> GetBinContent(j));
 	binXScMtd[kXScMtd] = (hrealXSumPeakScMtd -> GetBinLowEdge(j)) + (hrealXSumPeakScMtd -> GetBinWidth(j));
       }
     }
@@ -1153,27 +1289,31 @@ void anaBkgd2(){
     hLallSumMtd -> GetXaxis() -> SetTitle("M_{FD#pi^{-}} [MeV]");
     hLallSumMtd -> GetYaxis() -> SetTitle("counts");
     hLallSumMtd -> Draw();
+    hrealLSumMtd -> Draw("same");
     hLall90Mtd -> Draw("same");
-    l1 -> Draw("same");
+//    l1 -> Draw("same");
     
     cLambdaXiMassMtd -> cd(2);
-    nice_canv1(gPad);
-    hrealLSumMtd -> SetTitle("#pi^{-} in Hades + p in FD");
-    hrealLSumMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
-    hrealLSumMtd -> GetYaxis() -> SetTitle("counts");
-    hrealLSumMtd -> Draw();
-    hrealL90Mtd -> Draw("same");
-    l1 -> Draw("same");
-
-    cLambdaXiMassMtd -> cd(3);
     nice_canv1(gPad);
     hLallSumBGMtd -> SetTitle("p#pi^{-}: all, peak and BG");
     hLallSumBGMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumBGMtd -> GetYaxis() -> SetTitle("counts");
-    hrealLSumPeakMtd -> Draw();
+    hLallSumMtd -> Draw();
+    hrealLSumPeakMtd -> Draw("same");
     hLallSumBGMtd -> Draw("same");
-    hrealLSumMtd -> Draw("same");
-    l1a -> Draw("same");
+    
+//    l1a -> Draw("same");
+
+    cLambdaXiMassMtd -> cd(3);
+    nice_canv1(gPad);
+    hrealLSumBGMtd -> SetTitle("p#pi^{-}: real, peak90 and BG");
+    hrealLSumBGMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hrealLSumBGMtd -> GetYaxis() -> SetTitle("counts");
+    hrealLSumMtd -> Draw();
+    hrealL90MtdPeak -> Draw("same");
+    hrealLSumBGMtd -> Draw("same");
+
+//    l1a -> Draw("same");
 
     cLambdaXiMassMtd -> cd(4);
     nice_canv1(gPad);
@@ -1182,17 +1322,20 @@ void anaBkgd2(){
     hrealXSumMtd -> GetYaxis() -> SetTitle("counts");
     hrealXSumMtd -> Draw();
     hrealX90Mtd -> Draw("same");
-    l1 -> Draw("same");
+//   l1 -> Draw("same");
 
     cLambdaXiMassMtd -> cd(5);
     nice_canv1(gPad);
-    hXallSumBGMtd -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
-    hXallSumBGMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
-    hXallSumBGMtd -> GetYaxis() -> SetTitle("counts");
-    hrealXSumPeakMtd -> Draw();
-    hXallSumBGMtd -> Draw("same");
-    hrealXSumMtd -> Draw("same");
-    l1a -> Draw("same");
+    hrealXSumBGMtd -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hrealXSumBGMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
+    hrealXSumBGMtd -> GetYaxis() -> SetTitle("counts");
+    hrealXSumMtd -> Draw();
+    hrealX90MtdPeak -> Draw("same");
+    hrealXSumBGMtd -> Draw("same");
+//    l1a -> Draw("same");
+
+    cLambdaXiMassMtd -> cd(6);
+    l1 -> Draw("same");
 
     //invM scaling MTD
 /*    TCanvas *cimLsAmtdsc = new TCanvas("cimLsAmtdsc", "cimLsAmtdsc");
@@ -1211,47 +1354,62 @@ void anaBkgd2(){
     hLallSumScMtd -> GetXaxis() -> SetTitle("M_{FD#pi^{-}} [MeV]");
     hLallSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
     hLallSumScMtd -> Draw();
-    hLall90ScMtd -> Draw("same");
-    l1 -> Draw("same");
-        
+    hrealLSumScMtd -> Draw("same");
+    hrealL90ScMtd -> Draw("same");
+//    l1 -> Draw("same");
+
     cLambdaXiMassScMtd -> cd(2);
-    nice_canv1(gPad);
-    hrealLSumScMtd -> SetTitle("#pi^{-} in Hades + p in FD");
-    hrealLSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
-    hrealLSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumScMtd -> Draw();
-    hrealL90ScMtd -> Draw("p same");
-    l1 -> Draw("same");
-    
-    cLambdaXiMassScMtd -> cd(3);
     nice_canv1(gPad);
     hLallSumBGScMtd -> SetTitle("p#pi^{-}: all, peak and BG");
     hLallSumBGScMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumBGScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumBGScMtd -> Draw();
+    hLallSumScMtd -> Draw();
     hrealLSumPeakScMtd -> Draw("same");
-    hrealLSumScMtd -> Draw("same");
-    l1a -> Draw("same");
+    hLallSumBGScMtd -> Draw("same");
+//    l1a -> Draw("same");
+      
+    cLambdaXiMassScMtd -> cd(3);
+    nice_canv1(gPad);
+    hrealLSumBGScMtd -> SetTitle("p#pi^{-}: real, peak90 and BG");
+    hrealLSumBGScMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hrealLSumBGScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
+    hrealLSumScMtd -> Draw();
+    hrealL90ScMtdPeak -> Draw("same");
+    hrealLSumBGScMtd -> Draw("same");
+//    l1a -> Draw("same");
     
+    TLegend *lfin2 = new TLegend(.2,.35,.5,.8);
     
     cimLMtdlSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hLallSumScMtd -> SetTitle("#Lambda reconstruction, MTD_L cut");
-    hLallSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumScMtd -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumScMtd -> SetLineColor(4);
-    hLallSumScMtd -> SetLineStyle(2);
+    hLallSumScMtd -> SetLineColor(40);
+//    hLallSumScMtd -> SetLineStyle(2);
     hLallSumScMtd -> SetLineWidth(2);
-    hrealLSumScMtd -> SetLineColor(8);
-    hLallSumBGScMtd -> SetMarkerStyle(21);
-    hLallSumBGScMtd -> SetMarkerSize(1);
-    hLallSumBGScMtd -> SetMarkerColor(2);
+    hrealLSumScMtd -> SetLineColor(46);
+//    hrealLSumScMtd -> SetLineStyle(2);
+    hrealLSumScMtd -> SetLineWidth(2);
+    hrealLSumBGScMtd -> SetMarkerStyle(21);
+    hrealLSumBGScMtd -> SetMarkerSize(.5);
+    hrealLSumBGScMtd -> SetMarkerColor(2);
+    hrealLSumPeakScMtd -> SetLineColor(8);
+    hrealL90ScMtd -> SetLineColor(1);
     hLallSumScMtd -> Draw();
-    hLallSumBGScMtd -> Draw("p same");
     hrealLSumScMtd -> Draw("same");
+    hrealLSumBGScMtd -> Draw("p same");
+//    hrealLSumPeakScMtd -> Draw("same");
+    hrealL90ScMtdPeak -> Draw("same");
     massL_min -> Draw("same");
     massL_max -> Draw("same");
-    lfin -> Draw("same");//<<<<<<<<<<<<<<
+
+    lfin2 -> AddEntry(hLallSumScMtd, "sum all ch. (#pi^{-}-FD)");
+    lfin2 -> AddEntry(hrealLSumScMtd, "sum all ch. (#pi^{-}p)");
+    lfin2 -> AddEntry(hrealLSumBGScMtd, "BG=all-S");
+    //  lfin2 -> AddEntry(hrealLSumPeakScMtd, "all-BG in mass range");
+    lfin2 -> AddEntry(hrealL90ScMtdPeak, "S in mass range");
+    lfin2 -> Draw("same");//<<<<<<<<<<<<<<
 
     cLambdaXiMassScMtd -> cd(4);
     nice_canv1(gPad);
@@ -1259,37 +1417,48 @@ void anaBkgd2(){
     hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
     hrealXSumScMtd -> Draw();
-    hrealX90ScMtd -> Draw("p same");
-    l1 -> Draw("same");
+    hrealX90ScMtd -> Draw("same");
+//    l1 -> Draw("same");
     
     cLambdaXiMassScMtd -> cd(5);
     nice_canv1(gPad);
-    hXallSumBGScMtd -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
-    hXallSumBGScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
-    hXallSumBGScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGScMtd -> Draw();
-    hrealXSumPeakScMtd -> Draw("same");
-    hrealXSumScMtd -> Draw("same");
-    l1a -> Draw("same");
-    
+    hrealXSumBGScMtd -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hrealXSumBGScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
+    hrealXSumBGScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
+    hrealXSumScMtd -> Draw();
+    hrealX90ScMtdPeak -> Draw("same");
+    hrealXSumBGScMtd -> Draw("same");
+
+    cLambdaXiMassScMtd -> cd(6);
+    l1 -> Draw("same");
+
+    TLegend *lfin3 = new TLegend(.2,.35,.5,.8);
+        
     cimXMtdlVertlMlMtdxSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hrealXSumScMtd -> SetTitle("#Xi reconstruction, MTD_L, VERTz_L, Lmass, MTD_X cuts");
-    hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hrealXSumScMtd -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScMtd -> SetLineColor(4);
-    //hXallSumScMtd -> SetLineStyle(2);
-    //hXallSumScMtd -> SetLineWidth(2);
-    hrealXSumScMtd -> SetLineColor(8);
-    hXallSumBGScMtd -> SetMarkerStyle(21);
-    hXallSumBGScMtd -> SetMarkerSize(.5);
-    hXallSumBGScMtd -> SetMarkerColor(2);
-    hrealXSumScMtd -> Draw();
-    hXallSumBGScMtd -> Draw("p same");
-    hrealXSumScMtd -> Draw("same");
+    hrealXSumScMtd -> SetLineColor(46);
+//    hrealXSumScMtd -> SetLineStyle(2);
+    hrealXSumScMtd -> SetLineWidth(2);
+    hrealXSumBGScMtd -> SetMarkerStyle(21);
+    hrealXSumBGScMtd -> SetMarkerSize(.5);
+    hrealXSumBGScMtd -> SetMarkerColor(2);
+    hrealXSumPeakScMtd -> SetLineColor(8);
+    hrealX90ScMtdPeak -> SetLineColor(1);
+    hrealXSumScMtd -> Draw();   
+    hrealXSumBGScMtd -> Draw("p same");
+//    hrealXSumPeakScMtd -> Draw("same");
+    hrealX90ScMtdPeak -> Draw("same");
     massX_min -> Draw("same");
     massX_max -> Draw("same");
-    lfin -> Draw("same");//<<<<<<<<<<<<<<
+
+    lfin3 -> AddEntry(hrealXSumScMtd, "sum all ch. (#pi^{-}p)");
+    lfin3 -> AddEntry(hrealXSumBGScMtd, "BG =all-S");
+    //  lfin3 -> AddEntry(hrealXSumPeakScMtd, "all-BG in mass range");
+    lfin3 -> AddEntry(hrealX90ScMtdPeak, "S in mass range");
+    lfin3 -> Draw("same");//<<<<<<<<<<<<<<
 
     //MTD_L, Lmass, MTD_X, VERTZ_L, VERTZ_X
     //Lambda1115
@@ -1302,66 +1471,86 @@ void anaBkgd2(){
     double s_bg_vLScVert[150];
     double binLScVert[150]; 
     int kLScVert = -1;
-    
+
+    /*
     hrealLSumVert -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealLSumVert -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealLSumVert -> GetXaxis() -> FindBin(p3sigma);
-    MassminL = m3sigma;
-    MassmaxL = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealLSumVert -> GetXaxis() -> FindBin(MassminL);
+    b = hrealLSumVert -> GetXaxis() -> FindBin(MassmaxL);
+/*    MassminL = m3sigma;
+    MassmaxL = p3sigma;*/
     for(int j = 1; j <= nLVert; j++){
       massL = hrealLSumVert -> GetBinLowEdge(j);
       if(massL < MassminL) continue;
       else if(massL > MassmaxL) break;
-      else
-	hrealLSumPeakVert -> SetBinContent(j, hrealLSumVert -> GetBinContent(j));
-    }
+      else{
+	  hrealLSumPeakVert -> SetBinContent(j, hrealLSumVert -> GetBinContent(j));
+	  hrealL90VertPeak -> SetBinContent(j, hrealL90Vert -> GetBinContent(j));
+      }
+    }/*
     hrealLSumScVert -> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealLSumScVert -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealLSumScVert -> GetXaxis() -> FindBin(p3sigma);
-    MassminL = m3sigma;
-    MassmaxL = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealLSumScVert -> GetXaxis() -> FindBin(MassminL);
+    b = hrealLSumScVert -> GetXaxis() -> FindBin(MassmaxL);
+/*    MassminL = m3sigma;
+    MassmaxL = p3sigma;*/
     for(int j = 1; j <= nLScVert; j++){
       massLSc = hrealLSumScVert -> GetBinLowEdge(j);
       if(massLSc < MassminL) continue;
       else if(massLSc > MassmaxL) break;
-      else hrealLSumPeakScVert -> SetBinContent(j, hrealLSumScVert -> GetBinContent(j));    
+      else{
+	  hrealLSumPeakScVert -> SetBinContent(j, hrealLSumScVert -> GetBinContent(j));
+	  hrealL90ScVertPeak -> SetBinContent(j, hrealL90ScVert -> GetBinContent(j));
+      }
     }
 
     TH1F *hrealLSumPeakClVert = (TH1F*)hrealLSumPeakVert -> Clone();
     TH1F *hrealLSumPeakScClVert = (TH1F*)hrealLSumPeakScVert -> Clone();
     hLallSumBGVert -> Add(hLallSumVert, hrealLSumPeakClVert, 1, -1); 
-    hLallSumBGScVert -> Add(hLallSumScVert, hrealLSumPeakScClVert, 1, -1); 
+    hLallSumBGScVert -> Add(hLallSumScVert, hrealLSumPeakScClVert, 1, -1);
+    hrealLSumBGVert -> Add(hrealLSumVert, hrealL90VertPeak, 1, -1); 
+    hrealLSumBGScVert -> Add(hrealLSumScVert, hrealL90ScVertPeak, 1, -1); 
 
-    hLallSumBGVert -> SetLineColor(kRed);
-    hLallSumBGScVert -> SetLineColor(kRed);
+    hLallSumBGVert -> SetLineColor(5);
+    hLallSumBGScVert -> SetLineColor(5);
+    hrealLSumBGVert -> SetLineColor(kRed);
+    hrealLSumBGScVert -> SetLineColor(kRed);
     hrealLSumPeakVert -> SetLineColor(8);
     hrealLSumPeakScVert -> SetLineColor(8);
+    hrealL90VertPeak -> SetLineColor(1);
+    hrealL90ScVertPeak -> SetLineColor(1);
+    hLallSumVert -> SetLineColor(4);
+    hLallSumScVert -> SetLineColor(4);
+    hrealLSumVert -> SetLineColor(46);
+    hrealLSumScVert -> SetLineColor(46);
 
+    cout << "Vert: MassminL: " << MassminL << " " << a << " MassmaxL: " << MassmaxL << " " << b << endl;
+    
     cntSLVert = hrealLSumVert -> Integral(a,b);
-    cntBLVert = hLallSumBGVert -> Integral(a,b);
+    cntBLVert = hrealLSumBGVert -> Integral(a,b);
+//    cntBLVert = hLallSumBGVert -> Integral(a,b);
     cntSLscVert = hrealLSumScVert -> Integral(a,b);
-    cntBLscVert = hLallSumBGScVert -> Integral(a,b);
+    cntBLscVert = hrealLSumBGScVert -> Integral(a,b);
+//    cntBLscVert = hLallSumBGScVert -> Integral(a,b);
 
     //SB
     for(int j = 1; j <= nLVert; j++){
       if(hrealLSumPeakVert -> GetBinContent(j)){
 	kLVert++;
-	s_bg_vLVert[kLVert] = (hrealLSumPeakVert -> GetBinContent(j))/(hLallSumBGVert -> GetBinContent(j));
+	s_bg_vLVert[kLVert] = (hrealLSumPeakVert -> GetBinContent(j))/(hrealLSumBGVert -> GetBinContent(j));
 	binLVert[kLVert] = (hrealLSumPeakVert -> GetBinLowEdge(j)) + (hrealLSumPeakVert -> GetBinWidth(j));
       }
     }
     for(int j = 1; j <= nLScVert; j++){
       if(hrealLSumPeakScVert -> GetBinContent(j)){
 	kLScVert++;
-	s_bg_vLScVert[kLScVert] = (hrealLSumPeakScVert -> GetBinContent(j))/(hLallSumBGScVert -> GetBinContent(j));
+	s_bg_vLScVert[kLScVert] = (hrealLSumPeakScVert -> GetBinContent(j))/(hrealLSumBGScVert -> GetBinContent(j));
 	binLScVert[kLScVert] = (hrealLSumPeakScVert -> GetBinLowEdge(j)) + (hrealLSumPeakScVert -> GetBinWidth(j));
       }
     }
@@ -1377,35 +1566,41 @@ void anaBkgd2(){
     double binXScVert[150];
     int kXScVert = -1;
 
-    hrealXSumVert-> Fit(fit, "0");
+    /*hrealXSumVert-> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealXSumVert -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealXSumVert -> GetXaxis() -> FindBin(p3sigma);
-    MassminX = m3sigma;
-    MassmaxX = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealXSumVert -> GetXaxis() -> FindBin(MassminX);
+    b = hrealXSumVert -> GetXaxis() -> FindBin(MassmaxX);
+/*    MassminX = m3sigma;
+    MassmaxX = p3sigma;*/
     for(int j = 1; j <= nXVert; j++){
       massX = hrealXSumVert -> GetBinLowEdge(j);
       if(massX < MassminX) continue;
       else if(massX > MassmaxX) break;
-      else hrealXSumPeakVert -> SetBinContent(j, hrealXSumVert -> GetBinContent(j));
-    }
+      else{
+	  hrealXSumPeakVert -> SetBinContent(j, hrealXSumVert -> GetBinContent(j));
+	  hrealX90VertPeak -> SetBinContent(j, hrealX90Vert -> GetBinContent(j));
+      }
+    }/*
     hrealXSumScVert-> Fit(fit, "0");
     center_fit = fit -> GetParameter(1);
     sigma_fit = fit -> GetParameter(2);
     m3sigma = center_fit - 3*sigma_fit;
-    p3sigma = center_fit + 3*sigma_fit;
-    a = hrealXSumScVert -> GetXaxis() -> FindBin(m3sigma);
-    b = hrealXSumScVert -> GetXaxis() -> FindBin(p3sigma);
-    MassminX = m3sigma;
-    MassmaxX = p3sigma;
+    p3sigma = center_fit + 3*sigma_fit;*/
+    a = hrealXSumScVert -> GetXaxis() -> FindBin(MassminX);
+    b = hrealXSumScVert -> GetXaxis() -> FindBin(MassmaxX);
+/*    MassminX = m3sigma;
+    MassmaxX = p3sigma;*/
     for(int j = 1; j <= nXScVert; j++){
       massXSc = hrealXSumScVert -> GetBinLowEdge(j);
       if(massXSc < MassminX) continue;
       else if(massXSc > MassmaxX) break;
-      else hrealXSumPeakScVert -> SetBinContent(j, hrealXSumScVert -> GetBinContent(j));
+      else{
+	  hrealXSumPeakScVert -> SetBinContent(j, hrealXSumScVert -> GetBinContent(j));
+	  hrealX90ScVertPeak -> SetBinContent(j, hrealX90ScVert -> GetBinContent(j));
+      }
     }
 
     TH1F *hrealXSumPeakClVert = (TH1F*)hrealXSumPeakVert -> Clone();
@@ -1413,29 +1608,41 @@ void anaBkgd2(){
 
     hXallSumBGVert -> Add(hrealXSumVert, hrealXSumPeakClVert, 1, -1); 
     hXallSumBGScVert -> Add(hrealXSumScVert, hrealXSumPeakScClVert, 1, -1); 
+    hrealXSumBGVert -> Add(hrealXSumVert, hrealX90VertPeak, 1, -1); 
+    hrealXSumBGScVert -> Add(hrealXSumScVert, hrealX90ScVertPeak, 1, -1); 
 
-    hXallSumBGVert -> SetLineColor(kRed);
-    hXallSumBGScVert -> SetLineColor(kRed);
+    hXallSumBGVert -> SetLineColor(5);
+    hXallSumBGScVert -> SetLineColor(5);
+    hrealXSumBGVert -> SetLineColor(kRed);
+    hrealXSumBGScVert -> SetLineColor(kRed);
     hrealXSumPeakVert -> SetLineColor(8);
     hrealXSumPeakScVert -> SetLineColor(8);
+    hrealX90VertPeak -> SetLineColor(1);
+    hrealX90ScVertPeak -> SetLineColor(1);
+    hrealXSumVert -> SetLineColor(4);
+    hrealXSumScVert -> SetLineColor(4);
 
+    cout << "MassminX: " << MassminX << " " << a << " MassmaxX: " << MassmaxX << " " << b << endl;
+    
     cntSXVert = hrealXSumVert -> Integral(a,b);
-    cntBXVert = hXallSumBGVert -> Integral(a,b);
+    cntBXVert = hrealXSumBGVert -> Integral(a,b);
+//    cntBXVert = hXallSumBGVert -> Integral(a,b);
     cntSXscVert = hrealXSumScVert -> Integral(a,b);
-    cntBXscVert = hXallSumBGScVert -> Integral(a,b);
+    cntBXscVert = hrealXSumBGScVert -> Integral(a,b);
+//    cntBXscVert = hXallSumBGScVert -> Integral(a,b);
 
     //SB
     for(int j = 1; j <= nXVert; j++){
       if(hrealXSumPeakVert -> GetBinContent(j)){
 	kXVert++;
-	s_bg_vXVert[kXVert] = (hrealXSumPeakVert -> GetBinContent(j))/(hXallSumBGVert -> GetBinContent(j));
+	s_bg_vXVert[kXVert] = (hrealXSumPeakVert -> GetBinContent(j))/(hrealXSumBGVert -> GetBinContent(j));
 	binXVert[kXVert] = (hrealXSumPeakVert -> GetBinLowEdge(j)) + (hrealXSumPeakVert -> GetBinWidth(j));
       }
     }
     for(int j = 1; j <= nXScVert; j++){
       if(hrealXSumPeakScVert -> GetBinContent(j)){
 	kXScVert++;
-	s_bg_vXScVert[kXScVert] = (hrealXSumPeakScVert -> GetBinContent(j))/(hXallSumBGScVert -> GetBinContent(j));
+	s_bg_vXScVert[kXScVert] = (hrealXSumPeakScVert -> GetBinContent(j))/(hrealXSumBGScVert -> GetBinContent(j));
 	binXScVert[kXScVert] = (hrealXSumPeakScVert -> GetBinLowEdge(j)) + (hrealXSumPeakScVert -> GetBinWidth(j));
       }
     }
@@ -1447,27 +1654,29 @@ void anaBkgd2(){
     hLallSumVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumVert -> GetYaxis() -> SetTitle("counts");
     hLallSumVert -> Draw();
+    hrealLSumVert -> Draw("same");
     hLall90Vert -> Draw("same");
-    l1 -> Draw("same");
+//    l1 -> Draw("same");
     
     cLambdaXiMassVert -> cd(2);
-    nice_canv1(gPad);
-    hrealLSumVert -> SetTitle("#pi^{-} in Hades + p in FD");
-    hrealLSumVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
-    hrealLSumVert -> GetYaxis() -> SetTitle("counts");
-    hrealLSumVert -> Draw();
-    hrealL90Vert -> Draw("same");
-    l1 -> Draw("same");
-
-    cLambdaXiMassVert -> cd(3);
     nice_canv1(gPad);
     hLallSumBGVert -> SetTitle("p#pi^{-}: all, peak and BG");
     hLallSumBGVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumBGVert -> GetYaxis() -> SetTitle("counts");
-    hrealLSumPeakVert -> Draw();
+    hLallSumBGVert -> Draw();
+    hrealLSumPeakVert -> Draw("same");
     hLallSumBGVert -> Draw("same");
-    hrealLSumVert -> Draw("same");
-    l1a -> Draw("same");
+//    l1a -> Draw("same");
+
+    cLambdaXiMassVert -> cd(3);
+    nice_canv1(gPad);
+    hrealLSumBGVert -> SetTitle("p#pi^{-}: real, peak90 and BG");
+    hrealLSumBGVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hrealLSumBGVert -> GetYaxis() -> SetTitle("counts");
+    hrealLSumVert -> Draw();
+    hrealL90VertPeak -> Draw("same");
+    hrealLSumBGVert -> Draw("same");
+//    l1a -> Draw("same");
 
     cLambdaXiMassVert -> cd(4);
     nice_canv1(gPad);
@@ -1476,17 +1685,19 @@ void anaBkgd2(){
     hrealXSumVert -> GetYaxis() -> SetTitle("counts");
     hrealXSumVert -> Draw();
     hrealX90Vert -> Draw("same");
-    l1 -> Draw("same");
+//    l1 -> Draw("same");
 
     cLambdaXiMassVert -> cd(5);
     nice_canv1(gPad);
-    hXallSumBGVert -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
-    hXallSumBGVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
-    hXallSumBGVert -> GetYaxis() -> SetTitle("counts");
-    hrealXSumPeakVert -> Draw();
-    hXallSumBGVert -> Draw("same");
-    hrealXSumVert -> Draw("same");
-    l1a -> Draw("same");
+    hrealXSumBGVert -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hrealXSumBGVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
+    hrealXSumBGVert -> GetYaxis() -> SetTitle("counts");
+    hrealXSumVert -> Draw();
+    hrealX90VertPeak -> Draw("same");
+    hrealXSumBGVert -> Draw("same");
+
+    cLambdaXiMassVert -> cd(6);
+    l1 -> Draw("same");
 
     //invM scaling MTD, Vert
 /*    TCanvas *cimLsAvertsc = new TCanvas("cimLsAvertsc", "cimLsAvertsc");
@@ -1521,50 +1732,64 @@ void anaBkgd2(){
     hLallSumScVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
     hLallSumScVert -> Draw();
-    hLall90ScVert -> Draw("same");
-    l1 -> Draw("same");
+    hrealLSumScVert -> Draw("same");
+    hrealL90ScVert -> Draw("same");
+//    l1 -> Draw("same");
     
     cLambdaXiMassScVert -> cd(2);
     nice_canv1(gPad);
-    hrealLSumScVert -> SetTitle("#pi^{-} in Hades + p in FD");
-    hrealLSumScVert -> GetXaxis() -> SetTitle("M_{#pi^{-}} [MeV]");
-    hrealLSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumScVert -> Draw();
-    hrealL90ScVert -> Draw("same");
-    massL_min -> Draw("same");
-    massL_max -> Draw("same");
-    l1 -> Draw("same");
-    
+    hLallSumBGScVert -> SetTitle("p#pi^{-}: all, peak and BG");
+    hLallSumBGScVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hLallSumBGScVert -> GetYaxis() -> SetTitle("counts*#sigma");
+    hLallSumScVert -> Draw();
+    hrealLSumPeakScVert -> Draw("same");
+    hLallSumBGScVert -> Draw("same");
+//    l1a -> Draw("same");
+
     cLambdaXiMassScVert -> cd(3);
     nice_canv1(gPad);
-    hrealLSumPeakScVert -> SetTitle("p#pi^{-}: all, peak and BG");
-    hrealLSumPeakScVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
-    hrealLSumPeakScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumBGScVert -> Draw();
-    hrealLSumPeakScVert -> Draw("same");
-    hrealLSumScVert -> Draw("same");
-    l1a -> Draw("same");
+    hrealLSumBGScVert -> SetTitle("p#pi^{-}: real, peak90 and BG");
+    hrealLSumBGScVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
+    hrealLSumBGScVert -> GetYaxis() -> SetTitle("counts*#sigma");
+    hrealLSumScVert -> Draw();
+    hrealL90ScVertPeak -> Draw("same");
+    hrealLSumBGScVert -> Draw("same");
+//    l1a -> Draw("same");
+    
+    TLegend *lfin4 = new TLegend(.2,.35,.5,.8);
     
     cimLMtdlVertlSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hLallSumScVert -> SetTitle("#Lambda reconstruction, MTD_L, VERTz_L cuts");
-    hLallSumScVert -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
+    hLallSumScVert -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLallSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumScVert -> SetLineColor(4);
-    hLallSumScVert -> SetLineStyle(2);
+    hLallSumScVert -> SetLineColor(40);
+//    hLallSumScVert -> SetLineStyle(2);
     hLallSumScVert -> SetLineWidth(2);
-    hrealLSumScVert -> SetLineColor(8);
-    hrealLSumScVert -> SetLineStyle(10);
+    hrealLSumScVert -> SetLineColor(46);
+//    hrealLSumScVert -> SetLineStyle(2);
+    hrealLSumScVert -> SetLineWidth(2);
     hLallSumBGScVert -> SetMarkerStyle(21);
     hLallSumBGScVert -> SetMarkerSize(.5);
     hLallSumBGScVert -> SetMarkerColor(2);
+    hrealLSumPeakScVert -> SetLineColor(8);
+//    hrealLSumPeakScVert -> SetLineStyle(10);
+    hrealL90ScVert -> SetLineColor(1);
     hLallSumScVert -> Draw();
-    hLallSumBGScVert -> Draw("p same");
     hrealLSumScVert -> Draw("same");
+    hrealLSumBGScVert -> Draw("p same");
+//    hrealLSumPeakScVert -> Draw("same");
+    hrealL90ScVertPeak -> Draw("same");
     massL_min -> Draw("same");
     massL_max -> Draw("same");
-    lfin -> Draw("same");//<<<<<<<<<<<<<<
 
+    lfin4 -> AddEntry(hLallSumScVert, "sum all ch. (#pi^{-}-FD)");
+    lfin4 -> AddEntry(hrealLSumScVert, "sum all ch. (#pi^{-}p)");
+    lfin4 -> AddEntry(hrealLSumBGScVert, "BG=all-S");
+    //  lfin4 -> AddEntry(hrealLSumPeakScVert, "all-BG in mass range");
+    lfin4 -> AddEntry(hrealL90ScVertPeak, "S in mass range");
+    lfin4 -> Draw("same");//<<<<<<<<<<<<<<
+    
     cLambdaXiMassScVert -> cd(4);
     nice_canv1(gPad);
     hrealXSumScVert -> SetTitle("#Lambda + #pi^{-}");
@@ -1572,36 +1797,47 @@ void anaBkgd2(){
     hrealXSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
     hrealXSumScVert -> Draw();
     hrealX90ScVert -> Draw("same");
-    l1 -> Draw("same");
+//    l1 -> Draw("same");
     
     cLambdaXiMassScVert -> cd(5);
     nice_canv1(gPad);
-    hrealXSumPeakScVert -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
-    hrealXSumPeakScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
-    hrealXSumPeakScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGScVert -> Draw();
-    hrealXSumPeakScVert -> Draw("same");
-    hrealXSumScVert -> Draw("same");
-    l1a -> Draw("same");
-    
+    hrealXSumBGScVert -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
+    hrealXSumBGScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
+    hrealXSumBGScVert -> GetYaxis() -> SetTitle("counts*#sigma");
+    hrealXSumScVert -> Draw();
+    hrealX90ScVertPeak -> Draw("same");
+    hrealXSumBGScVert -> Draw("same");
+
+    cLambdaXiMassScVert -> cd(6);
+    l1 -> Draw("same");
+
+    TLegend *lfin5 = new TLegend(.2,.35,.5,.8);
+        
     cimXMtdlVertlMlMtdxVertxSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hrealXSumScVert -> SetTitle("#Xi reconstruction, MTD_L, VERTz_L, Lmass, MTD_X, VERTz_X");
-    hrealXSumScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
+    hrealXSumScVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
     hrealXSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumScVert -> SetLineColor(4);
-    //hXallSumScVert -> SetLineStyle(2);
-    //hXallSumScVert -> SetLineWidth(2);
-    hrealXSumScVert -> SetLineColor(8);
-    hXallSumBGScVert -> SetMarkerStyle(21);
-    hXallSumBGScVert -> SetMarkerSize(.5);
-    hXallSumBGScVert -> SetMarkerColor(2);
+    hrealXSumScVert -> SetLineColor(46);
+//    hrealXSumScVert -> SetLineStyle(2);
+    hrealXSumScVert -> SetLineWidth(2);
+    hrealXSumBGScVert -> SetMarkerStyle(21);
+    hrealXSumBGScVert -> SetMarkerSize(.5);
+    hrealXSumBGScVert -> SetMarkerColor(2);
+    hrealXSumPeakScVert -> SetLineColor(8);
+    hrealX90ScVertPeak -> SetLineColor(1);
     hrealXSumScVert -> Draw();
-    hXallSumBGScVert -> Draw("p same");
-    hrealXSumScVert -> Draw("same");
+    hrealXSumBGScVert -> Draw("p same");
+//    hrealXSumPeakScVert -> Draw("same");
+    hrealX90ScVertPeak -> Draw("same");
     massX_min -> Draw("same");
     massX_max -> Draw("same");
-    lfin -> Draw("same");//<<<<<<<<<<<<<<
+
+    lfin5 -> AddEntry(hrealXSumScVert, "sum all ch. (#pi^{-}p)");
+    lfin5 -> AddEntry(hrealXSumBGScVert, "BG=all-S");
+    //  lfin5 -> AddEntry(hrealXSumPeakScVert, "all-BG in mass range");
+    lfin5 -> AddEntry(hrealX90ScVertPeak, "S in mass range");
+    lfin5 -> Draw("same");//<<<<<<<<<<<<<<
 
     //
     ymax = 100000000;//hMTD_Lall1 -> GetMaximum();
@@ -1726,32 +1962,33 @@ void anaBkgd2(){
     printf("significance:\nL: noCut: %f, noCutsc: %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f, Lmasssc: %f\nX: noCut, %f, noCutsc %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", SgnL, SgnLsc, SgnLMtd, SgnLMtdsc, SgnLVert, SgnLVertsc, SgnLLmasssc, SgnX, SgnXsc, SgnXMtd, SgnXMtdsc, SgnXVert, SgnXVertsc);
 
     //effi
-    int nall = 5000; //n evt*100 -> [%]
+    int nall = 50000; //n evt*100 -> [%]
     double brLxchn = 0.64*5; //BR for Lambda->p pim * number of simulated channels with real Lambda1115
     printf("Effi rec.:\nL: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\nX: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", cntSLMtd/nall/brLxchn, cntSLscMtd/nall/brLxchn, cntSLVert/nall/brLxchn, cntSLscVert/nall/brLxchn, cntSXMtd/nall, cntSXscMtd/nall, cntSXVert/nall, cntSXscVert/nall);
 
     //3sigma Xi
     cout << "-3s:" << m3sigma << " +3s:" << p3sigma << " a:" << a << " b:" << b << endl;
     //Xi counts:
-    cout << "Xi(MTD_L, Vert_L, Lmass, MTD_X, no_sc):" << cntSXMtd << endl;
+    cout << "Xi(MTD_L, Vert_L, Lmass, MTD_X, no_sc): " << cntSXMtd << endl;
+    cout << "cntSXMtd90Peak: " << cntSXMtd90 << endl;
 
     TCanvas *cL_nocuts_sc = new TCanvas("cL_nocuts_sc", "Reconstruction of #Lambda(1115) (no cuts, #sigma sc.)", 1000, 600);
     cL_nocuts_sc -> cd();
     nice_canv1(gPad);
-    hLmass_sc -> Add(hLallSumSc);
+    hLmass_sc -> Add(hrealLSumSc);
     hLmass_sc -> Draw("nostack");
     hLmass_sc -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLmass_sc -> GetYaxis() -> SetTitle("counts*#sigma");
     hLmass_sc -> GetYaxis() -> SetRangeUser(0, 100000000);
     //hLallSumSc -> Draw("same");
     cL_nocuts_sc -> Modified();
-    lChan -> AddEntry(hLallSumSc, "sum of all channels");
+    lChan -> AddEntry(hrealLSumSc, "sum of all channels");
     lChan -> Draw("same");
 
     TCanvas *cL_rec_sc = new TCanvas("cL_rec_sc", "Reconstruction of #Lambda(1115) (all cuts, #sigma sc.)", 1000, 600);
     cL_rec_sc -> cd();
     nice_canv1(gPad);
-    hLmass_sc_rec -> Add(hLallSumScVert);//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    hLmass_sc_rec -> Add(hrealLSumScVert);
     hLmass_sc_rec -> Draw("nostack");
     hLmass_sc_rec -> GetXaxis() -> SetTitle("M_{p#pi^{-}} [MeV]");
     hLmass_sc_rec -> GetYaxis() -> SetTitle("counts*#sigma");
@@ -1785,7 +2022,7 @@ void anaBkgd2(){
     lChan -> Draw("same");
 
         
-    TFile *f = new TFile("./out_ana/out_anaBkgd_test5a.root", "RECREATE");
+    TFile *f = new TFile("./out_ana/out_anaBkgd_test5.root", "RECREATE");
     cLambdaXiMass -> Write();
     cLambdaXiMassSc -> Write();
     cLambdaXiMassMtd -> Write();
