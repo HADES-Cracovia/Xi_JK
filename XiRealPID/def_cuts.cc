@@ -283,24 +283,29 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH1F* hMLAll=new TH1F("hMLAll","reconstraced mass of all particles combination",imres,immin,immax);
     TH1F* hMLPiHades=new TH1F("hMLPiHades","reconstraced mass of all combinations: pion in HADES",imres,immin,immax);
     TH1F* hMLPiHpF=new TH1F("hMLPiHpF","reconstraced mass of all combinations: pion in HADES, proton in FD",imres,immin,immax);
+    TH1F* hrealL=new TH1F("hrealL","reconstraced mass of pion in HADES and proton in FD from #Lambda",imres,immin,immax);
     //MTD_L
     TH1F* hMLPiHadesMTD=new TH1F("hMLPiHadesMTD","reconstraced mass of all combinations: pion in Hades, distance between tracks <x",imres,immin,immax);
     TH1F* hMLPiHpFMTD=new TH1F("hMLPiHpFMTD","reconstraced mass of all combinations: pion in HADES, proton in FD, distance between tracks <x",imres,immin,immax);
+    TH1F* hrealLMTD=new TH1F("hrealLMTD","reconstraced mass of pion in HADES and proton in FD from #Lambda, distance between tracks <x",imres,immin,immax);
     //VERTz_L
     TH1F* hMLPiHadesMTDVert=new TH1F("hMLPiHadesMTDVert","reconstraced mass of all combinations: pion in Hades, distance between tracks <x, Vertz_L in range",imres,immin,immax);
     TH1F* hMLPiHpFMTDVert=new TH1F("hMLPiHpFMTDVert","reconstraced mass of all combinations: pion in HADES, proton in FD, distance between tracks <x, Vertz_L in range",imres,immin,immax);
-
+    TH1F* hrealLMTDVert=new TH1F("hrealLMTDVert","reconstraced mass of pion in HADES and proton in FD from #Lambda, distance between tracks <x, Vertz_L in range",imres,immin,immax);
+    
     //Xi
     immin=1200;
     immax=1400;
     imres=200;
     //m lambda
     TH1F* hMXAll=new TH1F("hMXAll","Mass reconstructed from Lambda and proton",imres,immin,immax);
+    TH1F* hrealX=new TH1F("hrealX","reconstraced mass of pion in HADES from #Xi and real #Lambda",imres,immin,immax);
     //MTD_X
     TH1F* hMXPiLMTD=new TH1F("hMXPiLMTD","Mass reconstructed from Lambda and proton, dist <x",imres,immin,immax);
+    TH1F* hrealXMTD=new TH1F("hrealXMTD","reconstraced mass of pion in HADES from #Xi and real #Lambda, dist <x",imres,immin,immax);
     //VERTz_L
     TH1F* hMXPiLMTDVert=new TH1F("hMXPiLMTDVert","Mass reconstructed from Lambda and proton, dist <x, #Xi_{Vert_z}",imres,immin,immax);
-    
+    TH1F* hrealXMTDVert=new TH1F("hrealXMTDVert","reconstraced mass of pion in HADES from #Xi and real #Lambda, dist <x, #Xi_{Vert_z}",imres,immin,immax);
 
     //cuts
     //Dist Lambda
@@ -347,7 +352,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	int vectorcandID, ksicandID;
 	int particleGeantID, vectorcandGeantID, ksicandGeantID;
 	int graphiID=0;
-	
+	Int_t particlecand_parentID, vectorcand_parentID, ksicand_parentID;
+		
 	for(int l=0;l<pcnt;l++)//particle candidates from HADES--------------------------------------------------
 	{ 
 	    particlecand = HCategoryManager::getObject(particlecand, fCatParticleCandSim,l);
@@ -388,6 +394,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    
 	    particlecand->calc4vectorProperties(HPhysicsConstants::mass(particleID));
 	    particleGeantID = particlecand -> getGeantPID();
+	    particlecand_parentID = particlecand -> getGeantParentPID();
 	    
 	    // cout << "tof:" << tof_h << " beta:" << beta << " p:" << mom << " q:" << charge << " mass:" << mass << endl;
 	    if(beta_h != -1 && mass_h > 0){
@@ -497,6 +504,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		
 		fwdetstrawvec -> calc4vectorProperties(HPhysicsConstants::mass(vectorcandID));
 		vectorcandGeantID = fwdetstrawvec -> getGeantPID();
+		vectorcand_parentID = fwdetstrawvec -> getGeantParentPID();
 
 		if(tof_v != -1){
 		    //cout << "dE: " << dE_v << " r: " << r_v << endl;
@@ -574,6 +582,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    if(vectorcandID == 14){ //pion in HADES, proton in FD
 			hMLPiHpF -> Fill(mass);
 			hTDpip -> Fill(distance);
+			if(particlecand_parentID==18 && vectorcand_parentID==18) //pion and proton from real Lambda
+			    hrealL -> Fill(mass);
 		    }
 		
 		    if(distance < max_distanceL){ //MTD_L cut
@@ -584,14 +594,19 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			if(vectorcandID == 14){ //pion in HADES, proton in FD
 			    hMLPiHpFMTD -> Fill(mass);
 			    hVertpip -> Fill(vertex_z);
+			    if(particlecand_parentID==18 && vectorcand_parentID==18) //pion and proton from real Lambda
+				hrealLMTD -> Fill(mass);
 			}
 		    
 			if(vertex_z > cut_vertex_z_minL && vertex_z < cut_vertex_z_max){ //VERTz_L cut
 			    //pion in HADES, anything in FD
 			    hMLPiHadesMTDVert -> Fill(mass);
 
-			    if(vectorcandID == 14) //pion in HADES, proton in FD
+			    if(vectorcandID == 14){ //pion in HADES, proton in FD
 				hMLPiHpFMTDVert -> Fill(mass);
+				if(particlecand_parentID==18 && vectorcand_parentID==18) //pion and proton from	real Lambda
+				    hrealLMTDVert -> Fill(mass);
+			    }
 			}	
 		    }
 		}
@@ -607,7 +622,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		      ksicand = HCategoryManager::getObject(ksicand, fCatParticleCandSim,f);
 		      if(!ksicand->isFlagBit(kIsUsed)) continue; // only the best tracks
 		      ksicandGeantID = ksicand -> getGeantPID();
-		      
+		      ksicand_parentID = ksicand -> getGeantParentPID();
+			    
 		      float mom_h_Xi = ksicand -> getMomentum();
 		      float charge_h_Xi = ksicand -> getCharge();
 		      float dEdx_h_Xi = ksicand -> getMdcdEdx();
@@ -651,13 +667,19 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		      if(ksicandID==9){ //particle in Hades is pion
     			  hTDpiL->Fill(distance_ksi);  //dist between L and pi
 			  hMXAll->Fill(ksiMass); //mass Xi: MTD_L, VERTzL, mL
-			  
+			  if(particlecand_parentID==18 && vectorcand_parentID==18 && ksicand_parentID==23) //pion and proton from real Lambda
+			      hrealX -> Fill(ksiMass);
+			                   
 			  if(distance_ksi < max_distanceX){
 			      hMXPiLMTD -> Fill(ksiMass);
 			      hXVertpiL -> Fill(ksiVert);
+			      if(particlecand_parentID==18 && vectorcand_parentID==18 && ksicand_parentID==23) //pion and proton from real Lambda
+				  hrealXMTD -> Fill(ksiMass);
 			  			      
 			      if(ksiVert > cut_vertex_z_minX && ksiVert < cut_vertex_z_max){
 				  hMXPiLMTDVert -> Fill(ksiMass);
+				  if(particlecand_parentID==18 && vectorcand_parentID==18 && ksicand_parentID==23) //pion and proton from real Lambda
+				      hrealXMTDVert -> Fill(ksiMass);
 			      }
 			  }
 		      }
@@ -1093,6 +1115,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hMLPiHpF -> GetXaxis() -> SetTitle("m_{p#pi^{-}} [MeV]");
     hMLPiHpF -> GetYaxis() -> SetTitle("counts");
     hMLPiHpF -> Write();
+    hrealL -> GetXaxis() -> SetTitle("m_{p#pi^{-}} [MeV]");
+    hrealL -> GetYaxis() -> SetTitle("counts");
+    hrealL -> Write();
 
     hMLPiHadesMTD -> GetXaxis() -> SetTitle("m_{p#pi^{-}} [MeV]");
     hMLPiHadesMTD -> GetYaxis() -> SetTitle("counts");
@@ -1100,6 +1125,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hMLPiHpFMTD -> GetXaxis() -> SetTitle("m_{p#pi^{-}} [MeV]");
     hMLPiHpFMTD -> GetYaxis() -> SetTitle("counts");
     hMLPiHpFMTD -> Write();
+    hrealLMTD -> GetXaxis() -> SetTitle("m_{p#pi^{-}} [MeV]");
+    hrealLMTD -> GetYaxis() -> SetTitle("counts");
+    hrealLMTD -> Write();
 
     hMLPiHadesMTDVert -> GetXaxis() -> SetTitle("m_{p#pi^{-}} [MeV]");
     hMLPiHadesMTDVert -> GetYaxis() -> SetTitle("counts");
@@ -1107,6 +1135,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hMLPiHpFMTDVert -> GetXaxis() -> SetTitle("m_{p#pi^{-}} [MeV]");
     hMLPiHpFMTDVert -> GetYaxis() -> SetTitle("counts");
     hMLPiHpFMTDVert -> Write();
+    hrealLMTDVert -> GetXaxis() -> SetTitle("m_{p#pi^{-}} [MeV]");
+    hrealLMTDVert -> GetYaxis() -> SetTitle("counts");
+    hrealLMTDVert -> Write();
 
     //Xi
     hTDpiL -> GetXaxis() -> SetTitle("dist [mm]");
@@ -1120,14 +1151,23 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hMXAll -> GetXaxis() -> SetTitle("m_{#pi^{-}#Lambda} [MeV]");
     hMXAll -> GetYaxis() -> SetTitle("counts");
     hMXAll -> Write();
-   
+    hrealX -> GetXaxis() -> SetTitle("m_{#pi^{-}#Lambda} [MeV]");
+    hrealX -> GetYaxis() -> SetTitle("counts");
+    hrealX -> Write();
+
     hMXPiLMTD -> GetXaxis() -> SetTitle("m_{#pi^{-}#Lambda} [MeV]");
     hMXPiLMTD -> GetYaxis() -> SetTitle("counts");
     hMXPiLMTD -> Write(); 
+    hrealXMTD -> GetXaxis() -> SetTitle("m_{#pi^{-}#Lambda} [MeV]");
+    hrealXMTD -> GetYaxis() -> SetTitle("counts");
+    hrealXMTD -> Write();
   
     hMXPiLMTDVert -> GetXaxis() -> SetTitle("m_{#pi^{-}#Lambda} [MeV]");
     hMXPiLMTDVert -> GetYaxis() -> SetTitle("counts");
     hMXPiLMTDVert -> Write();
+    hrealXMTDVert -> GetXaxis() -> SetTitle("m_{#pi^{-}#Lambda} [MeV]");
+    hrealXMTDVert -> GetYaxis() -> SetTitle("counts");
+    hrealXMTDVert -> Write();
     //*******************
         
     output_file->Close();
