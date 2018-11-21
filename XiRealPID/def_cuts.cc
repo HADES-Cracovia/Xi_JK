@@ -68,13 +68,21 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     }
 
     HCategory * fFwDetStrawCal = nullptr;
-    fFwDetStrawCal = HCategoryManager::getCategory(catFwDetStrawCal, kTRUE, "catFwDetStrawCalSim");
+    fFwDetStrawCal = HCategoryManager::getCategory(catFwDetStrawCal, kTRUE, "catFwDetStrawCal");
     if (!fFwDetStrawCal)
     {
         cout << "No catFwDetStrawCal!" << endl;
         exit(EXIT_FAILURE);  // do you want a brute force exit ?
     }
 
+    HCategory * fFwDetStrawCalSim = nullptr;
+    fFwDetStrawCalSim = HCategoryManager::getCategory(catFwDetStrawCal, kTRUE, "catFwDetStrawCalSim");
+    if (!fFwDetStrawCalSim)
+    {
+	cout << "No catFwDetStrawCalSim!" << endl;
+	//exit(EXIT_FAILURE);  // do you want a brute force exit ?
+    }
+    
     HCategory * fCatFwDetCandSim = nullptr;
     fCatFwDetCandSim = HCategoryManager::getCategory(catFwDetCand, kTRUE, "catFwDetCand");
     if (!fCatFwDetCandSim)
@@ -204,10 +212,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TCanvas *cBetaPID_rpc = new TCanvas("cBetaPID_rpc", "cBetaPID_rpc");
     
     //FwDet only
-    TH1F *hdE_fd = new TH1F("hdE_fd", "hdE_fd", 200, 0, 10000);
-    TH1F *hr_fd = new TH1F("hr_fd", "hr_fd", 60, 0, 6);
+    TH1F *hdE_fd = new TH1F("hdE_fd", "hdE_fd", 200, 0, .1);
+    TH1F *hr_fd = new TH1F("hr_fd", "hr_fd", 20, 0, 10);
     TH2F *hBeta_fd = new TH2F("hBeta_fd", "hBeta_fd", 400, -2000, 2000, 200, 0, 1);
     TH2F *hM22_fd = new TH2F("hM22_fd", "hM22_fd", nbins2, mom1, mom2 , nbins1, mas21, mas22);
+    TH2F *hdetof_fd = new TH2F("hdetof_fd", "hdetof_fd", nbins2, 0, .1 , nbins1, toff1, toff2);
+    
     // TCanvas *cBetaPID_fd = new TCanvas("cBetaPID_fd", "cBetaPID_fd");
 
     //ToF
@@ -331,7 +341,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     double cut_vertex_z_max = 300; // !!
     double massLmin = 1106; // !!
     double massLmax = 1126; //!!
-    
+
+    int eventNo = -1;
     //event loop *************************************************
     //*********************************************************
     for (Int_t i = 0; i < entries; i++)                   
@@ -492,12 +503,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    for(int j=0; j<vcnt; j++)//vector candidates, FwDetCand loop--------------------------------------------------
 	    {
 		fwdetstrawvec=HCategoryManager::getObject(fwdetstrawvec, fCatFwDetCandSim, j);
-		fwdetstrawcal=HCategoryManager::getObject(fwdetstrawcal, fCatFwDetCandSim, j);
-
 		float tof_v = fwdetstrawvec -> getTof();
-		float dE_v = fwdetstrawcal -> getEloss(); //E loss in the straw
-		float r_v = fwdetstrawcal -> getDriftRadius(); //drift radius
-	
+		float dE_v = 0; 
+		float r_v = 0; 
+		
 		vectorcandID = tofPID(tof_v);
 //		vectorcandID = 14;
 		hVpid -> Fill(vectorcandID);
@@ -506,14 +515,22 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		vectorcandGeantID = fwdetstrawvec -> getGeantPID();
 		vectorcand_parentID = fwdetstrawvec -> getGeantParentPID();
 
-		if(tof_v != -1){
-		    //cout << "dE: " << dE_v << " r: " << r_v << endl;
-		    hdE_fd -> Fill(dE_v/r_v);
-		    hr_fd -> Fill(r_v);
+		int nh = fwdetstrawvec -> getNofHits();
+		for(int n = 0; n < nh; n++){
+		    int m = fwdetstrawvec -> getHitIndex(n);
+		    fwdetstrawcal=HCategoryManager::getObject(fwdetstrawcal, fFwDetStrawCalSim, m);
+		    dE_v += fwdetstrawcal -> getEloss(); //E loss in the straw
+		    r_v = fwdetstrawcal -> getDriftRadius(); //drift radius
+		    if(tof_v != -1)
+			hr_fd -> Fill(r_v);
+//		    cout << "dE=" << dE_v << " dr=" << r_v << endl;
 		}
 
 		if(tof_v != -1){
 		    //	cout << "tofRec_v: " << tofRec_v << " tof_v: " << tof_v << endl;
+		    hdE_fd -> Fill(dE_v);
+		    hdetof_fd -> Fill(dE_v, tof_v);
+
 		    hTof_all_fd -> Fill(tof_v);
 		    hTof_all -> Fill(tof_v);
 		    if(vectorcandID == 9){
@@ -688,7 +705,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    } //end FD
 	} //end HADES
 
-	
+	eventNo = i;
     }//end event loop
 
     hM12_h = massPID(hM12_h);
@@ -852,10 +869,13 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     cBetaPID_rpc -> Write();
     
     //FwDet only
-    hdE_fd -> GetXaxis() -> SetTitle("dE/dx in straws [MeV/mm?]");
+    hdE_fd -> GetXaxis() -> SetTitle("dE in straws [MeV?]");
     hdE_fd -> GetYaxis() -> SetTitle("#");
     hdE_fd -> Write();
-    hr_fd -> GetXaxis() -> SetTitle("drift radius [mm?]");
+    hdetof_fd -> GetXaxis() -> SetTitle("dE in straws [MeV]");
+    hdetof_fd -> GetYaxis() -> SetTitle("tof [ns]");
+    hdetof_fd -> Write();
+    hr_fd -> GetXaxis() -> SetTitle("drift radius [mm]");
     hr_fd -> GetYaxis() -> SetTitle("#");
     hr_fd -> Write();
  /*hBeta_fd -> GetXaxis() -> SetTitle("p*q [MeV/c]");
