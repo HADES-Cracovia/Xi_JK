@@ -899,7 +899,7 @@ void anaBkgd2(){
     massX_min -> SetLineColor(kRed);
     massX_max -> SetLineColor(kRed);
     
-    TLegend *lfin = new TLegend(.2,.35,.5,.8);
+    TLegend *lfin = new TLegend(.2,.5,.35,.8);
     
     //invM scaling
     /*TCanvas *cimLsAsc = new TCanvas("cimLsAsc", "cimLsAsc");
@@ -909,8 +909,8 @@ void anaBkgd2(){
     TCanvas *cimXsRsc = new TCanvas("cimXsRsc", "cimXsRsc");
     TCanvas *cimXsBGsc = new TCanvas("cimXsBGsc", "cimXsBGsc");
     */
-    TCanvas *cimLNoCutsSc = new TCanvas("cimLNoCutsSc","cimLNoCutsSc"); //inv mass Lambda spectrum, no cuts, cr sec scaling
-    TCanvas *cimXMtdlVertlMlSc = new TCanvas("cimXMtdlVerlMlSc","cimXMtdlVerlMlSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass cuts, cr sec scaling
+    TCanvas *cimLNoCutsSc = new TCanvas("cimLNoCutsSc","cimLNoCutsSc", 1000, 800); //inv mass Lambda spectrum, no cuts, cr sec scaling
+    TCanvas *cimXMtdlVertlMlSc = new TCanvas("cimXMtdlVerlMlSc","cimXMtdlVerlMlSc", 1000, 800); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass cuts, cr sec scaling
     //>>>>>>>>>>>>>>>>>
     cLambdaXiMassSc -> cd(1);
     nice_canv1(gPad);
@@ -1097,7 +1097,7 @@ void anaBkgd2(){
     l1a -> Draw("same");
     */
 
-    TLegend *lfin1 = new TLegend(.2,.35,.5,.8);
+    TLegend *lfin1 = new TLegend(.2,.5,.35,.8);
 
     cimXMtdlVertlMlSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
@@ -1457,8 +1457,8 @@ void anaBkgd2(){
     TCanvas *cimXsRmtdsc = new TCanvas("cimXsRmtdsc", "cimXsRmtdsc");
     TCanvas *cimXsBGmtdsc = new TCanvas("cimXsBGmtdsc", "cimXsBGmtdsc");
 */
-    TCanvas *cimLMtdlSc = new TCanvas("cimLMtdlSc","cimLMtdlSc"); //inv mass Lambda spectrum, MTD_L cut, cr sec scaling
-    TCanvas *cimXMtdlVertlMlMtdxSc = new TCanvas("cimXMtdlVerlMlMtdxSc","cimXMtdlVerlMlMtdxSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X cuts, cr sec scaling
+    TCanvas *cimLMtdlSc = new TCanvas("cimLMtdlSc","cimLMtdlSc", 1000, 800); //inv mass Lambda spectrum, MTD_L cut, cr sec scaling
+    TCanvas *cimXMtdlVertlMlMtdxSc = new TCanvas("cimXMtdlVerlMlMtdxSc","cimXMtdlVerlMlMtdxSc", 1000, 800); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X cuts, cr sec scaling
     
     cLambdaXiMassScMtd -> cd(1);
     nice_canv1(gPad);
@@ -1490,7 +1490,7 @@ void anaBkgd2(){
     hrealLSumBGScMtd -> Draw("same");
 //    l1a -> Draw("same");
     
-    TLegend *lfin2 = new TLegend(.2,.35,.5,.8);
+    TLegend *lfin2 = new TLegend(.2,.5,.35,.8);
     
     cimLMtdlSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
@@ -1545,7 +1545,7 @@ void anaBkgd2(){
     l1 -> Draw();
     l2 -> Draw("same");
 
-    TLegend *lfin3 = new TLegend(.2,.35,.5,.8);
+    TLegend *lfin3 = new TLegend(.2,.5,.35,.8);
         
     cimXMtdlVertlMlMtdxSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
@@ -1850,8 +1850,8 @@ void anaBkgd2(){
     TCanvas *cimXsRvertsc = new TCanvas("cimXsRvertsc", "cimXsRvertsc");
     TCanvas *cimXsBGvertsc = new TCanvas("cimXsBGvertsc", "cimXsBGvertsc");
 */    
-    TCanvas *cimLMtdlVertlSc = new TCanvas("cimLMtdlVertlSc","cimLMtdlVertlSc"); //inv mass Lambda spectrum, MTD_L, VERTz_L cuts, cr sec scaling
-    TCanvas *cimXMtdlVertlMlMtdxVertxSc = new TCanvas("cimXMtdlVerlMlMtdxVertxSc","cimXMtdlVerlMlMtdxVertxSc"); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X, VERTz_X cuts, cr sec scaling
+    TCanvas *cimLMtdlVertlSc = new TCanvas("cimLMtdlVertlSc","cimLMtdlVertlSc", 1000, 800); //inv mass Lambda spectrum, MTD_L, VERTz_L cuts, cr sec scaling
+    TCanvas *cimXMtdlVertlMlMtdxVertxSc = new TCanvas("cimXMtdlVerlMlMtdxVertxSc","cimXMtdlVerlMlMtdxVertxSc", 1000, 800); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X, VERTz_X cuts, cr sec scaling
  
     Double_t ymax;
     ymax = 2300000;
@@ -1899,7 +1899,7 @@ void anaBkgd2(){
     hrealLSumBGScVert -> Draw("same");
 //    l1a -> Draw("same");
     
-    TLegend *lfin4 = new TLegend(.2,.35,.5,.8);
+    TLegend *lfin4 = new TLegend(.2,.5,.35,.8);
     
     cimLMtdlVertlSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
@@ -1956,7 +1956,7 @@ void anaBkgd2(){
     l1 -> Draw();
     l2 -> Draw("same");
 
-    TLegend *lfin5 = new TLegend(.2,.35,.5,.8);
+    TLegend *lfin5 = new TLegend(.2,.5,.35,.8);
         
     cimXMtdlVertlMlMtdxVertxSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
@@ -2117,7 +2117,7 @@ void anaBkgd2(){
     //Xi counts:
     cout << "Xi(MTD_L, Vert_L, Lmass, MTD_X, no_sc): " << cntSXMtd << endl;
   
-    TCanvas *cL_nocuts_sc = new TCanvas("cL_nocuts_sc", "Reconstruction of #Lambda(1115) (no cuts, #sigma sc.)", 1000, 600);
+    TCanvas *cL_nocuts_sc = new TCanvas("cL_nocuts_sc", "Reconstruction of #Lambda(1115) (no cuts, #sigma sc.)", 1000, 800);
     cL_nocuts_sc -> cd();
     nice_canv1(gPad);
     hLmass_sc -> Add(hrealLSumSc);
@@ -2130,7 +2130,7 @@ void anaBkgd2(){
     lChan -> AddEntry(hrealLSumSc, "sum of all channels");
     lChan -> Draw("same");
 
-    TCanvas *cL_rec_sc = new TCanvas("cL_rec_sc", "Reconstruction of #Lambda(1115) (all cuts, #sigma sc.)", 1000, 600);
+    TCanvas *cL_rec_sc = new TCanvas("cL_rec_sc", "Reconstruction of #Lambda(1115) (all cuts, #sigma sc.)", 1000, 800);
     cL_rec_sc -> cd();
     nice_canv1(gPad);
     hLmass_sc_rec -> Add(hrealLSumScVert);
@@ -2142,7 +2142,7 @@ void anaBkgd2(){
     cL_rec_sc -> Modified();
     lChan -> Draw("same");
 
-    TCanvas *cX_nocuts_sc = new TCanvas("cXi_nocuts_sc", "Reconstruction of #Xi^{-} (MTD_L, MassL, #sigma sc.)", 1000, 600);
+    TCanvas *cX_nocuts_sc = new TCanvas("cXi_nocuts_sc", "Reconstruction of #Xi^{-} (MTD_L, MassL, #sigma sc.)", 1000, 800);
     cX_nocuts_sc -> cd();
     nice_canv1(gPad);
     hXmass_sc -> Add(hrealXSumSc); 
@@ -2154,7 +2154,7 @@ void anaBkgd2(){
     cX_nocuts_sc -> Modified();
     lChan -> Draw("same");
 
-    TCanvas *cX_fin_sc = new TCanvas("cXi_fin_sc", "Reconstruction of #Xi^{-} (all cuts, #sigma sc.)", 1000, 600);
+    TCanvas *cX_fin_sc = new TCanvas("cXi_fin_sc", "Reconstruction of #Xi^{-} (all cuts, #sigma sc.)", 1000, 800);
     cX_fin_sc -> cd();
     nice_canv1(gPad);
     hXmass_sc_fin -> Add(hrealXSumScMtd);
