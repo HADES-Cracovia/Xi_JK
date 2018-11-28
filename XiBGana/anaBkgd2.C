@@ -2,9 +2,9 @@ void nice_canv1(TVirtualPad * c)
 {
     c -> SetBottomMargin(0.15);
     c -> SetLeftMargin(0.15);
-    gStyle -> SetTitleSize(0.07, "xy");
-    gStyle -> SetLabelSize(0.06, "xy");
-    gStyle -> SetTitleOffset(1.1, "xy");
+    gStyle -> SetTitleSize(0.035, "xy");
+    gStyle -> SetLabelSize(0.035, "xy");
+    gStyle -> SetTitleOffset(1.2, "xy");
 }
 
 //void anaBkgd2(char* inpath){
@@ -112,7 +112,7 @@ void anaBkgd2(){
     //Lambda1115
     TH1F *hLVertex_sig = new TH1F("hLVertex_sig", "hLVertex_sig", 150, -100, 500); //Lambda1115 vertex_z signal
     TH1F *hLVertex_bg = new TH1F("hLVertex_bg", "hLVertex_bg", 150, -100, 500); //Lambda1115 vertex_z bg
-    TH1F *hLVertex_bg_sum = new TH1F("hLVertex_bg_sum", "#Lambda/(1115/) vertex reconstruction --- background channels sum", 150, -100, 500); //Xi vertex_z bg sum
+    TH1F *hLVertex_bg_sum = new TH1F("hLVertex_bg_sum", "#Lambda/(1115/) vertex reconstruction --- backgroundchannels sum", 150, -100, 500); //Xi vertex_z bg sum
 
     TH1F *hLallSumVert = new TH1F("hLallSumVert", "hLallSumVert", nbinsL, minL, maxL);
     TH1F *hrealLSumVert = new TH1F("hrealLSumVert", "hrealLSumVert", nbinsL, minL, maxL);
@@ -205,6 +205,10 @@ void anaBkgd2(){
     int a, b;
     double cntSL, cntSLsc, cntBL, cntBLsc, cntSX, cntSXsc, cntBX, cntBXsc, cntSLMtd, cntSLscMtd, cntSLLmass, cntSLscLmass, cntBLscLmass, cntSXMtd, cntSXscMtd, cntBLMtd, cntBLscMtd, cntBXMtd, cntBXscMtd, cntSLVert, cntSLscVert, cntSXVert, cntSXscVert, cntBLVert, cntBLscVert, cntBXVert, cntBXscVert, cntSXMtd90;
     double cntSLGeant, cntSLscGeant, cntSXGeant, cntSXscGeant, cntSLMtdGeant, cntSLscMtdGeant, cntSXMtdGeant, cntSXscMtdGeant, cntSLVertGeant, cntSLscVertGeant, cntSXVertGeant, cntSXscVertGeant;
+    double nallL = 0;
+    double nallX = 0;
+    double ninch = 0;
+    
     //channels
     char chanNo[64];
     int chan[] = {90, 10, 21, 22, 23, 62, 100};
@@ -249,6 +253,8 @@ void anaBkgd2(){
     lChan -> SetBorderSize(0);
     lChan -> SetTextSize(.04);
 
+    TCanvas *ctmp = new TCanvas("ctmp", "ctmp");
+    
     for(int i = 0; i < 7; i++){
       sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_test5c.root", chan[i]);
       	TFile *f1 = TFile::Open(chanNo, "READ");
@@ -259,6 +265,9 @@ void anaBkgd2(){
 	ptch -> SetTextSize(0.07);
 	ptch -> AddText(reac[i].c_str());
 
+	TH1I *tmpevnt = (TH1I*)f1 -> Get("heventNo");
+	ninch = tmpevnt -> GetEntries();
+	
 	//no cuts
 	TH1F *hAllHFd = (TH1F*)f1->Get("hMLAll"); //all combinations of H-FD
 	TH1F *hLall = (TH1F*)f1->Get("hMLPiHades"); //pi in H, anth in FD
@@ -591,6 +600,13 @@ void anaBkgd2(){
 	  hrealX90ScVert -> SetLineColor(kBlack);
 
           clLambdaScVertrec -> SetLineWidth(2);
+
+	  nallX += ninch;
+	  cout << "nallX1=" << nallX << endl;
+	}
+	if(i!=1 &&  i!=6){
+	    nallL += ninch;
+	    cout << "nallL1=" << nallL << endl;
 	}
 
 
@@ -657,7 +673,7 @@ void anaBkgd2(){
 //    hrealLSumBGSc -> Add(hrealLSumSc, hLGeantIDScPeak, 1, -1);
 
     //BG subtr.
-    float BGpar = 5;
+    float BGpar = 6;
     TString nameL = "hrealLSumCl";
     TString nameLsc = "hrealLSumScCl";
     TH1F *hrealLSumCl = (TH1F*)hrealLSum -> Clone();
@@ -673,8 +689,58 @@ void anaBkgd2(){
     hrealLSumBGSc = (TH1F*)gDirectory -> Get(nameLscbg);
     hrealLSumPeak -> Add(hrealLSumCl, hrealLSumBG, 1, -1);
     hrealLSumPeakSc -> Add(hrealLSumScCl, hrealLSumBGSc, 1, -1);
-    //end BG subtr.
+
     
+    /*
+    TString nameL = "hrealLSumCl";
+    TH1F *hrealLSumCl = (TH1F*)hrealLSum -> Clone();
+    TF1 * ffL = new TF1("ffL", "gaus(0)+gaus(3)+pol5(6)", 1080,1190);
+    ffL -> SetParameters(1000,1115,3,1000,1115,3,0,0,0,0,0);
+    hrealLSumCl -> Fit("ffL", "V+");
+    hrealLSumCl -> SetName(nameL);
+    TF1 * ffLsig = new TF1("ffLsig", "gaus(0)+gaus(3)", 1080,1190);
+    ffLsig -> SetParameters(1000,1115,3,1000,1115,3);
+    hrealLSumCl -> Fit(ffLsig);
+    TString bg = "_background";
+    TString nameLbg = nameL + bg;
+    TF1 * ffLbg = new TF1("ffLbg", "pol5(0)", 1080,1190);
+    ffLbg -> SetParameters(0,0,0,0,0);
+    hrealLSumCl -> Fit(ffLbg);
+
+    hrealLSumBG = (TH1F*)hrealLSumCl -> Clone("hrealLSumBG");
+    hrealLSumBG -> Add(ffLsig, -1);
+
+    hrealLSumPeak = (TH1F*)hrealLSumCl -> Clone("hrealLSumPeak");
+    hrealLSumPeak -> Add(ffLbg, -1);
+ 
+    //scaled
+    TString nameLsc = "hrealLSumScCl";
+    TH1F *hrealLSumScCl = (TH1F*)hrealLSumSc -> Clone();
+    TF1 * ffLsc = new TF1("ffLsc", "gaus(0)+gaus(3)+pol5(6)", 1080,1190);
+    ffLsc -> SetParameters(1000,1115,3,1000,1115,3,0,0,0,0,0);
+    hrealLSumScCl -> Fit("ffLsc", "V+");
+    hrealLSumScCl -> SetName(nameLsc);
+    TF1 * ffLsigsc = new TF1("ffLsigsc", "gaus(0)+gaus(3)", 1080,1190);
+//    ffLsigsc -> SetParameters(1000,1115,3,1000,1115,3);
+    //hrealLSumScCl -> Fit(ffLsig);
+    TString nameLscbg = nameLsc + bg;
+    TF1 * ffLbgsc = new TF1("ffLbgsc", "pol5(0)", 1080,1190);
+//    ffLbgsc -> SetParameters(0,0,0,0,0);
+    //hrealLSumScCl -> Fit(ffLbg);
+    double par[11];
+    ffLsc -> GetParameters(par);*/
+/*    ffLsigsc -> SetParameters(par);
+    ffLsigsc -> Draw("same");
+    ffLbgsc -> SetParameters(&par[6]);
+    ffLbgsc -> Draw("same");
+*/
+    /* hrealLSumBGSc = (TH1F*)hrealLSumScCl -> Clone("hrealLSumBGSc");
+    hrealLSumBGSc -> Add(ffLsigsc, -1);
+    
+    hrealLSumPeakSc = (TH1F*)hrealLSumScCl -> Clone("hrealLSumPeakSc");
+    hrealLSumPeakSc -> Add(ffLbgsc, -1);  
+    //end BG subtr.
+    */
     hrealLSumBG -> SetLineColor(kRed);
     hrealLSumBGSc -> SetLineColor(kRed);
     hrealLSum -> SetLineColor(8);
@@ -767,7 +833,7 @@ void anaBkgd2(){
 //    hrealXSumBGSc -> Add(hrealXSumSc, hXGeantIDScPeak, 1, -1); 
 
     //BG subtr.
-//    float BGpar = 5;
+//    float BGpar = 7;
     TString nameX = "hrealXSumCl";
     TString nameXsc = "hrealXSumScCl";
     TH1F *hrealXSumCl = (TH1F*)hrealXSum -> Clone();
@@ -857,21 +923,6 @@ void anaBkgd2(){
     hrealLSumBG -> Draw("same");
 //    l1a -> Draw("same");
     
-/*    cLambdaXiMass -> cd(4);
-    nice_canv1(gPad);
-    hXallSumBG -> SetTitle("p2#pi^{-}: all, peak and BG");
-    hXallSumBG -> GetXaxis() -> SetTitle("M_{p2#pi^{-}} [MeV]");
-    hXallSumBG -> GetYaxis() -> SetTitle("counts");
-    hXallSum -> Draw();
-    hrealXSumPeak -> Draw("same");
-    hXallSumBG -> Draw("same");*/
-        /*hrealXSum -> SetTitle("#Lambda + #pi^{-}");
-    hrealXSum -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
-    hrealXSum -> GetYaxis() -> SetTitle("counts");
-    hrealXSum -> Draw();
-    hrealX90 -> Draw("same");*/
-//    l1 -> Draw("same");
-    
     cLambdaXiMass -> cd(4);
     nice_canv1(gPad);
     hrealXSumBG -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
@@ -901,14 +952,6 @@ void anaBkgd2(){
     
     TLegend *lfin = new TLegend(.2,.5,.35,.8);
     
-    //invM scaling
-    /*TCanvas *cimLsAsc = new TCanvas("cimLsAsc", "cimLsAsc");
-    TCanvas *cimLsRsc = new TCanvas("cimLsRsc", "cimLsRsc");
-    TCanvas *cimLsBGsc = new TCanvas("cimLsBGsc", "cimLsBGsc");
-    TCanvas *cimXsAsc = new TCanvas("cimXsAsc", "cimXsAsc");
-    TCanvas *cimXsRsc = new TCanvas("cimXsRsc", "cimXsRsc");
-    TCanvas *cimXsBGsc = new TCanvas("cimXsBGsc", "cimXsBGsc");
-    */
     TCanvas *cimLNoCutsSc = new TCanvas("cimLNoCutsSc","cimLNoCutsSc", 1000, 800); //inv mass Lambda spectrum, no cuts, cr sec scaling
     TCanvas *cimXMtdlVertlMlSc = new TCanvas("cimXMtdlVerlMlSc","cimXMtdlVerlMlSc", 1000, 800); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass cuts, cr sec scaling
     //>>>>>>>>>>>>>>>>>
@@ -922,17 +965,6 @@ void anaBkgd2(){
     hrealL90Sc -> Draw(" same");
 //    l1 -> Draw("same");
     
-    /*cimLsAsc -> cd();
-    nice_canv1(gPad);
-    hLallSumSc -> SetTitle("#pi^{-} in Hades - anything (p) in FwDet");
-    hLallSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hLallSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLall90Sc -> SetMarkerStyle(20);
-    hLall90Sc -> SetMarkerSize(.5);
-    hLallSumSc -> Draw("pE1");
-    hLall90Sc -> Draw("p same");
-    l1 -> Draw("same");
-    */
     cLambdaXiMassSc -> cd(2);
     nice_canv1(gPad);
     hLallSumBGSc -> SetTitle("p#pi^{-}: all, peak and BG");
@@ -943,20 +975,6 @@ void anaBkgd2(){
     hLallSumBGSc -> Draw("same");
 //    l1a -> Draw("same");
 
-    /*    cimLsRsc -> cd();
-    nice_canv1(gPad);
-    hrealLSumSc -> SetTitle("Real #Lambda: #pi^{-} and p from #Lambda(1115)");
-    hrealLSumSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hrealLSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealLSumSc -> SetMarkerStyle(20);
-    hrealLSumSc -> SetMarkerSize(.5);
-    hrealLSumSc -> SetMarkerColor(4);
-    hrealL90Sc -> SetMarkerStyle(20);
-    hrealL90Sc -> SetMarkerSize(.5);
-    hrealLSumSc -> Draw("pE1");
-    hrealL90Sc -> Draw("p same");
-    l1 -> Draw("same");
-*/
     cLambdaXiMassSc -> cd(3);
     nice_canv1(gPad);
     hrealLSumBGSc -> SetTitle("p#pi^{-}: real, Geant and BG");
@@ -967,21 +985,6 @@ void anaBkgd2(){
     hrealLSumBGSc -> Draw("same");
 //    l1a -> Draw("same");
     
-/*    cimLsBGsc -> cd();
-    nice_canv1(gPad);
-    hLallSumBGSc -> SetTitle("Real #Lambda peak and BG");
-    hLallSumBGSc -> GetXaxis() -> SetTitle("M_{p#pi_{-}} [MeV]");
-    hLallSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hLallSumBGSc -> SetMarkerStyle(20);
-    hLallSumBGSc -> SetMarkerSize(.5);
-    hLallSumBGSc -> SetMarkerColor(2);
-    hrealLSumPeakSc -> SetMarkerStyle(20);
-    hrealLSumPeakSc -> SetMarkerSize(.5);
-    hrealLSumPeakSc -> SetMarkerColor(8);
-    hLallSumBGSc -> Draw("pE1");
-    hrealLSumPeakSc -> Draw("p same");
-    l1a -> Draw("same");
-*/
     cimLNoCutsSc -> cd();//<<<<<<<<<<<<<<
     nice_canv1(gPad);
     hrealLSumSc -> SetTitle("#Lambda reconstruction, no cuts");
@@ -1005,7 +1008,7 @@ void anaBkgd2(){
     hLGeantIDSumSc -> Draw("same");
     massL_min -> Draw("same");
     massL_max -> Draw("same");
-
+    
 //    lfin -> AddEntry(hLallSumSc, "sum all ch. (#pi^{-}-FD)");
     lfin -> AddEntry(hrealLSumSc, "sum all ch. (#pi^{-}p)");
     lfin -> AddEntry(hrealLSumBGSc, "BG");
@@ -1013,61 +1016,6 @@ void anaBkgd2(){
     lfin -> AddEntry(hLGeantIDSumSc, "real #Lambda");
     lfin -> Draw("same");//<<<<<<<<<<<<<<
 
-/*    cLambdaXiMassSc -> cd(4);
-    nice_canv1(gPad);
-    hXallSumBGSc -> SetTitle("p2#pi^{-}: all, peak and BG");
-    hXallSumBGSc -> GetXaxis() -> SetTitle("M_{p2#pi^{-}} [MeV]");
-    hXallSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumSc -> Draw();
-    hrealXSumPeakSc -> Draw("same");
-    hrXallSumBGSc -> Draw("same");*/
-//    l1 -> Draw("same");
-    
-/*    cimXsAsc -> cd();
-    nice_canv1(gPad);
-    hrealXSumSc -> SetTitle("2#pi^{-} in Hades - anything (p) in FwDet");
-    hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumSc -> SetMarkerStyle(20);
-    hrealXSumSc -> SetMarkerSize(.5);
-    hrealXSumSc -> SetMarkerColor(4);
-    hrealX90Sc -> SetMarkerStyle(20);
-    hrealX90Sc -> SetMarkerSize(.5);
-    hrealXSumSc -> Draw("pE1");
-    hrealX90Sc -> Draw("p same");
-    l1 -> Draw("same");
-		     */  
-    /* cLambdaXiMassSc -> cd(5);
-    nice_canv1(gPad);
-    hXrealLpimSumSc -> SetTitle("#pi^{-} and p from #Lambda(1115) + #pi^{-} in Hades");
-    hXrealLpimSumSc -> GetXaxis() -> SetTitle("invM [MeV]");
-    hXrealLpimSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXrealLpimSumSc -> Draw();
-    hXrealLpim90Sc -> Draw("same");
-    */
-/*    cLambdaXiMassSc -> cd(5);
-    nice_canv1(gPad);
-    hrealXSumSc -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumSc -> Draw("pE1");
-    hrealX90Sc -> Draw("p same");
-    l1 -> Draw("same");
-		     *//*  
-    cimXsRsc -> cd();
-    nice_canv1(gPad);
-    hrealXSumSc -> SetTitle("Real #Xi: #pi^{-} and p from #Lambda(1115) + #pi^{-} from #Xi");
-    hrealXSumSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hrealXSumSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hrealXSumSc -> SetMarkerStyle(20);
-    hrealXSumSc -> SetMarkerSize(.5);
-    hrealXSumSc -> SetMarkerColor(4);
-    hrealX90Sc -> SetMarkerStyle(20);
-    hrealX90Sc -> SetMarkerSize(.5);
-    hrealXSumSc -> Draw("pE1");
-    hrealX90Sc -> Draw("p same");
-    l1 -> Draw("same");
-		     */
     cLambdaXiMassSc -> cd(4);
     nice_canv1(gPad);
     hrealXSumBGSc -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
@@ -1081,21 +1029,6 @@ void anaBkgd2(){
     l1 -> Draw();
     l2 -> Draw("same");
     
-    /*cimXsBGsc -> cd();
-    nice_canv1(gPad);
-    hXallSumBGSc -> SetTitle("Real #Xi^{-} peak and BG");
-    hXallSumBGSc -> GetXaxis() -> SetTitle("M_{#Lambda#pi_{-}} [MeV]");
-    hXallSumBGSc -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumBGSc -> SetMarkerStyle(20);
-    hXallSumBGSc -> SetMarkerSize(.5);
-    hXallSumBGSc -> SetMarkerColor(2);
-    hrealXSumPeakSc -> SetMarkerStyle(20);
-    hrealXSumPeakSc -> SetMarkerSize(.5);
-    hrealXSumPeakSc -> SetMarkerColor(8);
-    hXallSumBGSc -> Draw("pE1");
-    hrealXSumPeakSc -> Draw("p same");
-    l1a -> Draw("same");
-    */
 
     TLegend *lfin1 = new TLegend(.2,.5,.35,.8);
 
@@ -1182,7 +1115,7 @@ void anaBkgd2(){
 //   hLallSumBGScMtd -> Add(hLallSumScMtd, hrealLSumPeakScClMtd, 1, -1); 
 //    hrealLSumBGMtd -> Add(hrealLSumMtd, hLGeantIDMtdPeak, 1, -1); 
 //   hrealLSumBGScMtd -> Add(hrealLSumScMtd, hLGeantIDScMtdPeak, 1, -1); 
-
+    ctmp -> cd();
     //BG subtr.                                                                          
     //    float BGpar = 5;
     TString nameLMtd = "hrealLSumMtdCl";
@@ -1341,7 +1274,7 @@ void anaBkgd2(){
 //    hXallSumBGScMtd -> Add(hrealXSumScMtd, hrealXSumPeakScClMtd, 1, -1); 
 //    hrealXSumBGMtd -> Add(hrealXSumMtd, hXGeantIDMtdPeak, 1, -1); 
 //    hrealXSumBGScMtd -> Add(hrealXSumScMtd, hXGeantIDScMtdPeak, 1, -1); 
-
+    ctmp -> cd();
     //BG subtr.
     //    float BGpar = 5;
     TString nameXMtd = "hrealXSumMtdCl";
@@ -1425,16 +1358,6 @@ void anaBkgd2(){
 
 //    l1a -> Draw("same");
 
-/*    cLambdaXiMassMtd -> cd(4);
-    nice_canv1(gPad);
-    hXallSumBGMtd -> SetTitle("p2#pi^{-}: all, peak and BG");
-    hXallSumBGMtd -> GetXaxis() -> SetTitle("M_{p2#pi^{-}} [MeV]");
-    hXallSumBGMtd -> GetYaxis() -> SetTitle("counts");
-    hXallSumMtd -> Draw();
-    hrealXSumMtdPeak -> Draw("same");
-    hXallSumBGMtd -> Draw("same");*/
-//   l1 -> Draw("same");
-
     cLambdaXiMassMtd -> cd(5);
     nice_canv1(gPad);
     hrealXSumBGMtd -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
@@ -1449,14 +1372,6 @@ void anaBkgd2(){
     l1 -> Draw();
     l2 -> Draw("same");
 
-    //invM scaling MTD
-/*    TCanvas *cimLsAmtdsc = new TCanvas("cimLsAmtdsc", "cimLsAmtdsc");
-    TCanvas *cimLsRmtdsc = new TCanvas("cimLsRmtdsc", "cimLsRmtdsc");
-    TCanvas *cimLsBGmtdsc = new TCanvas("cimLsBGmtdsc", "cimLsBGmtdsc");
-    TCanvas *cimXsAmtdsc = new TCanvas("cimXsAmtdsc", "cimXsAmtdsc");
-    TCanvas *cimXsRmtdsc = new TCanvas("cimXsRmtdsc", "cimXsRmtdsc");
-    TCanvas *cimXsBGmtdsc = new TCanvas("cimXsBGmtdsc", "cimXsBGmtdsc");
-*/
     TCanvas *cimLMtdlSc = new TCanvas("cimLMtdlSc","cimLMtdlSc", 1000, 800); //inv mass Lambda spectrum, MTD_L cut, cr sec scaling
     TCanvas *cimXMtdlVertlMlMtdxSc = new TCanvas("cimXMtdlVerlMlMtdxSc","cimXMtdlVerlMlMtdxSc", 1000, 800); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X cuts, cr sec scaling
     
@@ -1519,19 +1434,9 @@ void anaBkgd2(){
     lfin2 -> AddEntry(hrealLSumScMtd, "sum all ch. (#pi^{-}p)");
     lfin2 -> AddEntry(hrealLSumBGScMtd, "BG");
     lfin2 -> AddEntry(hrealLSumMtdPeakSc, "peak=all-BG");
-    lfin2 -> AddEntry(hLGeantIDSumScMtd, "real Xi^{-}#");
+    lfin2 -> AddEntry(hLGeantIDSumScMtd, "real #Lambda");
     lfin2 -> Draw("same");//<<<<<<<<<<<<<<
 
-/*    cLambdaXiMassScMtd -> cd(4);
-    nice_canv1(gPad);
-    hXallSumScMtd -> SetTitle("p2#pi^{-}: all, peak and BG");
-    hXallSumScMtd -> GetXaxis() -> SetTitle("M_{p2#pi^{-}} [MeV]");
-    hXallSumScMtd -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumScMtd -> Draw();
-    hrealXSumScMtd -> Draw("same");
-    hXallSumBGScMtd -> Draw("same");*/
-//    l1 -> Draw("same");
-    
     cLambdaXiMassScMtd -> cd(4);
     nice_canv1(gPad);
     hrealXSumBGScMtd -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
@@ -1567,7 +1472,7 @@ void anaBkgd2(){
     massX_min -> Draw("same");
     massX_max -> Draw("same");
 
-    lfin3 -> AddEntry(hrealXSumScMtd, "sum all ch. (#pi^{-}p)");
+    lfin3 -> AddEntry(hrealXSumScMtd, "sum all ch. (#Lambda#pi^{-})");
     lfin3 -> AddEntry(hrealXSumBGScMtd, "BG");
     lfin3 -> AddEntry(hrealXSumMtdPeakSc, "peak=all-BG");
     lfin3 -> AddEntry(hXGeantIDSumScMtd, "real #Xi^{-}");
@@ -1629,7 +1534,7 @@ void anaBkgd2(){
 //    hLallSumBGScVert -> Add(hLallSumScVert, hrealLSumPeakScClVert, 1, -1);
 //    hrealLSumBGVert -> Add(hrealLSumVert, hLGeantIDVertPeak, 1, -1); 
 //    hrealLSumBGScVert -> Add(hrealLSumScVert, hLGeantIDScVertPeak, 1, -1); 
-
+    ctmp -> cd();
     //BG subtr.
     //    float BGpar = 5;
     TString nameLVert = "hrealLSumVertCl";
@@ -1736,7 +1641,7 @@ void anaBkgd2(){
 //    hXallSumBGScVert -> Add(hrealXSumScVert, hrealXSumPeakScClVert, 1, -1); 
 //    hrealXSumBGVert -> Add(hrealXSumVert, hXGeantIDVertPeak, 1, -1); 
 //    hrealXSumBGScVert -> Add(hrealXSumScVert, hXGeantIDScVertPeak, 1, -1); 
-
+    ctmp -> cd();
     //BG subtr.
     //    float BGpar = 5;
     TString nameXVert = "hrealXSumVertCl";
@@ -1819,16 +1724,6 @@ void anaBkgd2(){
     hrealLSumBGVert -> Draw("same");
 //    l1a -> Draw("same");
 
-/*    cLambdaXiMassVert -> cd(4);
-    nice_canv1(gPad);
-    hXallSumVert -> SetTitle("p2#pi^{-}: all, peak, BG");
-    hXallSumVert -> GetXaxis() -> SetTitle("M_{#Lambda#pi^{-}} [MeV]");
-    hXallSumVert -> GetYaxis() -> SetTitle("counts");
-    hXallSumVert -> Draw();
-    hrealXSumVert -> Draw("same");
-    hXallSumBGVert -> Draw();*/
-//    l1 -> Draw("same");
-
     cLambdaXiMassVert -> cd(4);
     nice_canv1(gPad);
     hrealXSumBGVert -> SetTitle("#Xi^{-}: #Lambda#pi^{-} all, peak and BG");
@@ -1842,14 +1737,6 @@ void anaBkgd2(){
     l1 -> Draw();
     l2 -> Draw("same");
 
-    //invM scaling MTD, Vert
-/*    TCanvas *cimLsAvertsc = new TCanvas("cimLsAvertsc", "cimLsAvertsc");
-    TCanvas *cimLsRvertsc = new TCanvas("cimLsRvertsc", "cimLsRvertsc");
-    TCanvas *cimLsBGvertsc = new TCanvas("cimLsBGvertsc", "cimLsBGvertsc");
-    TCanvas *cimXsAvertsc = new TCanvas("cimXsAvertsc", "cimXsAvertsc");
-    TCanvas *cimXsRvertsc = new TCanvas("cimXsRvertsc", "cimXsRvertsc");
-    TCanvas *cimXsBGvertsc = new TCanvas("cimXsBGvertsc", "cimXsBGvertsc");
-*/    
     TCanvas *cimLMtdlVertlSc = new TCanvas("cimLMtdlVertlSc","cimLMtdlVertlSc", 1000, 800); //inv mass Lambda spectrum, MTD_L, VERTz_L cuts, cr sec scaling
     TCanvas *cimXMtdlVertlMlMtdxVertxSc = new TCanvas("cimXMtdlVerlMlMtdxVertxSc","cimXMtdlVerlMlMtdxVertxSc", 1000, 800); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X, VERTz_X cuts, cr sec scaling
  
@@ -1912,9 +1799,9 @@ void anaBkgd2(){
 //    hrealLSumScVert -> SetLineColor(46);
 //    hrealLSumScVert -> SetLineStyle(2);
     hrealLSumScVert -> SetLineWidth(2);
-    hLallSumBGScVert -> SetMarkerStyle(21);
-    hLallSumBGScVert -> SetMarkerSize(.5);
-    hLallSumBGScVert -> SetMarkerColor(2);
+    hrealLSumBGScVert -> SetMarkerStyle(21);
+    hrealLSumBGScVert -> SetMarkerSize(.5);
+    hrealLSumBGScVert -> SetMarkerColor(2);
     //  hrealLSumPeakScVert -> SetLineColor(8);
     // hrealLSumPeakScVert -> SetLineStyle(8);
     // hLGeantIDSumScVert -> SetLineColor(1);
@@ -1930,18 +1817,8 @@ void anaBkgd2(){
     lfin4 -> AddEntry(hrealLSumScVert, "sum all ch. (#pi^{-}p)");
     lfin4 -> AddEntry(hrealLSumBGScVert, "BG");
     lfin4 -> AddEntry(hrealLSumVertPeakSc, "peak=all-BG");
-    lfin4 -> AddEntry(hLGeantIDSumScVert, "real #Xi^{-}");
+    lfin4 -> AddEntry(hLGeantIDSumScVert, "real #Lambda");
     lfin4 -> Draw("same");//<<<<<<<<<<<<<<
-    
-/*    cLambdaXiMassScVert -> cd(4);
-    nice_canv1(gPad);
-    hXallSumScVert -> SetTitle("p2#pi^{-}: all, peak and BG");
-    hXallSumScVert -> GetXaxis() -> SetTitle("M_{p2#pi^{-}} [MeV]");
-    hXallSumScVert -> GetYaxis() -> SetTitle("counts*#sigma");
-    hXallSumScVert -> Draw();
-    hrealXSumScVertPeak -> Draw("same");
-    hXallSumBGScVert -> Draw("same");*/
-//    l1 -> Draw("same");
     
     cLambdaXiMassScVert -> cd(4);
     nice_canv1(gPad);
@@ -1978,7 +1855,7 @@ void anaBkgd2(){
     massX_min -> Draw("same");
     massX_max -> Draw("same");
 
-    lfin5 -> AddEntry(hrealXSumScVert, "sum all ch. (#pi^{-}p)");
+    lfin5 -> AddEntry(hrealXSumScVert, "sum all ch. (#Lambda#pi^{-})");
     lfin5 -> AddEntry(hrealXSumBGScVert, "BG");
     lfin5 -> AddEntry(hrealXSumVertPeakSc, "peak=all-BG");
     lfin5 -> AddEntry(hXGeantIDSumScVert, "real #Xi^{-}");
@@ -2108,9 +1985,11 @@ void anaBkgd2(){
     printf("significance:\nL: noCut: %f, noCutsc: %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f, Lmasssc: %f\nX: noCut, %f, noCutsc %f, MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", SgnL, SgnLsc, SgnLMtd, SgnLMtdsc, SgnLVert, SgnLVertsc, SgnLLmasssc, SgnX, SgnXsc, SgnXMtd, SgnXMtdsc, SgnXVert, SgnXVertsc);
 
     //effi
-    int nall = 5000; //n evt*100 -> [%]
-    double brLxchn = 0.64*5; //BR for Lambda->p pim * number of simulated channels with real Lambda1115
-    printf("Effi rec.:\nL: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\nX: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", cntSLMtd/nall/brLxchn, cntSLscMtd/nall/brLxchn, cntSLVert/nall/brLxchn, cntSLscVert/nall/brLxchn, cntSXMtd/nall, cntSXscMtd/nall, cntSXVert/nall, cntSXscVert/nall);
+    cout << "nallX2=" << nallX << "nallL2=" << nallL << endl;
+    nallL /= 100; //n evt -> [%]
+    nallX /= 100; //n evt -> [%]
+    double brL = 0.64; //BR for Lambda->p pim 
+    printf("Effi rec.:\nL: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\nX: MTD: %f, MTDsc: %f, Vert: %f, Vertsc: %f\n", cntSLMtd/nallL/brL, cntSLscMtd/nallL/brL, cntSLVert/nallL/brL, cntSLscVert/nallL/brL, cntSXMtd/nallX, cntSXscMtd/nallX, cntSXVert/nallX, cntSXscVert/nallX);
 
     //3sigma Xi
     cout << "-3s:" << m3sigma << " +3s:" << p3sigma << " a:" << a << " b:" << b << endl;
@@ -2183,28 +2062,6 @@ void anaBkgd2(){
     cVertZ_L -> Write();
     cVertZ_X -> Write();
   
-    /*cimLsAsc -> Write();
-    cimLsRsc -> Write();
-    cimLsBGsc -> Write();
-    cimXsAsc -> Write();
-    cimXsRsc -> Write();
-    cimXsBGsc -> Write();
-
-    cimLsAmtdsc -> Write();
-    cimRmtdsc -> Write();
-    cimLsBGmtdsc -> Write();
-    cimXsAmtdsc -> Write();
-    cimXsRmtdsc -> Write();
-    cimXsBGmtdsc -> Write();
-
-    cimLsAvertsc -> Write();
-    cimLsRvertsc -> Write();
-    cimLsBGvertsc -> Write();
-    cimXsAvertsc -> Write();
-    cimXsRvertsc -> Write();
-    cimXsBGvertsc -> Write();
-    */
-    
     cimLNoCutsSc -> Write();
     cimXMtdlVertlMlSc -> Write();
     cimLMtdlSc -> Write();
@@ -2216,7 +2073,7 @@ void anaBkgd2(){
     cL_rec_sc -> Write();
     cX_nocuts_sc -> Write();
     cX_fin_sc -> Write();
-
+    
     f -> Close();
     
     

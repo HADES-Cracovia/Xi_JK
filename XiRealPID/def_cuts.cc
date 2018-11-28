@@ -154,7 +154,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     int mas1 = -500;
     int mas2 = 2000;
     int mas21 = -200000;
-    int mas22 = 3000000;
+    int mas22 = 1500000;
     int dex1 = 0;
     int dex2 = 30;
     int tofh1 = 0;
@@ -173,6 +173,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH2F *hM22_h = new TH2F("hM22_h", "hM22_h", nbins2, mom1, mom2 , nbins1, mas21, mas22);
     TH1F *hM1_h = new TH1F("hM1_h", "hM1_h", nbins1, mas1, mas2);
     TH1F *hM12_h = new TH1F("hM12_h", "hM12_h", nbins1, mas21, mas22);
+    TH1F *hM12_h_m2 = new TH1F("hM12_h_m2", "hM12_h_m2", nbins1, mas21, mas22);
+    TH1F *hM12_h_pos = new TH1F("hM12_h_pos", "hM12_h_pos", nbins1, mas21, mas22);
+    TH1F *hM12_h_neg = new TH1F("hM12_h_neg", "hM12_h_neg", nbins1, mas21, mas22);
+    TH1F *hM12_h_pions = new TH1F("hM12_h_pions", "hM12_h_pions", nbins1, -60000, 60000);
 //    TH2F *hBeta_q_h = new TH2F("hBeta_q_h", "hBeta_q_h", nbins2, -10, 10, nbins1, bet1, bet2);
     TH2F *hBeta_m_h = new TH2F("hBeta_m_h", "hBeta_h_afterMassPID", nbins2, mom1, mom2, nbins1, bet1, bet2);
     TH2F *hM2_m_h = new TH2F("hM2_m_h", "hM2_m_h", nbins2, mom1, mom2, nbins1, mas1, mas2);
@@ -217,6 +221,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH2F *hBeta_fd = new TH2F("hBeta_fd", "hBeta_fd", 400, -2000, 2000, 200, 0, 1);
     TH2F *hM22_fd = new TH2F("hM22_fd", "hM22_fd", nbins2, mom1, mom2 , nbins1, mas21, mas22);
     TH2F *hdetof_fd = new TH2F("hdetof_fd", "hdetof_fd", nbins2, 0, .1 , nbins1, toff1, toff2);
+    TH2F *hdetof_fd_Geant = new TH2F("hdetof_fd_Geant", "hdetof_fd_Geant", nbins2, 0, .1 , nbins1, toff1, toff2);
+    TH2F *hdetof_fd_Geant9 = new TH2F("hdetof_fd_Geant9", "hdetof_fd_Geant9", nbins2, 0, .1 , nbins1, toff1, toff2);
+    TH2F *hdetof_fd_Geant11 = new TH2F("hdetof_fd_Geant11", "hdetof_fd_Geant11", nbins2, 0, .1 , nbins1, toff1, toff2);
+    TH2F *hdetof_fd_Geant14 = new TH2F("hdetof_fd_Geant14", "hdetof_fd_Geant14", nbins2, 0, .1 , nbins1, toff1, toff2);
     
     // TCanvas *cBetaPID_fd = new TCanvas("cBetaPID_fd", "cBetaPID_fd");
 
@@ -343,6 +351,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     double massLmax = 1126; //!!
 
     int eventNo = -1;
+    TH1I *heventNo = new TH1I();
+    heventNo -> SetName("heventNo");
     //event loop *************************************************
     //*********************************************************
     for (Int_t i = 0; i < entries; i++)                   
@@ -416,12 +426,19 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		hM12_h -> Fill(mass2_h*charge_h);
 		hM2_h -> Fill(pq_h, mass_h);
 		hM22_h -> Fill(pq_h, mass2_h);
+		hM12_h_m2 -> Fill(mass2_h);
+		if(charge_h < 0)
+		    hM12_h_neg -> Fill(mass2_h*charge_h);
+		else
+		    hM12_h_pos -> Fill(mass2_h*charge_h);
 		if(particleID > 0){
 		    hBeta_m_h -> Fill(pq_h, beta_h);
 		    hM1_m_h -> Fill(mass_h*charge_h);
 		    hM12_m_h -> Fill(mass2_h);
 		    hM2_m_h -> Fill(pq_h, mass_h);
 		    hM22_m_h -> Fill(pq_h, mass2_h);
+		    if(particleID==8 || particleID==9)
+			hM12_h_pions -> Fill(mass2_h*charge_h);
 		}
 		
 		if(particlecand -> getSystem() == 1){
@@ -553,14 +570,20 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    if(vectorcandGeantID == 9){
 			hTof_pim_fd_GeantID -> Fill(tof_v);
 			hTof_pim_GeantID -> Fill(tof_v);
+			hdetof_fd_Geant -> Fill(dE_v, tof_v);
+			hdetof_fd_Geant9 -> Fill(dE_v, tof_v);
 		    }
 		    else if(vectorcandGeantID == 11){
 			hTof_Kp_fd_GeantID -> Fill(tof_v);
 			hTof_Kp_GeantID -> Fill(tof_v);
+			hdetof_fd_Geant -> Fill(dE_v, tof_v);
+			hdetof_fd_Geant11 -> Fill(dE_v, tof_v);
 		    }
 		    else if(vectorcandGeantID == 14){
 			hTof_p_fd_GeantID -> Fill(tof_v);
 			hTof_p_GeantID -> Fill(tof_v);
+			hdetof_fd_Geant -> Fill(dE_v, tof_v);
+			hdetof_fd_Geant14 -> Fill(dE_v, tof_v);
 		    }
 		}
 
@@ -706,6 +729,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	} //end HADES
 
 	eventNo = i;
+	heventNo -> Fill(i);
     }//end event loop
 
     hM12_h = massPID(hM12_h);
@@ -719,6 +743,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hBeta_m_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM1_h -> GetXaxis() -> SetTitle("m [MeV]");
     hM12_h -> GetXaxis() -> SetTitle("m^{2}*q [MeV]");
+    hM12_h_m2 -> GetXaxis() -> SetTitle("m^{2} [MeV]");
+    hM12_h_pos -> GetXaxis() -> SetTitle("m^{2}*q [MeV]");
+    hM12_h_neg -> GetXaxis() -> SetTitle("m^{2}*q [MeV]");
+    hM12_h_pions -> GetXaxis() -> SetTitle("m^{2}*q [MeV]");
     hM2_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM22_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM1_m_h -> GetXaxis() -> SetTitle("m*q [MeV]");
@@ -731,6 +759,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hBeta_m_h -> GetYaxis() -> SetTitle("#beta");
     hM1_h -> GetYaxis() -> SetTitle("counts");
     hM12_h -> GetYaxis() -> SetTitle("counts");
+    hM12_h_m2 -> GetYaxis() -> SetTitle("counts");
+    hM12_h_pos -> GetYaxis() -> SetTitle("counts");
+    hM12_h_neg -> GetYaxis() -> SetTitle("counts");
+    hM12_h_pions -> GetYaxis() -> SetTitle("counts");
     hM2_h -> GetYaxis() -> SetTitle("m*q [MeV]");
     hM22_h -> GetYaxis() -> SetTitle("m^{2}*q [(MeV)^{2}]");
     hM1_m_h -> GetYaxis() -> SetTitle("counts");
@@ -743,6 +775,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hBeta_m_h -> Write();
     hM1_h -> Write();
     hM12_h -> Write();
+    hM12_h_m2 -> Write();
+    hM12_h_pos -> Write();
+    hM12_h_neg -> Write();
+    hM12_h_pions -> Write();
     hM2_h -> Write();
     hM22_h -> Write();
     hM1_m_h -> Write();
@@ -875,6 +911,18 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hdetof_fd -> GetXaxis() -> SetTitle("dE in straws [MeV]");
     hdetof_fd -> GetYaxis() -> SetTitle("tof [ns]");
     hdetof_fd -> Write();
+    hdetof_fd_Geant -> GetXaxis() -> SetTitle("dE in straws [MeV]");
+    hdetof_fd_Geant -> GetYaxis() -> SetTitle("tof [ns]");
+    hdetof_fd_Geant -> Write();
+    hdetof_fd_Geant9 -> GetXaxis() -> SetTitle("dE in straws [MeV]");
+    hdetof_fd_Geant9 -> GetYaxis() -> SetTitle("tof [ns]");
+    hdetof_fd_Geant9 -> Write();
+    hdetof_fd_Geant11 -> GetXaxis() -> SetTitle("dE in straws [MeV]");
+    hdetof_fd_Geant11 -> GetYaxis() -> SetTitle("tof [ns]");
+    hdetof_fd_Geant11 -> Write();
+    hdetof_fd_Geant14 -> GetXaxis() -> SetTitle("dE in straws [MeV]");
+    hdetof_fd_Geant14 -> GetYaxis() -> SetTitle("tof [ns]");
+    hdetof_fd_Geant14 -> Write();
     hr_fd -> GetXaxis() -> SetTitle("drift radius [mm]");
     hr_fd -> GetYaxis() -> SetTitle("#");
     hr_fd -> Write();
@@ -1189,7 +1237,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hrealXMTDVert -> GetYaxis() -> SetTitle("counts");
     hrealXMTDVert -> Write();
     //*******************
-        
+    heventNo -> Write();
+    
     output_file->Close();
     cout << "writing root tree done" << endl;
     
