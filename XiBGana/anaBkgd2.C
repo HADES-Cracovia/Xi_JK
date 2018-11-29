@@ -674,7 +674,7 @@ void anaBkgd2(){
 
     //BG subtr.
     float BGpar = 6;
-    TString nameL = "hrealLSumCl";
+/*    TString nameL = "hrealLSumCl";
     TString nameLsc = "hrealLSumScCl";
     TH1F *hrealLSumCl = (TH1F*)hrealLSum -> Clone();
     TH1F *hrealLSumScCl = (TH1F*)hrealLSumSc -> Clone();
@@ -689,58 +689,75 @@ void anaBkgd2(){
     hrealLSumBGSc = (TH1F*)gDirectory -> Get(nameLscbg);
     hrealLSumPeak -> Add(hrealLSumCl, hrealLSumBG, 1, -1);
     hrealLSumPeakSc -> Add(hrealLSumScCl, hrealLSumBGSc, 1, -1);
-
+*/
     
-    /*
     TString nameL = "hrealLSumCl";
     TH1F *hrealLSumCl = (TH1F*)hrealLSum -> Clone();
-    TF1 * ffL = new TF1("ffL", "gaus(0)+gaus(3)+pol5(6)", 1080,1190);
-    ffL -> SetParameters(1000,1115,3,1000,1115,3,0,0,0,0,0);
-    hrealLSumCl -> Fit("ffL", "V+");
-    hrealLSumCl -> SetName(nameL);
-    TF1 * ffLsig = new TF1("ffLsig", "gaus(0)+gaus(3)", 1080,1190);
-    ffLsig -> SetParameters(1000,1115,3,1000,1115,3);
-    hrealLSumCl -> Fit(ffLsig);
     TString bg = "_background";
+    cout << ">>>>>>>>fit lno<<<<<<<<<" << endl;
+    TF1 * ffL = new TF1("ffL", "gaus(0)+gaus(3)+pol2(6)", 1080,1190);
+    ffL -> SetParameters(
+	2984560,1114.29,4.12196,
+	8.78103e+06,1.11469e+03,1.95058,
+	-4.32460e+09,7.51569e+06,-3.25342e+03,1,1);
+    ffL -> SetParLimits(0, 0, 100000000);
+    ffL -> SetParLimits(1, 1110, 1120);
+    ffL -> SetParLimits(2, 0, 10);
+    ffL -> SetParLimits(3, 0, 100000000);
+    ffL -> SetParLimits(4, 1110, 1120);
+    ffL -> SetParLimits(5, 0, 10);
+    hrealLSumCl -> Fit("ffL", "", "", 1090, 1140);
+    hrealLSumCl -> SetName(nameL);
+    TF1 * ffLsig = new TF1("ffLsig", "gaus(0)+gaus(3)", 1070,1200);
     TString nameLbg = nameL + bg;
-    TF1 * ffLbg = new TF1("ffLbg", "pol5(0)", 1080,1190);
-    ffLbg -> SetParameters(0,0,0,0,0);
-    hrealLSumCl -> Fit(ffLbg);
+    TF1 * ffLbg = new TF1("ffLbg", "pol2(0)", 1090,1140);
+    double par[12];
+    ffL -> GetParameters(par);
+    ffLsig -> SetParameters(par);
+    ffLsig -> Draw("same");
+    ffLbg -> SetParameters(&par[6]);
+    ffLbg -> Draw("same");
 
     hrealLSumBG = (TH1F*)hrealLSumCl -> Clone("hrealLSumBG");
     hrealLSumBG -> Add(ffLsig, -1);
 
     hrealLSumPeak = (TH1F*)hrealLSumCl -> Clone("hrealLSumPeak");
-    hrealLSumPeak -> Add(ffLbg, -1);
- 
+    hrealLSumPeak -> Add(hrealLSumBG, -1);
+     
     //scaled
     TString nameLsc = "hrealLSumScCl";
     TH1F *hrealLSumScCl = (TH1F*)hrealLSumSc -> Clone();
-    TF1 * ffLsc = new TF1("ffLsc", "gaus(0)+gaus(3)+pol5(6)", 1080,1190);
-    ffLsc -> SetParameters(1000,1115,3,1000,1115,3,0,0,0,0,0);
-    hrealLSumScCl -> Fit("ffLsc", "V+");
+    cout << ">>>>>>>>fitlss<<<<<<<<<" << endl;
+    TF1 * ffLsc = new TF1("ffLsc", "gaus(0)+gaus(3)+pol2(6)", 1080,1190);
+    ffLsc -> SetParameters(
+	2984560,1114.29,4.12196,
+	8.78103e+06,1.11469e+03,1.95058,
+	-4.32460e+09,7.51569e+06,-3.25342e+03,1,1);
+    ffLsc -> SetParLimits(0, 0, 100000000);
+    ffLsc -> SetParLimits(1, 1110, 1120);
+    ffLsc -> SetParLimits(2, 0, 10);
+    ffLsc -> SetParLimits(3, 0, 100000000);
+    ffLsc -> SetParLimits(4, 1110, 1120);
+    ffLsc -> SetParLimits(5, 0, 10);
+    hrealLSumScCl -> Fit("ffLsc", "", "", 1090, 1140);
     hrealLSumScCl -> SetName(nameLsc);
-    TF1 * ffLsigsc = new TF1("ffLsigsc", "gaus(0)+gaus(3)", 1080,1190);
-//    ffLsigsc -> SetParameters(1000,1115,3,1000,1115,3);
-    //hrealLSumScCl -> Fit(ffLsig);
+    TF1 * ffLsigsc = new TF1("ffLsigsc", "gaus(0)+gaus(3)", 1070,1200);
     TString nameLscbg = nameLsc + bg;
-    TF1 * ffLbgsc = new TF1("ffLbgsc", "pol5(0)", 1080,1190);
-//    ffLbgsc -> SetParameters(0,0,0,0,0);
-    //hrealLSumScCl -> Fit(ffLbg);
-    double par[11];
-    ffLsc -> GetParameters(par);*/
-/*    ffLsigsc -> SetParameters(par);
+    TF1 * ffLbgsc = new TF1("ffLbgsc", "pol2(0)", 1090,1140);
+    par[12] = 0;
+    ffLsc -> GetParameters(par);
+    ffLsigsc -> SetParameters(par);
     ffLsigsc -> Draw("same");
     ffLbgsc -> SetParameters(&par[6]);
     ffLbgsc -> Draw("same");
-*/
-    /* hrealLSumBGSc = (TH1F*)hrealLSumScCl -> Clone("hrealLSumBGSc");
+
+    hrealLSumBGSc = (TH1F*)hrealLSumScCl -> Clone("hrealLSumBGSc");
     hrealLSumBGSc -> Add(ffLsigsc, -1);
     
     hrealLSumPeakSc = (TH1F*)hrealLSumScCl -> Clone("hrealLSumPeakSc");
-    hrealLSumPeakSc -> Add(ffLbgsc, -1);  
+    hrealLSumPeakSc -> Add(hrealLSumBGSc, -1);  
     //end BG subtr.
-    */
+    
     hrealLSumBG -> SetLineColor(kRed);
     hrealLSumBGSc -> SetLineColor(kRed);
     hrealLSum -> SetLineColor(8);
@@ -833,23 +850,76 @@ void anaBkgd2(){
 //    hrealXSumBGSc -> Add(hrealXSumSc, hXGeantIDScPeak, 1, -1); 
 
     //BG subtr.
-//    float BGpar = 7;
     TString nameX = "hrealXSumCl";
-    TString nameXsc = "hrealXSumScCl";
     TH1F *hrealXSumCl = (TH1F*)hrealXSum -> Clone();
-    TH1F *hrealXSumScCl = (TH1F*)hrealXSumSc -> Clone();
+    cout << ">>>>>>>>fit Xno<<<<<<<<<" << endl;
+    TF1 * ffX = new TF1("ffX", "gaus(0)+gaus(3)+pol5(6)", 1280,1360);
+    ffX -> SetParameters(
+	3.73999e+05,1.31872e+03,4.05039,
+	2.78539e+04,1.31000e+03,9,
+	-2.85281e+07,1.64862e+04,1.59317e+01,-3.03469e-03,-4.53008e-06);
+    ffX -> SetParLimits(0, 0, 100000000);
+    ffX -> SetParLimits(1, 1310, 1330);
+    ffX -> SetParLimits(2, 0, 9);
+    ffX -> SetParLimits(3, 0, 100000000);
+    ffX -> SetParLimits(4, 1310, 1330);
+    ffX -> SetParLimits(5, 0, 9);
+    hrealXSumCl -> Fit("ffX", "", "", 1280, 1365);
     hrealXSumCl -> SetName(nameX);
-    hrealXSumScCl -> SetName(nameXsc);
-    hrealXSumCl -> ShowBackground(BGpar);
-    hrealXSumScCl -> ShowBackground(BGpar);
-//    TString bg = "_background";
+    TF1 * ffXsig = new TF1("ffXsig", "gaus(0)+gaus(3)", 1280,1360);
     TString nameXbg = nameX + bg;
+    TF1 * ffXbg = new TF1("ffXbg", "pol5(0)", 1280,1360);
+    double par[12];
+    ffX -> GetParameters(par);
+    ffXsig -> SetParameters(par);
+    ffXsig -> Draw("same");
+    ffXbg -> SetParameters(&par[6]);
+    ffXbg -> Draw("same");
+
+    hrealXSumBG = (TH1F*)hrealXSumCl -> Clone("hrealXSumBG");
+    hrealXSumBG -> Add(ffXsig, -1);
+
+    hrealXSumPeak = (TH1F*)hrealXSumCl -> Clone("hrealXSumPeak");
+    hrealXSumPeak -> Add(hrealXSumBG, -1);
+
+    //scaled
+    TString nameXsc = "hrealXSumScCl";
+    TH1F *hrealXSumScCl = (TH1F*)hrealXSumSc -> Clone();
+    cout << ">>>>>>>>fit Xscno<<<<<<<<<" << endl;
+    TF1 * ffXsc = new TF1("ffXsc", "gaus(0)+gaus(3)+pol5(6)", 1280,1360);
+    ffXsc -> SetParameters(
+	3.73999e+05,1.31872e+03,4.05039,
+	2.78539e+04,1.31000e+03,9,
+	-2.85281e+07,1.64862e+04,1.59317e+01,-3.03469e-03,-4.53008e-06);
+//pol4:
+//	3.43758e+05,1.31861e+03,3.84611, 
+//	6.36039e+04,1.31822e+03,9,
+//	-1.44681e+07,1.12006e+04,7.94111e+00,-6.04656e-03);
+    ffXsc -> SetParLimits(0, 0, 100000000);
+    ffXsc -> SetParLimits(1, 1310, 1330);
+    ffXsc -> SetParLimits(2, 0, 9);
+    ffXsc -> SetParLimits(3, 0, 100000000);
+    ffXsc -> SetParLimits(4, 1310, 1330);
+    ffXsc -> SetParLimits(5, 0, 9);
+    hrealXSumScCl -> Fit("ffXsc", "", "", 1280, 1365);
+    hrealXSumScCl -> Fit("ffXsc", "", "", 1280, 1365);
+    hrealXSumScCl -> SetName(nameXsc);
+    TF1 * ffXsigsc = new TF1("ffXsigsc", "gaus(0)+gaus(3)", 1280,1360);
     TString nameXscbg = nameXsc + bg;
-    hrealXSumBG = (TH1F*)gDirectory -> Get(nameXbg);
-    hrealXSumBGSc = (TH1F*)gDirectory -> Get(nameXscbg);
-    hrealXSumPeak -> Add(hrealXSumCl, hrealXSumBG, 1, -1);
-    hrealXSumPeakSc -> Add(hrealXSumScCl, hrealXSumBGSc, 1, -1);
-    //end BG subtr.   
+    TF1 * ffXbgsc = new TF1("ffXbgsc", "pol5(0)", 1280,1360);
+    double parX[12];
+    ffXsc -> GetParameters(parX);
+    ffXsigsc -> SetParameters(parX);
+    ffXsigsc -> Draw("same");
+    ffXbgsc -> SetParameters(&parX[6]);
+    ffXbgsc -> Draw("same");
+
+    hrealXSumBGSc = (TH1F*)hrealXSumScCl -> Clone("hrealXSumBGSc");
+    hrealXSumBGSc -> Add(ffXsigsc, -1);
+
+    hrealXSumPeakSc = (TH1F*)hrealXSumScCl -> Clone("hrealXSumPeakSc");
+    hrealXSumPeakSc -> Add(hrealXSumBGSc, -1);
+    //end BG subtr.       
     
     hrealXSumBG -> SetLineColor(kRed);
     hrealXSumBGSc -> SetLineColor(kRed);
@@ -1117,24 +1187,71 @@ void anaBkgd2(){
 //   hrealLSumBGScMtd -> Add(hrealLSumScMtd, hLGeantIDScMtdPeak, 1, -1); 
     ctmp -> cd();
     //BG subtr.                                                                          
-    //    float BGpar = 5;
     TString nameLMtd = "hrealLSumMtdCl";
-    TString nameLscMtd = "hrealLSumScMtdCl";
     TH1F *hrealLSumMtdCl = (TH1F*)hrealLSumMtd -> Clone();
-    TH1F *hrealLSumScMtdCl = (TH1F*)hrealLSumScMtd -> Clone();
+    cout << ">>>>>>>>fit lmtd<<<<<<<<<" << endl;
+    TF1 * ffLmtd = new TF1("ffLmtd", "gaus(0)+gaus(3)+pol2(6)", 1080,1190);
+    ffLmtd -> SetParameters(
+	2984560,1114.29,4.12196,
+	8.78103e+06,1.11469e+03,1.95058,
+	-4.32460e+09,7.51569e+06,-3.25342e+03,1,1);
+    ffLmtd -> SetParLimits(0, 0, 100000000);
+    ffLmtd -> SetParLimits(1, 1110, 1120);
+    ffLmtd -> SetParLimits(2, 0, 10);
+    ffLmtd -> SetParLimits(3, 0, 100000000);
+    ffLmtd -> SetParLimits(4, 1110, 1120);
+    ffLmtd -> SetParLimits(5, 0, 10);
+    hrealLSumMtdCl -> Fit("ffLmtd", "", "", 1090, 1140);
     hrealLSumMtdCl -> SetName(nameLMtd);
-    hrealLSumScMtdCl -> SetName(nameLscMtd);
-    hrealLSumMtdCl -> ShowBackground(BGpar);
-    hrealLSumScMtdCl -> ShowBackground(BGpar);
-    //    TString bg = "_background";                                                                  
+    TF1 * ffLmtdsig = new TF1("ffLmtdsig", "gaus(0)+gaus(3)", 1070,1200);
+    TString nameLmtdbg = nameLMtd + bg;
+    TF1 * ffLmtdbg = new TF1("ffLmtdbg", "pol2(0)", 1090,1140);
+    par[12] = 0;
+    ffLmtd -> GetParameters(par);
+    ffLmtdsig -> SetParameters(par);
+    ffLmtdsig -> Draw("same");
+    ffLmtdbg -> SetParameters(&par[6]);
+    ffLmtdbg -> Draw("same");
 
-    TString nameLMtdbg = nameLMtd + bg;
-    TString nameLscMtdbg = nameLscMtd + bg;
-    hrealLSumBGMtd = (TH1F*)gDirectory -> Get(nameLMtdbg);
-    hrealLSumBGScMtd = (TH1F*)gDirectory -> Get(nameLscMtdbg);
-    hrealLSumMtdPeak -> Add(hrealLSumMtdCl, hrealLSumBGMtd, 1, -1);
-    hrealLSumMtdPeakSc -> Add(hrealLSumScMtdCl, hrealLSumBGScMtd, 1, -1);
-    //end BG subtr.       
+    hrealLSumBGMtd = (TH1F*)hrealLSumMtdCl -> Clone("hrealLSumBGMtd");
+    hrealLSumBGMtd -> Add(ffLmtdsig, -1);
+
+    hrealLSumMtdPeak = (TH1F*)hrealLSumMtdCl -> Clone("hrealLSumMtdPeak");
+    hrealLSumMtdPeak -> Add(hrealLSumBGMtd, -1);
+
+    //scaled
+    TString nameLmtdsc = "hrealLSumScMtdCl";
+    TH1F *hrealLSumScMtdCl = (TH1F*)hrealLSumScMtd -> Clone();
+    cout << ">>>>>>>>fit Lscmtd<<<<<<<<<" << endl;
+    TF1 * ffLmtdsc = new TF1("ffLmtdsc", "gaus(0)+gaus(3)+pol2(6)", 1080,1190);
+    ffLmtdsc -> SetParameters(
+	2984560,1114.29,4.12196,
+	8.78103e+06,1.11469e+03,1.95058,
+	-4.32460e+09,7.51569e+06,-3.25342e+03,1,1);
+    ffLmtdsc -> SetParLimits(0, 0, 100000000);
+    ffLmtdsc -> SetParLimits(1, 1110, 1120);
+    ffLmtdsc -> SetParLimits(2, 0, 10);
+    ffLmtdsc -> SetParLimits(3, 0, 100000000);
+    ffLmtdsc -> SetParLimits(4, 1110, 1120);
+    ffLmtdsc -> SetParLimits(5, 0, 10);
+    hrealLSumScMtdCl -> Fit("ffLmtdsc", "", "", 1090, 1140);
+    hrealLSumScMtdCl -> SetName(nameLmtdsc);
+    TF1 * ffLmtdsigsc = new TF1("ffLmtdsigsc", "gaus(0)+gaus(3)", 1070,1200);
+    TString nameLmtdscbg = nameLmtdsc + bg;
+    TF1 * ffLmtdbgsc = new TF1("ffLmtdbgsc", "pol2(0)", 1090,1140);
+    double par[12];
+    ffLmtdsc -> GetParameters(par);
+    ffLmtdsigsc -> SetParameters(par);
+    ffLmtdsigsc -> Draw("same");
+    ffLmtdbgsc -> SetParameters(&par[6]);
+    ffLmtdbgsc -> Draw("same");
+
+    hrealLSumBGScMtd = (TH1F*)hrealLSumScMtdCl -> Clone("hrealLSumBGScMtd");
+    hrealLSumBGScMtd -> Add(ffLmtdsigsc, -1);
+
+    hrealLSumMtdPeakSc = (TH1F*)hrealLSumScMtdCl -> Clone("hrealLSumMtdPeakSc");
+    hrealLSumMtdPeakSc -> Add(hrealLSumBGScMtd, -1);
+    //end BG subtr.            
     
     hrealLSumBGMtd -> SetLineColor(kRed);
     hrealLSumBGScMtd -> SetLineColor(kRed);
@@ -1276,24 +1393,72 @@ void anaBkgd2(){
 //    hrealXSumBGScMtd -> Add(hrealXSumScMtd, hXGeantIDScMtdPeak, 1, -1); 
     ctmp -> cd();
     //BG subtr.
-    //    float BGpar = 5;
     TString nameXMtd = "hrealXSumMtdCl";
-    TString nameXscMtd = "hrealXSumScMtdCl";
     TH1F *hrealXSumMtdCl = (TH1F*)hrealXSumMtd -> Clone();
-    TH1F *hrealXSumScMtdCl = (TH1F*)hrealXSumScMtd -> Clone();
+    cout << ">>>>>>>>fit xmtd<<<<<<<<<" << endl;
+    TF1 * ffXmtd = new TF1("ffXmtd", "gaus(0)+gaus(3)+pol5(6)", 1280,1360);
+    ffXmtd -> SetParameters(
+	3.73999e+05,1.31872e+03,4.05039,
+	2.78539e+04,1.31000e+03,9,
+	-2.85281e+07,1.64862e+04,1.59317e+01,-3.03469e-03,-4.53008e-06);
+    ffXmtd -> SetParLimits(0, 0, 100000000);
+    ffXmtd -> SetParLimits(1, 1310, 1330);
+    ffXmtd -> SetParLimits(2, 0, 9);
+    ffXmtd -> SetParLimits(3, 0, 100000000);
+    ffXmtd -> SetParLimits(4, 1310, 1330);
+    ffXmtd -> SetParLimits(5, 0, 9);
+    hrealXSumMtdCl -> Fit("ffXmtd", "", "",1280,1365);
     hrealXSumMtdCl -> SetName(nameXMtd);
-    hrealXSumScMtdCl -> SetName(nameXscMtd);
-    hrealXSumMtdCl -> ShowBackground(BGpar);
-    hrealXSumScMtdCl -> ShowBackground(BGpar);
-    //    TString bg = "_background";
-    TString nameXMtdbg = nameXMtd + bg;
-    TString nameXscMtdbg = nameXscMtd + bg;
-    hrealXSumBGMtd = (TH1F*)gDirectory -> Get(nameXMtdbg);
-    hrealXSumBGScMtd = (TH1F*)gDirectory -> Get(nameXscMtdbg);
-    hrealXSumMtdPeak -> Add(hrealXSumMtdCl, hrealXSumBGMtd, 1, -1);
-    hrealXSumMtdPeakSc -> Add(hrealXSumScMtdCl, hrealXSumBGScMtd, 1, -1);
-    //end BG subtr.              
-    
+    TF1 * ffXmtdsig = new TF1("ffXmtdsig", "gaus(0)+gaus(3)", 1280,1360);
+    TString nameXmtdbg = nameXMtd + bg;
+    TF1 * ffXmtdbg = new TF1("ffXmtdbg", "pol5(0)", 1280,1360);
+    double par[12];
+    ffXmtd -> GetParameters(par);
+    ffXmtdsig -> SetParameters(par);
+    ffXmtdsig -> Draw("same");
+    ffXmtdbg -> SetParameters(&par[6]);
+    ffXmtdbg -> Draw("same");
+
+    hrealXSumBGMtd = (TH1F*)hrealXSumMtdCl -> Clone("hrealXSumBGMtd");
+    hrealXSumBGMtd -> Add(ffXmtdsig, -1);
+
+    hrealXSumMtdPeak = (TH1F*)hrealXSumCl -> Clone("hrealXSumMtdPeak");
+    hrealXSumMtdPeak -> Add(hrealXSumBGMtd, -1);
+
+    //scaled
+    TString nameXmtdsc = "hrealXSumScMtdCl";
+    TH1F *hrealXSumScMtdCl = (TH1F*)hrealXSumScMtd -> Clone();
+    cout << ">>>>>>>>fit Xscmtd<<<<<<<<<" << endl;
+    TF1 * ffXmtdsc = new TF1("ffXmtdsc", "gaus(0)+gaus(3)+pol5(6)", 1280,1360);
+    ffXmtdsc -> SetParameters(
+	3.73999e+05,1.31872e+03,4.05039,
+	2.78539e+04,1.31000e+03,9,
+	-2.85281e+07,1.64862e+04,1.59317e+01,-3.03469e-03,-4.53008e-06);
+    ffXmtdsc -> SetParLimits(0, 0, 100000000);
+    ffXmtdsc -> SetParLimits(1, 1310, 1330);
+    ffXmtdsc -> SetParLimits(2, 0, 9);
+    ffXmtdsc -> SetParLimits(3, 0, 100000000);
+    ffXmtdsc -> SetParLimits(4, 1310, 1330);
+    ffXmtdsc -> SetParLimits(5, 0, 9);
+    hrealXSumScMtdCl -> Fit("ffXmtdsc", "", "", 1290, 1365);
+    hrealXSumScMtdCl -> SetName(nameXmtdsc);
+    TF1 * ffXmtdsigsc = new TF1("ffXmtdsigsc", "gaus(0)+gaus(3)", 1280,1360);
+    TString nameXmtdscbg = nameXmtdsc + bg;
+    TF1 * ffXmtdbgsc = new TF1("ffXmtdbgsc", "pol5(0)", 1280,1360);
+    double par[12];
+    ffXmtdsc -> GetParameters(par);
+    ffXmtdsigsc -> SetParameters(par);
+    ffXmtdsigsc -> Draw("same");
+    ffXmtdbgsc -> SetParameters(&par[6]);
+    ffXmtdbgsc -> Draw("same");
+
+    hrealXSumBGScMtd = (TH1F*)hrealXSumScMtdCl -> Clone("hrealXSumBGScMtd");
+    hrealXSumBGScMtd -> Add(ffXmtdsigsc, -1);
+
+    hrealXSumMtdPeakSc = (TH1F*)hrealXSumScMtdCl -> Clone("hrealXSumMtdPeakSc");
+    hrealXSumMtdPeakSc -> Add(hrealXSumBGScMtd, -1);
+    //end BG subtr.
+
     hrealXSumBGMtd -> SetLineColor(kRed);
     hrealXSumBGScMtd -> SetLineColor(kRed);
     hrealXSumMtd -> SetLineColor(8);
@@ -1536,24 +1701,72 @@ void anaBkgd2(){
 //    hrealLSumBGScVert -> Add(hrealLSumScVert, hLGeantIDScVertPeak, 1, -1); 
     ctmp -> cd();
     //BG subtr.
-    //    float BGpar = 5;
     TString nameLVert = "hrealLSumVertCl";
-    TString nameLscVert = "hrealLSumScVertCl";
     TH1F *hrealLSumVertCl = (TH1F*)hrealLSumVert -> Clone();
-    TH1F *hrealLSumScVertCl = (TH1F*)hrealLSumScVert -> Clone();
+    cout << ">>>>>>>>fit lvert<<<<<<<<<" << endl;
+    TF1 * ffLvert = new TF1("ffLvert", "gaus(0)+gaus(3)+pol2(6)", 1080,1190);
+    ffLvert -> SetParameters(
+	2984560,1114.29,4.12196,
+	8.78103e+06,1.11469e+03,1.95058,
+	-4.32460e+09,7.51569e+06,-3.25342e+03,1,1);
+    ffLvert -> SetParLimits(0, 0, 100000000);
+    ffLvert -> SetParLimits(1, 1110, 1120);
+    ffLvert -> SetParLimits(2, 0, 10);
+    ffLvert -> SetParLimits(3, 0, 100000000);
+    ffLvert -> SetParLimits(4, 1110, 1120);
+    ffLvert -> SetParLimits(5, 0, 10);
+    hrealLSumVertCl -> Fit("ffLvert", "", "", 1090, 1140);
     hrealLSumVertCl -> SetName(nameLVert);
-    hrealLSumScVertCl -> SetName(nameLscVert);
-    hrealLSumVertCl -> ShowBackground(BGpar);
-    hrealLSumScVertCl -> ShowBackground(BGpar);
-    //    TString bg = "_background";
-    TString nameLVertbg = nameLVert + bg;
-    TString nameLscVertbg = nameLscVert + bg;
-    hrealLSumBGVert = (TH1F*)gDirectory -> Get(nameLVertbg);
-    hrealLSumBGScVert = (TH1F*)gDirectory -> Get(nameLscVertbg);
-    hrealLSumVertPeak -> Add(hrealLSumVertCl, hrealLSumBGVert, 1, -1);
-    hrealLSumVertPeakSc -> Add(hrealLSumScVertCl, hrealLSumBGScVert, 1, -1);
-    //end BG subtr.     
+    TF1 * ffLvertsig = new TF1("ffLvertsig", "gaus(0)+gaus(3)", 1070,1200);
+    TString nameLvertbg = nameLVert + bg;
+    TF1 * ffLvertbg = new TF1("ffLvertbg", "pol2(0)", 1090,1140);
+    double par[12];
+    ffLvert -> GetParameters(par);
+    ffLvertsig -> SetParameters(par);
+    ffLvertsig -> Draw("same");
+    ffLvertbg -> SetParameters(&par[6]);
+    ffLvertbg -> Draw("same");
+
+    hrealLSumBGVert = (TH1F*)hrealLSumVertCl -> Clone("hrealLSumBGVert");
+    hrealLSumBGVert -> Add(ffLvertsig, -1);
+
+    hrealLSumVertPeak = (TH1F*)hrealLSumVertCl -> Clone("hrealLSumVertPeak");
+    hrealLSumVertPeak -> Add(hrealLSumBGVert, -1);
     
+    //scaled
+    TString nameLvertsc = "hrealLSumScVertCl";
+    TH1F *hrealLSumScVertCl = (TH1F*)hrealLSumScVert -> Clone();
+    cout << ">>>>>>>>fit Lscvert<<<<<<<<<" << endl;
+    TF1 * ffLvertsc = new TF1("ffLvertsc", "gaus(0)+gaus(3)+pol2(6)", 1080,1190);
+    ffLvertsc -> SetParameters(
+	8.82592e+06,1.11484e+03,2.20163,
+	1.28201e+06,1.11448e+03,8.34705,
+	-8.79549e+07,8.12041e+04);
+    ffLvertsc -> SetParLimits(0, 0, 100000000);
+    ffLvertsc -> SetParLimits(1, 1110, 1120);
+    ffLvertsc -> SetParLimits(2, 0, 10);
+    ffLvertsc -> SetParLimits(3, 0, 100000000);
+    ffLvertsc -> SetParLimits(4, 1110, 1120);
+    ffLvertsc -> SetParLimits(5, 0, 10);
+    hrealLSumScVertCl -> Fit("ffLvertsc", "", "", 1090, 1140);
+    hrealLSumScVertCl -> SetName(nameLvertsc);
+    TF1 * ffLvertsigsc = new TF1("ffLvertsigsc", "gaus(0)+gaus(3)", 1070,1200);
+    TString nameLvertscbg = nameLvertsc + bg;
+    TF1 * ffLvertbgsc = new TF1("ffLvertbgsc", "pol2(0)", 1090,1140);
+    double par[12];
+    ffLvertsc -> GetParameters(par);
+    ffLvertsigsc -> SetParameters(par);
+    ffLvertsigsc -> Draw("same");
+    ffLvertbgsc -> SetParameters(&par[6]);
+    ffLvertbgsc -> Draw("same");
+
+    hrealLSumBGScVert = (TH1F*)hrealLSumScVertCl -> Clone("hrealLSumBGScVert");
+    hrealLSumBGScVert -> Add(ffLvertsigsc, -1);
+
+    hrealLSumVertPeakSc = (TH1F*)hrealLSumScVertCl -> Clone("hrealLSumVertPeakSc");
+    hrealLSumVertPeakSc -> Add(hrealLSumBGScVert, -1);
+    //end BG subtr.
+
     hrealLSumBGVert -> SetLineColor(kRed);
     hrealLSumBGScVert -> SetLineColor(kRed);
     hrealLSumVert -> SetLineColor(8);
@@ -1643,24 +1856,72 @@ void anaBkgd2(){
 //    hrealXSumBGScVert -> Add(hrealXSumScVert, hXGeantIDScVertPeak, 1, -1); 
     ctmp -> cd();
     //BG subtr.
-    //    float BGpar = 5;
     TString nameXVert = "hrealXSumVertCl";
-    TString nameXscVert = "hrealXSumScVertCl";
     TH1F *hrealXSumVertCl = (TH1F*)hrealXSumVert -> Clone();
-    TH1F *hrealXSumScVertCl = (TH1F*)hrealXSumScVert -> Clone();
+    cout << ">>>>>>>>fit xvert<<<<<<<<<" << endl;
+    TF1 * ffXvert = new TF1("ffXvert", "gaus(0)+gaus(3)+pol5(6)", 1280,1360);
+    ffXvert -> SetParameters(
+        3.73999e+05,1.31872e+03,4.05039,
+	2.78539e+04,1.31000e+03,9,
+	-2.85281e+07,1.64862e+04,1.59317e+01,-3.03469e-03,-4.53008e-06);
+    ffXvert -> SetParLimits(0, 0, 100000000);
+    ffXvert -> SetParLimits(1, 1310, 1330);
+    ffXvert -> SetParLimits(2, 0, 9);
+    ffXvert -> SetParLimits(3, 0, 100000000);
+    ffXvert -> SetParLimits(4, 1310, 1330);
+    ffXvert -> SetParLimits(5, 0, 9);
+    hrealXSumVertCl -> Fit("ffXvert", "", "", 1280, 1365);
     hrealXSumVertCl -> SetName(nameXVert);
-    hrealXSumScVertCl -> SetName(nameXscVert);
-    hrealXSumVertCl -> ShowBackground(BGpar);
-    hrealXSumScVertCl -> ShowBackground(BGpar);
-    //    TString bg = "_background";
-    TString nameXVertbg = nameXVert + bg;
-    TString nameXscVertbg = nameXscVert + bg;
-    hrealXSumBGVert = (TH1F*)gDirectory -> Get(nameXVertbg);
-    hrealXSumBGScVert = (TH1F*)gDirectory -> Get(nameXscVertbg);
-    hrealXSumVertPeak -> Add(hrealXSumVertCl, hrealXSumBGVert, 1, -1);
-    hrealXSumVertPeakSc -> Add(hrealXSumScVertCl, hrealXSumBGScVert, 1, -1);
-    //end BG subtr.          
-    
+    TF1 * ffXvertsig = new TF1("ffXvertsig", "gaus(0)+gaus(3)", 1280,1360);
+    TString nameXvertbg = nameXVert + bg;
+    TF1 * ffXvertbg = new TF1("ffXvertbg", "pol5(0)", 1280,1360);
+    double par[12];
+    ffXvert -> GetParameters(par);
+    ffXvertsig -> SetParameters(par);
+    ffXvertsig -> Draw("same");
+    ffXvertbg -> SetParameters(&par[6]);
+    ffXvertbg -> Draw("same");
+
+    hrealXSumBGVert = (TH1F*)hrealXSumVertCl -> Clone("hrealXSumBGVert");
+    hrealXSumBGVert -> Add(ffXvertsig, -1);
+
+    hrealXSumVertPeak = (TH1F*)hrealXSumVertCl -> Clone("hrealXSumVertPeak");
+    hrealXSumVertPeak -> Add(hrealXSumBGVert, -1);
+
+    //scaled
+    TString nameXvertsc = "hrealXSumScVertCl";
+    TH1F *hrealXSumScVertCl = (TH1F*)hrealXSumScVert -> Clone();
+    cout << ">>>>>>>>fit Xscvert<<<<<<<<<" << endl;
+    TF1 * ffXvertsc = new TF1("ffXvertsc", "gaus(0)+gaus(3)+pol5(6)", 1280,1360);
+    ffXvertsc -> SetParameters(
+        3.73999e+05,1.31872e+03,4.05039,
+	2.78539e+04,1.31000e+03,9,
+	-2.85281e+07,1.64862e+04,1.59317e+01,-3.03469e-03,-4.53008e-06);
+    ffXvertsc -> SetParLimits(0, 0, 100000000);
+    ffXvertsc -> SetParLimits(1, 1310, 1330);
+    ffXvertsc -> SetParLimits(2, 0, 9);
+    ffXvertsc -> SetParLimits(3, 0, 100000000);
+    ffXvertsc -> SetParLimits(4, 1310, 1330);
+    ffXvertsc -> SetParLimits(5, 0, 9);
+    hrealXSumScVertCl -> Fit("ffXvertsc", "", "", 1280, 1365);
+    hrealXSumScVertCl -> SetName(nameXvertsc);
+    TF1 * ffXvertsigsc = new TF1("ffXvertsigsc", "gaus(0)+gaus(3)", 1280,1360);
+    TString nameXvertscbg = nameXvertsc + bg;
+    TF1 * ffXvertbgsc = new TF1("ffXvertbgsc", "pol5(0)", 1280,1360);
+    double par[12];
+    ffXvertsc -> GetParameters(par);
+    ffXvertsigsc -> SetParameters(par);
+    ffXvertsigsc -> Draw("same");
+    ffXvertbgsc -> SetParameters(&par[6]);
+    ffXvertbgsc -> Draw("same");
+
+    hrealXSumBGScVert = (TH1F*)hrealXSumScVertCl -> Clone("hrealXSumBGScVert");
+    hrealXSumBGScVert -> Add(ffXvertsigsc, -1);
+
+    hrealXSumVertPeakSc = (TH1F*)hrealXSumScVertCl -> Clone("hrealXSumVertPeakSc");
+    hrealXSumVertPeakSc -> Add(hrealXSumBGScVert, -1);
+    //end BG subtr.                          
+
     hrealXSumBGVert -> SetLineColor(kRed);
     hrealXSumBGScVert -> SetLineColor(kRed);
     hrealXSumVert -> SetLineColor(8);
@@ -2046,7 +2307,7 @@ void anaBkgd2(){
     lChan -> Draw("same");
 
         
-    TFile *f = new TFile("./out_ana/out_anaBkgd_test5c.root", "RECREATE");
+    TFile *f = new TFile("./out_ana/out_anaBkgd_test8.root", "RECREATE");
     cLambdaXiMass -> Write();
     cLambdaXiMassSc -> Write();
     cLambdaXiMassMtd -> Write();
