@@ -148,7 +148,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     int mom21 = -3000000;
     int mom22 = 3000000;
     int bet1 = 0;
-    int bet2 = 2;
+    int bet2 = 1.2;
     int ekin1 = 0;
     int ekin2 = 2000;
     int mas1 = -500;
@@ -218,7 +218,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     //FwDet only
     TH1F *hdE_fd = new TH1F("hdE_fd", "hdE_fd", 200, 0, .1);
     TH1F *hr_fd = new TH1F("hr_fd", "hr_fd", 20, 0, 10);
-    TH2F *hBeta_fd = new TH2F("hBeta_fd", "hBeta_fd", 400, -2000, 2000, 200, 0, 1);
+    TH2F *hBeta_fd = new TH2F("hBeta_fd", "hBeta_fd", 400, -2000, 2000, 200, bet1, bet2);
     TH2F *hM22_fd = new TH2F("hM22_fd", "hM22_fd", nbins2, mom1, mom2 , nbins1, mas21, mas22);
     TH2F *hdetof_fd = new TH2F("hdetof_fd", "hdetof_fd", nbins2, 0, .1 , nbins1, toff1, toff2);
     TH2F *hdetof_fd_Geant = new TH2F("hdetof_fd_Geant", "hdetof_fd_Geant", nbins2, 0, .1 , nbins1, toff1, toff2);
@@ -362,7 +362,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    cout<<"event no. "<<i<<endl;
 	HParticleCandSim* particlecand =nullptr;
 	HParticleCandSim* ksicand =nullptr;  //candidate for pion to Xi reconstr
-	HFwDetCandSim* fwdetstrawvec = nullptr;
+//	HFwDetCandSim* fwdetstrawvec = nullptr; //with FD!!!
+	HParticleCandSim* fwdetstrawvec = nullptr; //if no FD!!!
 	HFwDetStrawCalSim* fwdetstrawcal = nullptr;
 
 	HParticleTool particle_tool;
@@ -407,7 +408,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		}
 */
 	    // PID	    
-	    if(beta_h!=-1 && mass_h > 0)
+	    if(beta_h!=-1)
 //		particleID = mass2PID(mass2_h, charge_h); //PID as ranges in m2(pq) spectrum
 		particleID = mass2PIDfit(fitpar, mass2_h, charge_h, nPartSpec); //PID as +/-4sigma in m2 spectrum
 	    else break;
@@ -418,7 +419,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    particlecand_parentID = particlecand -> getGeantParentPID();
 	    
 	    // cout << "tof:" << tof_h << " beta:" << beta << " p:" << mom << " q:" << charge << " mass:" << mass << endl;
-	    if(beta_h != -1 && mass_h > 0){
+	    if(beta_h != -1){
 		hdEdx_h -> Fill(pq_h, dEdx_h);
 		hBeta_h -> Fill(pq_h, beta_h);
 		hEkin_h -> Fill(pq_h, ener_h);
@@ -517,20 +518,19 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		//	cout << "beta: " << beta << " mom: " << mom << " dEdx: " << dEdx << " ener: " << ener << endl;
 	    //##############################
 
-	    for(int j=0; j<vcnt; j++)//vector candidates, FwDetCand loop--------------------------------------------------
-	    {
-		fwdetstrawvec=HCategoryManager::getObject(fwdetstrawvec, fCatFwDetCandSim, j);
-		float tof_v = fwdetstrawvec -> getTof();
+//	    for(int j=0; j<vcnt; j++){//vector candidates, FwDetCand loop-------------------------------------------------- with FD!!!
+	    for(int j=0; j<pcnt; j++){//vector candidates, FwDetCand loop-------------------------------------------------- no FD!!!
+		if(j==l)
+		    continue; //skip pion from lambda decay, no FD!!!
+		
+//		float tof_v = 0; //with FD!!!
 		float dE_v = 0; 
 		float r_v = 0; 
-		
+
+		//with FD!!!
+/*		fwdetstrawvec=HCategoryManager::getObject(fwdetstrawvec, fCatFwDetCandSim, j);
+		tof_v = fwdetstrawvec -> getTof();
 		vectorcandID = tofPID(tof_v);
-//		vectorcandID = 14;
-		hVpid -> Fill(vectorcandID);
-		
-		fwdetstrawvec -> calc4vectorProperties(HPhysicsConstants::mass(vectorcandID));
-		vectorcandGeantID = fwdetstrawvec -> getGeantPID();
-		vectorcand_parentID = fwdetstrawvec -> getGeantParentPID();
 
 		int nh = fwdetstrawvec -> getNofHits();
 		for(int n = 0; n < nh; n++){
@@ -542,7 +542,38 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			hr_fd -> Fill(r_v);
 //		    cout << "dE=" << dE_v << " dr=" << r_v << endl;
 		}
+*/		//end with FD!!!
 
+                //no FD!!!
+		fwdetstrawvec = HCategoryManager::getObject(fwdetstrawvec, fCatParticleCandSim,j);
+		if(!fwdetstrawvec->isFlagBit(kIsUsed)) continue; //only the best tracks
+
+		float mom_v = fwdetstrawvec -> getMomentum();
+		float charge_v = fwdetstrawvec -> getCharge();
+		float dEdx_v = fwdetstrawvec -> getMdcdEdx();
+		float beta_v = fwdetstrawvec -> getBeta();
+		float mass_v =  mom_v*(TMath::Sqrt((1/beta_v/beta_v)-1));
+		float mass2_v = mass_v*mass_v;
+		float ener_v = mass_v*((1/TMath::Sqrt(1-beta_v*beta_v))-1);
+		float pq_v = mom_v*charge_v;
+		float tofRec_v = particlecand -> getTofRec();
+		float tof_v = particlecand -> getTof();
+
+		// PID
+		if(beta_v!=-1)
+		    //particleID = mass2PID(mass2_h, charge_h); //PID as ranges in m2(pq) spectrum
+		    vectorcandID = mass2PIDfit(fitpar, mass2_v, charge_v, nPartSpec); //PID based on m2 spectrum
+		else break;
+		//end no FD!!!
+
+		//              vectorcandID = 14;
+		hVpid -> Fill(vectorcandID);
+
+		fwdetstrawvec -> calc4vectorProperties(HPhysicsConstants::mass(vectorcandID));
+		vectorcandGeantID = fwdetstrawvec -> getGeantPID();
+		vectorcand_parentID = fwdetstrawvec -> getGeantParentPID();
+
+				
 		if(tof_v != -1){
 		    //	cout << "tofRec_v: " << tofRec_v << " tof_v: " << tof_v << endl;
 		    hdE_fd -> Fill(dE_v);
@@ -592,14 +623,14 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		particle_tool.calcSegVector(particlecand->getZ(),particlecand->getR(),TMath::DegToRad()*particlecand->getPhi(),TMath::DegToRad()*particlecand->getTheta(),base_H,dir_H);
 	
 		HGeomVector base_FW;
-		base_FW.setX(fwdetstrawvec->getPointX());
+/*		base_FW.setX(fwdetstrawvec->getPointX()); //with FD!!!
 		base_FW.setY(fwdetstrawvec->getPointY());
 		base_FW.setZ(fwdetstrawvec->getPointZ());
-		HGeomVector dir_FW;
-		dir_FW.setX(fwdetstrawvec->getDirTx());
+*/		HGeomVector dir_FW;
+/*		dir_FW.setX(fwdetstrawvec->getDirTx());  //with FD!!!
 		dir_FW.setY(fwdetstrawvec->getDirTy());
-		dir_FW.setZ(1);//konwencja, tak jest ustawione w fwdetstrawvec
-
+*/		dir_FW.setZ(1);//konwencja, tak jest ustawione w fwdetstrawvec
+		particle_tool.calcSegVector(fwdetstrawvec->getZ(),fwdetstrawvec->getR(),TMath::DegToRad()*fwdetstrawvec->getPhi(),TMath::DegToRad()*fwdetstrawvec->getTheta(),base_FW,dir_FW); //no FD!!!
 		//*******************
 		double distance=particle_tool.calculateMinimumDistance(base_FW,dir_FW,base_H,dir_H);
 
@@ -657,7 +688,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    for(int f=0;f<pcnt;f++)//scan all particles detected in HADES except Pion used for Lambda reconstraction
 		    {
 		      if(f==l)
-			continue;//skip pion from lambda decay
+			  continue;//skip pion from lambda decay
+		      if(f==j)
+			  continue;//skip proton from lambda decay if there is no FD!!!
 
 		      ksicand = HCategoryManager::getObject(ksicand, fCatParticleCandSim,f);
 		      if(!ksicand->isFlagBit(kIsUsed)) continue; // only the best tracks
@@ -676,7 +709,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		      //float tof_h_Xi = ksicand -> getTof();
 
 		      // PID
-		      if(beta_h_Xi!=-1 && mass_h_Xi > 0)
+		      if(beta_h_Xi!=-1)
 			  ksicandID = mass2PIDfit(fitpar, mass2_h_Xi, charge_h_Xi, nPartSpec);
 		      else break;
 		      // cout << "ksicandID: " << ksicandID << endl;
