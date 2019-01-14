@@ -20,11 +20,13 @@
 #include <TGraphErrors.h>
 #include <TLatex.h>
 #include <TLegend.h>
+#include <TPaveText.h>
 
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include <TString.h>
+#include <TLine.h>
 #include <TSpectrum.h>
 
 #include "massPID.cc"
@@ -117,17 +119,16 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     for(pidNo; pidNo < partN; pidNo++){
 	char cutName[50];
 	sprintf(cutName, "CUTG_%02d", pidNo);
-	//if(!(TCutG*)fCut -> Get()){
-	//    continue;
-	//}
-	//else{
 	if(!(TCutG*)fCut -> Get(cutName)) sprintf(cutName, "CUTG_%02d", 0);
 	gCut[k] = (TCutG*)fCut -> Get(cutName) -> Clone();
 	cout << "cutName: " << cutName << endl;
 	k++;
-	//}
     }
 
+    //check the strange structure on dEdx tof spectrum
+    TFile *fCutdedx = TFile::Open("cut_dedxtof.root");
+    TCutG *gCutdedx = (TCutG*)fCutdedx -> Get("CUTG") -> Clone();;
+    
     //read parametrization for mass cut PID
     ifstream fPID;
     fPID.open(anapars.pidfile);
@@ -147,8 +148,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     int mom2 = 2000;
     int mom21 = -3000000;
     int mom22 = 3000000;
-    int bet1 = 0;
-    int bet2 = 1.2;
+    double bet1 = 0;
+    double bet2 = 1.2;
     int ekin1 = 0;
     int ekin2 = 2000;
     int mas1 = -500;
@@ -166,7 +167,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     int nbins1 = 200; 
     
     //HADES only
-    TH2F *hdEdx_h = new TH2F("hdEdx_h", "hdEdx_h", nbins2, mom1, mom2, nbins1, dex1, dex2);
+    TH2F *hdEdx_mdc = new TH2F("hdEdx_mdc", "hdEdx_mdc", nbins2, mom1, mom2, nbins1, dex1, dex2);
     TH2F *hBeta_h = new TH2F("hBeta_h", "hBeta_h", nbins2, mom1, mom2, nbins1, bet1, bet2);
     TH2F *hEkin_h = new TH2F("hEkin_h", "hEkin_h", nbins2, mom1, mom2, nbins1, ekin1, ekin2);
     TH2F *hM2_h = new TH2F("hM2_h", "hM2_h", nbins2, mom1, mom2 , nbins1, mas1, mas2);
@@ -184,7 +185,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH1F *hM1_m_h = new TH1F("hM1_m_h", "hM1_m_h", nbins1, mas1, mas2);
     TH1F *hM12_m_h = new TH1F("hM12_m_h", "hM12_m_h", nbins1, mas21, mas22);
     TCanvas *cBetaPID_h = new TCanvas("cBetaPID_h", "cBetaPID_h");
-    TCanvas *cMassPID_h = new TCanvas("cMassPID_h", "cMassPID_h");
+    TCanvas *cMassPID_h = new TCanvas("cMassPID_h", "cMassPID_h", 1200, 800);
+    TCanvas *cMassPID_pions = new TCanvas("cMassPID_pions","cMassPID_pions", 1200, 800);
     
     //tof (system==1)
     TH2F *hdEdx_tof = new TH2F("hdEdx_tof", "hdEdx_tof", nbins2, mom1, mom2, nbins1, dex1, dex2);
@@ -200,6 +202,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH1F *hM1_m_tof = new TH1F("hM1_m_tof", "hM1_m_tof", nbins1, mas1, mas2);
     TH1F *hM12_m_tof = new TH1F("hM12_m_tof", "hM12_m_tof", nbins1, mas21, mas22);
     TCanvas *cBetaPID_tof = new TCanvas("cBetaPID_tof", "cBetaPID_tof");
+
+    //check dedx tof
+    TH2F *hcheckdedx_dedxmdc = new TH2F("hcheckdedx_dedxmdc", "hcheckdedx_dedxmdc", nbins2, mom1, mom2, nbins1, dex1, dex2);
+    TH2F *hcheckdedx_btof = new TH2F("hcheckdedx_btof", "hcheckdedx_btof", nbins2, mom1, mom2, nbins1, bet1, bet2);
+    
+
     //RPC (system==0)
     TH2F *hdEdx_rpc = new TH2F("hdEdx_rpc", "hdEdx_rpc", nbins2, mom1, mom2, nbins1, dex1, dex2);
     TH2F *hBeta_rpc = new TH2F("hBeta_rpc", "hBeta_rpc", nbins2, mom1, mom2, nbins1, bet1, bet2);
@@ -226,8 +234,6 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH2F *hdetof_fd_Geant11 = new TH2F("hdetof_fd_Geant11", "hdetof_fd_Geant11", nbins2, 0, .1 , nbins1, toff1, toff2);
     TH2F *hdetof_fd_Geant14 = new TH2F("hdetof_fd_Geant14", "hdetof_fd_Geant14", nbins2, 0, .1 , nbins1, toff1, toff2);
     
-    // TCanvas *cBetaPID_fd = new TCanvas("cBetaPID_fd", "cBetaPID_fd");
-
     //ToF
     //H&FD
     TH1F *hTof_pim = new TH1F("hTof_pim", "hTof_pim", nbins1, tofh1, tofh2);
@@ -310,7 +316,34 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH1F* hMLPiHadesMTDVert=new TH1F("hMLPiHadesMTDVert","reconstraced mass of all combinations: pion in Hades, distance between tracks <x, Vertz_L in range",imres,immin,immax);
     TH1F* hMLPiHpFMTDVert=new TH1F("hMLPiHpFMTDVert","reconstraced mass of all combinations: pion in HADES, proton in FD, distance between tracks <x, Vertz_L in range",imres,immin,immax);
     TH1F* hrealLMTDVert=new TH1F("hrealLMTDVert","reconstraced mass of pion in HADES and proton in FD from #Lambda, distance between tracks <x, Vertz_L in range",imres,immin,immax);
+
+    int thmin = 0;
+    int thmax = 4;
+    int costhmin = -1;
+    int costhmax = 1;
+    int mommin = 0;
+    int mommax = 1500;
+    int phimin = 0;
+    int phimax = 4;
+    int ymin = 0;
+    int ymax = 1;
+    int nbins3 = 100;
     
+    TH1F* hThetaL = new TH1F("hThetaL", "hThetaL", nbins3, thmin, thmax);
+    TH1F* hThetaLcm = new TH1F("hThetaLcm", "hThetaLcm", nbins3, thmin, thmax);
+    TH1F* hCosThetaL = new TH1F("hCosThetaL", "hCosThetaL", nbins3, costhmin, costhmax);
+    TH1F* hCosThetaLcm = new TH1F("hCosThetaLcm", "hCosThetaLcm", nbins3, costhmin, costhmax);
+    TH2F* hMomThetaL = new TH2F("hMomThetaL", "hMomThetaL", nbins3, mommin, mommax, nbins3, thmin, thmax);
+    TH2F* hMomThetaLcm = new TH2F("hMomThetaLcm", "hMomThetaLcm", nbins3, mommin, mommax, nbins3, thmin, thmax);
+    TH1F* hPhiL = new TH1F("hPhiL", "hPhiL", nbins3, phimin, phimax);
+    TH1F* hPhiLcm = new TH1F("hPhiLcm", "hPhiLcm", nbins3, phimin, phimax);
+    TH1F* hMomL = new TH1F("hMomL", "hMomL", nbins3, mommin, mommax);
+    TH1F* hMomLcm = new TH1F("hMomLcm", "hMomLcm", nbins3, mommin, mommax);
+    TH1F* hRapL = new TH1F("hRapL", "hRapL", nbins3, ymin, ymax);
+    TH1F* hRapLcm = new TH1F("hRapLcm", "hRapLcm", nbins3, ymin, ymax);
+    TH1F* hPseuRapL = new TH1F("hPseuRapL", "hPseuRapL", nbins3, ymin, ymax);
+    TH1F* hPseuRapLcm = new TH1F("hPseuRapLcm", "hPseuRapLcm", nbins3, ymin, ymax);
+			
     //Xi
     immin=1200;
     immax=1400;
@@ -350,6 +383,15 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     double massLmin = 1106; // !!
     double massLmax = 1126; //!!
 
+    //beam vector
+    double beam_en = 4.5; //[GeV]
+    double p_mass = .938; //[GeV]
+    double beam_mom = sqrt(beam_en*beam_en - p_mass*p_mass);
+    TLorentzVector *proj = new TLorentzVector(0, 0, beam_mom, beam_en);
+    TLorentzVector *targ = new TLorentzVector(0, 0, 0, p_mass);
+    TLorentzVector *beam = new TLorentzVector(0,0,0,0);;
+    *beam= *proj + *targ;
+    
     int eventNo = -1;
     TH1I *heventNo = new TH1I();
     heventNo -> SetName("heventNo");
@@ -362,8 +404,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    cout<<"event no. "<<i<<endl;
 	HParticleCandSim* particlecand =nullptr;
 	HParticleCandSim* ksicand =nullptr;  //candidate for pion to Xi reconstr
-//	HFwDetCandSim* fwdetstrawvec = nullptr; //with FD!!!
-	HParticleCandSim* fwdetstrawvec = nullptr; //if no FD!!!
+	HFwDetCandSim* fwdetstrawvec = nullptr; //with FD!!!
+//	HParticleCandSim* fwdetstrawvec = nullptr; //if no FD!!!
 	HFwDetStrawCalSim* fwdetstrawcal = nullptr;
 
 	HParticleTool particle_tool;
@@ -383,7 +425,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    
 	    float mom_h = particlecand -> getMomentum();
 	    float charge_h = particlecand -> getCharge();
-	    float dEdx_h = particlecand -> getMdcdEdx();
+	    float dEdx_mdc = particlecand -> getMdcdEdx();
+	    float dEdx_tof = particlecand -> getTofdEdx();
 	    float beta_h = particlecand -> getBeta();
 	    //float mass_h = particlecand -> getMass(); //hParticleCandSim
 	    //float mass2_h = particlecand -> getMass2(); //hParticleCandSim
@@ -420,7 +463,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    
 	    // cout << "tof:" << tof_h << " beta:" << beta << " p:" << mom << " q:" << charge << " mass:" << mass << endl;
 	    if(beta_h != -1){
-		hdEdx_h -> Fill(pq_h, dEdx_h);
+		hdEdx_mdc -> Fill(pq_h, dEdx_mdc);
 		hBeta_h -> Fill(pq_h, beta_h);
 		hEkin_h -> Fill(pq_h, ener_h);
 		hM1_h -> Fill(mass_h*charge_h);
@@ -443,7 +486,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		}
 		
 		if(particlecand -> getSystem() == 1){
-		    hdEdx_tof -> Fill(pq_h, dEdx_h);
+		    hdEdx_tof -> Fill(pq_h, dEdx_tof);
 		    hBeta_tof -> Fill(pq_h, beta_h);
 		    hEkin_tof -> Fill(pq_h, ener_h);
 		    hM1_tof -> Fill(mass_h*charge_h);
@@ -457,10 +500,14 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			hM2_m_tof -> Fill(pq_h, mass_h);
 			hM22_m_tof -> Fill(pq_h, mass2_h);	
 		    }	 
+		    if(gCutdedx -> IsInside(pq_h,dEdx_tof)){
+			hcheckdedx_dedxmdc -> Fill(pq_h, dEdx_mdc);
+			hcheckdedx_btof -> Fill(pq_h, beta_h);
+		    }
 		}
 
 		if(particlecand -> getSystem() == 0){
-		    hdEdx_rpc -> Fill(pq_h, dEdx_h);
+		    hdEdx_rpc -> Fill(pq_h, dEdx_tof);
 		    hBeta_rpc -> Fill(pq_h, beta_h);
 		    hEkin_rpc -> Fill(pq_h, ener_h);
 		    hM1_rpc -> Fill(mass_h*charge_h);
@@ -518,17 +565,17 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		//	cout << "beta: " << beta << " mom: " << mom << " dEdx: " << dEdx << " ener: " << ener << endl;
 	    //##############################
 
-//	    for(int j=0; j<vcnt; j++){//vector candidates, FwDetCand loop-------------------------------------------------- with FD!!!
-	    for(int j=0; j<pcnt; j++){//vector candidates, FwDetCand loop-------------------------------------------------- no FD!!!
-		if(j==l)
+	    for(int j=0; j<vcnt; j++){//vector candidates, FwDetCand loop-------------------------------------------------- with FD!!!
+//	    for(int j=0; j<pcnt; j++){//vector candidates, FwDetCand loop-------------------------------------------------- no FD!!!
+/*		if(j==l)
 		    continue; //skip pion from lambda decay, no FD!!!
-		
-//		float tof_v = 0; //with FD!!!
+*/		
+		float tof_v = 0; //with FD!!!
 		float dE_v = 0; 
 		float r_v = 0; 
-
+		float tofEloss_v = 0;
 		//with FD!!!
-/*		fwdetstrawvec=HCategoryManager::getObject(fwdetstrawvec, fCatFwDetCandSim, j);
+		fwdetstrawvec=HCategoryManager::getObject(fwdetstrawvec, fCatFwDetCandSim, j);
 		tof_v = fwdetstrawvec -> getTof();
 		vectorcandID = tofPID(tof_v);
 
@@ -542,10 +589,11 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			hr_fd -> Fill(r_v);
 //		    cout << "dE=" << dE_v << " dr=" << r_v << endl;
 		}
-*/		//end with FD!!!
+		tofEloss_v = tof_v*dE_v;
+		//end with FD!!!
 
                 //no FD!!!
-		fwdetstrawvec = HCategoryManager::getObject(fwdetstrawvec, fCatParticleCandSim,j);
+/*		fwdetstrawvec = HCategoryManager::getObject(fwdetstrawvec, fCatParticleCandSim,j);
 		if(!fwdetstrawvec->isFlagBit(kIsUsed)) continue; //only the best tracks
 
 		float mom_v = fwdetstrawvec -> getMomentum();
@@ -564,8 +612,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    //particleID = mass2PID(mass2_h, charge_h); //PID as ranges in m2(pq) spectrum
 		    vectorcandID = mass2PIDfit(fitpar, mass2_v, charge_v, nPartSpec); //PID based on m2 spectrum
 		else break;
-		//end no FD!!!
-
+*/		//end no FD!!!
+		
 		//              vectorcandID = 14;
 		hVpid -> Fill(vectorcandID);
 
@@ -623,14 +671,14 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		particle_tool.calcSegVector(particlecand->getZ(),particlecand->getR(),TMath::DegToRad()*particlecand->getPhi(),TMath::DegToRad()*particlecand->getTheta(),base_H,dir_H);
 	
 		HGeomVector base_FW;
-/*		base_FW.setX(fwdetstrawvec->getPointX()); //with FD!!!
+		base_FW.setX(fwdetstrawvec->getPointX()); //with FD!!!
 		base_FW.setY(fwdetstrawvec->getPointY());
 		base_FW.setZ(fwdetstrawvec->getPointZ());
-*/		HGeomVector dir_FW;
-/*		dir_FW.setX(fwdetstrawvec->getDirTx());  //with FD!!!
+		HGeomVector dir_FW;
+		dir_FW.setX(fwdetstrawvec->getDirTx());  //with FD!!!
 		dir_FW.setY(fwdetstrawvec->getDirTy());
-*/		dir_FW.setZ(1);//konwencja, tak jest ustawione w fwdetstrawvec
-		particle_tool.calcSegVector(fwdetstrawvec->getZ(),fwdetstrawvec->getR(),TMath::DegToRad()*fwdetstrawvec->getPhi(),TMath::DegToRad()*fwdetstrawvec->getTheta(),base_FW,dir_FW); //no FD!!!
+		dir_FW.setZ(1);//konwencja, tak jest ustawione w fwdetstrawvec
+//		particle_tool.calcSegVector(fwdetstrawvec->getZ(),fwdetstrawvec->getR(),TMath::DegToRad()*fwdetstrawvec->getPhi(),TMath::DegToRad()*fwdetstrawvec->getTheta(),base_FW,dir_FW); //no FD!!!
 		//*******************
 		double distance=particle_tool.calculateMinimumDistance(base_FW,dir_FW,base_H,dir_H);
 
@@ -642,7 +690,25 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 
 		TLorentzVector sum_mass = *fwdetstrawvec + *particlecand;
 		Float_t mass=sum_mass.M();
-
+		Float_t betaL=sum_mass.Beta();
+		//lab
+		Float_t thetaL=sum_mass.Theta(); 
+		Float_t cosThetaL=sum_mass.CosTheta(); 
+		Float_t phiL=sum_mass.Phi(); 
+		Float_t momL=sum_mass.P();
+		Float_t yL=sum_mass.Rapidity();
+//		Float_t pseudoyL=sum_mass.PseudoRapidity();
+		//cm
+		TLorentzVector *sum_mass_cm = new TLorentzVector(0,0,0,0);
+		*sum_mass_cm = *fwdetstrawvec + *particlecand;
+		sum_mass_cm -> Boost(-(*beam).BoostVector());
+		Float_t thetaLcm=sum_mass_cm->Theta();
+		Float_t cosThetaLcm=sum_mass_cm->CosTheta();
+		Float_t phiLcm=sum_mass_cm->Phi();
+		Float_t momLcm=sum_mass_cm->P();
+		Float_t yLcm=sum_mass_cm->Rapidity();
+//		Float_t pseudoyLcm=sum_mass_cm->PseudoRapidity();
+	      		
 		hMLAll -> Fill(mass);
 
 		if(particleID == 9){ //pion in HADES, anything in FD
@@ -677,6 +743,13 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 				hMLPiHpFMTDVert -> Fill(mass);
 				if(particlecand_parentID==18 && vectorcand_parentID==18) //pion and proton from	real Lambda
 				    hrealLMTDVert -> Fill(mass);
+				hThetaLcm -> Fill(thetaLcm);
+				hCosThetaLcm -> Fill(cosThetaLcm);
+				hMomThetaLcm -> Fill(momLcm, thetaLcm);
+				hPhiLcm -> Fill(phiLcm);
+				hMomLcm -> Fill(momLcm);
+				hRapLcm -> Fill(yLcm);
+//				hPseuRapLcm -> Fill(pseudoyLcm);
 			    }
 			}	
 		    }
@@ -689,9 +762,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    {
 		      if(f==l)
 			  continue;//skip pion from lambda decay
-		      if(f==j)
+/*		      if(f==j)
 			  continue;//skip proton from lambda decay if there is no FD!!!
-
+*/
 		      ksicand = HCategoryManager::getObject(ksicand, fCatParticleCandSim,f);
 		      if(!ksicand->isFlagBit(kIsUsed)) continue; // only the best tracks
 		      ksicandGeantID = ksicand -> getGeantPID();
@@ -765,12 +838,12 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	heventNo -> Fill(i);
     }//end event loop
 
-    hM12_h = massPID(hM12_h);
+    hM12_h = massPID(hM12_h, fitpar, nPartSpec);
     
     output_file->cd();
     gPad -> SetLogz();
-    //Hades only
-    hdEdx_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
+    //MDC only
+    hdEdx_mdc -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hBeta_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hEkin_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hBeta_m_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
@@ -786,7 +859,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hM2_m_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
     hM22_m_h -> GetXaxis() -> SetTitle("p*q [MeV/c]");
 
-    hdEdx_h -> GetYaxis() -> SetTitle("dE/dx");
+    hdEdx_mdc -> GetYaxis() -> SetTitle("dE/dx");
     hBeta_h -> GetYaxis() -> SetTitle("#beta");
     hEkin_h -> GetYaxis() -> SetTitle("E_{kin} [MeV]");
     hBeta_m_h -> GetYaxis() -> SetTitle("#beta");
@@ -802,7 +875,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hM2_m_h -> GetYaxis() -> SetTitle("m*q [MeV]");
     hM22_m_h -> GetYaxis() -> SetTitle("m^{2}*q [(MeV)^{2}]");
     
-    hdEdx_h -> Write();
+    hdEdx_mdc -> Write();
     hBeta_h -> Write();
     hEkin_h -> Write();
     hBeta_m_h -> Write();
@@ -819,10 +892,171 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hM2_m_h -> Write();
     hM22_m_h -> Write();
 
+    //pid
     cMassPID_h -> cd();
     hM12_h -> Draw();
+    float a1 = 0;
+    float a2 = 0;
+    float hmax = hM12_h -> GetBinContent(hM12_h -> GetMaximumBin());
+    TLine *lpid1 = new TLine(a1, 0, a1, hmax);
+    TLine *lpid2 = new TLine(a2, 0, a2, hmax);
+    TLine *lpid3 = new TLine(a1, hmax, a2, hmax);
+    TPaveText *ptp = new TPaveText(.14, .8, .16, .85, "NDC");
+    ptp -> SetFillColor(0);
+    ptp -> SetBorderSize(0);
+//    ptp -> SetTextSize(0.07);
+
+    for(int j = 0; j < nPartSpec; j++){
+	float mean = fitpar[3*j+1];
+	float sigma = -1;
+	if(j < 2)
+	    sigma = 3*fitpar[3*j+2]; //for pions: 3sigma
+	else
+	    sigma = 2*fitpar[3*j+2]; //for p and K: 2sigma
+	if(j == 0){
+	    a1 = mean-sigma;
+	    a2 = 0;
+	    lpid1 = new TLine(a1, 0, a1, hmax);
+	    lpid2 = new TLine(a2, 0, a2, hmax);
+	    lpid1 -> SetLineColor(2);
+	    lpid1 -> SetLineWidth(3);
+	    lpid2 -> SetLineColor(2);
+	    lpid2 -> SetLineWidth(3);
+	    lpid1 -> Draw("same");
+	    lpid2 -> Draw("same");
+	    lpid3 = new TLine(a1, hmax*3/4, a2, hmax*3/4);
+	    lpid3 -> SetLineColor(2);
+	    lpid3 -> SetLineWidth(3);
+	    lpid3 -> SetLineStyle(9);
+	    lpid3 -> Draw("same");
+	    ptp -> AddText("#pi^{-}");
+	    ptp -> SetTextColor(2);
+	    ptp -> Draw("same");
+	}else if(j == 1){
+	    a1 = 0;
+	    a2 = mean+sigma;
+	    lpid1 = new TLine(a1, 0, a1, hmax);
+	    lpid2 = new TLine(a2, 0, a2, hmax);
+	    lpid1 -> SetLineColor(6);
+	    lpid1 -> SetLineWidth(3);
+	    lpid2 -> SetLineColor(6);
+	    lpid2 -> SetLineWidth(3);
+	    lpid1 -> Draw("same");
+	    lpid2 -> Draw("same");
+	    lpid3 = new TLine(a1, hmax/2, a2, hmax/2);
+	    lpid3 -> SetLineColor(6);
+	    lpid3 -> SetLineWidth(3);
+	    lpid3 -> SetLineStyle(9);
+	    lpid3 -> Draw("same");
+	    ptp = new TPaveText(.22, .8, .24, .85, "NDC");
+	    ptp -> SetFillColor(0);
+	    ptp -> AddText("#pi^{+}");
+	    ptp -> SetTextColor(6);
+	    ptp -> Draw("same");
+	}else{
+	    a1 = mean-sigma;
+	    a2 = mean+sigma;
+	    lpid1 = new TLine(a1, 0, a1, hmax);
+	    lpid2 = new TLine(a2, 0, a2, hmax);
+	    lpid3 = new TLine(a1, hmax/2, a2, hmax/2);
+	    lpid1 -> SetLineWidth(3);
+	    lpid2 -> SetLineWidth(3);
+	    lpid3 -> SetLineWidth(3);
+	    lpid3 -> SetLineStyle(9);
+	    if(j == 2){
+		lpid1 -> SetLineColor(4);
+		lpid2 -> SetLineColor(4);
+		lpid3 -> SetLineColor(4);
+		ptp = new TPaveText(.3, .8, .32, .85, "NDC");
+		ptp -> SetFillColor(0);
+		ptp -> AddText("K^{+}");
+		ptp -> SetTextColor(4);
+	    }else if(j == 3){
+		lpid1 -> SetLineColor(8);
+		lpid2 -> SetLineColor(8);
+		lpid3 -> SetLineColor(8);
+		ptp = new TPaveText(.58, .8, .6, .85, "NDC");
+		ptp -> SetFillColor(0);
+		ptp -> SetFillColor(0);
+		ptp -> AddText("p");
+		ptp -> SetTextColor(8);
+	    }
+	    lpid1 -> Draw("same");
+	    lpid2 -> Draw("same");
+	    lpid3 -> Draw("same");
+	    ptp -> Draw("same");
+	}
+    }
     cMassPID_h -> Write();
 
+    //pions PID
+    cMassPID_pions -> cd();
+    hM12_h_pions -> Draw();
+    a1 = 0;
+    a2 = 0;
+    float a1a = 0;
+    hmax = hM12_h_pions -> GetBinContent(hM12_h_pions -> GetMaximumBin());
+    TLine *lpid1a = new TLine(a1a, 0, a1a, hmax);
+    for(int j = 0; j < 2; j++){
+	float mean = fitpar[3*j+1];
+	float sigma = -1;
+	sigma = 3*fitpar[3*j+2]; //for pions: 3sigma
+	if(j == 0){
+	    a1 = mean-sigma;
+	    a2 = 0;
+	    a1a = mean+sigma;
+	    lpid1 = new TLine(a1, 0, a1, hmax);
+	    lpid2 = new TLine(a2, 0, a2, hmax);
+	    lpid1 -> SetLineColor(2);
+	    lpid1 -> SetLineWidth(3);
+	    lpid2 -> SetLineColor(2);
+	    lpid2 -> SetLineWidth(3);
+	    lpid1 -> Draw("same");
+	    lpid2 -> Draw("same");
+	    lpid3 = new TLine(a1, hmax*3/4, a2, hmax*3/4);
+	    lpid3 -> SetLineColor(2);
+	    lpid3 -> SetLineWidth(3);
+	    lpid3 -> SetLineStyle(9);
+	    lpid3 -> Draw("same");
+	    lpid1a = new TLine(a1a, 0, a1a, hmax);
+	    lpid1a -> SetLineColor(2);
+	    lpid1a -> Draw("same");
+	    ptp = new TPaveText(.33, .8, .35, .85, "NDC");
+	    ptp -> SetFillColor(0);
+	    ptp -> AddText("#pi^{-}");
+	    ptp -> SetTextColor(2);
+	    ptp -> Draw("same");
+	}else if(j == 1){
+	    a1 = 0;
+	    a2 = mean+sigma;
+	    a1a = mean-sigma;
+	    lpid1 = new TLine(a1, 0, a1, hmax);
+	    lpid2 = new TLine(a2, 0, a2, hmax);
+	    lpid1 -> SetLineColor(6);
+	    lpid1 -> SetLineWidth(3);
+	    lpid2 -> SetLineColor(6);
+	    lpid2 -> SetLineWidth(3);
+	    lpid1 -> Draw("same");
+	    lpid2 -> Draw("same");
+	    lpid3 = new TLine(a1, hmax/2, a2, hmax/2);
+	    lpid3 -> SetLineColor(6);
+	    lpid3 -> SetLineWidth(3);
+	    lpid3 -> SetLineStyle(9);
+	    lpid3 -> Draw("same");
+	    lpid1a = new TLine(a1a, 0, a1a, hmax);
+	    lpid1a -> SetLineColor(6);
+	    lpid1a -> Draw("same");
+	    ptp = new TPaveText(.65, .8, .67, .85, "NDC");
+	    ptp -> SetFillColor(0);
+	    ptp -> AddText("#pi^{+}");
+	    ptp -> SetTextColor(6);
+	    ptp -> Draw("same");
+
+	}
+    }
+    cMassPID_pions -> Write();
+
+    
 //    hBeta_q_h -> GetXaxis() -> SetTitle("q");
 //    hBeta_q_h -> GetYaxis() -> SetTitle("#beta");
 //    hBeta_q_h -> Write();
@@ -876,6 +1110,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hM1_m_tof -> Write();
     hM2_m_tof -> Write();
     hM22_m_tof -> Write();
+
+    hcheckdedx_dedxmdc -> Write();
+    hcheckdedx_btof -> Write();
     
     cBetaPID_tof -> cd();
     cBetaPID_tof -> SetLogz();
@@ -938,7 +1175,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     cBetaPID_rpc -> Write();
     
     //FwDet only
-    hdE_fd -> GetXaxis() -> SetTitle("dE in straws [MeV?]");
+    hdE_fd -> GetXaxis() -> SetTitle("dE in straws [MeV]");
     hdE_fd -> GetYaxis() -> SetTitle("#");
     hdE_fd -> Write();
     hdetof_fd -> GetXaxis() -> SetTitle("dE in straws [MeV]");
@@ -1240,6 +1477,30 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hrealLMTDVert -> GetYaxis() -> SetTitle("counts");
     hrealLMTDVert -> Write();
 
+    hThetaLcm -> GetXaxis() -> SetTitle("#theta_{CM} [rad]");
+    hMomThetaLcm -> GetXaxis() -> SetTitle("p [Gev/c]");
+    hCosThetaLcm -> GetXaxis() -> SetTitle("cos#theta");
+    hPhiLcm -> GetXaxis() -> SetTitle("#phi [rad]");
+    hMomLcm -> GetXaxis() -> SetTitle("p [Gev/c]");
+    hRapLcm -> GetXaxis() -> SetTitle("y []");
+//    hPseuRapLcm -> GetXaxis() -> SetTitle("");
+
+    hThetaLcm -> GetYaxis() -> SetTitle("counts");
+    hMomThetaLcm -> GetYaxis() -> SetTitle("#theta_{CM} [rad]");
+    hCosThetaLcm -> GetYaxis() -> SetTitle("counts");
+    hPhiLcm -> GetYaxis() -> SetTitle("counts");
+    hMomLcm -> GetYaxis() -> SetTitle("counts");
+    hRapLcm -> GetYaxis() -> SetTitle("counts");
+//    hPseuRapLcm -> GetYaxis() -> SetTitle("counts");
+
+    hThetaLcm -> Write();
+    hMomThetaLcm -> Write();
+    hCosThetaLcm -> Write();
+    hPhiLcm -> Write();
+    hMomLcm -> Write();
+    hRapLcm -> Write();
+//    hPseuRapLcm -> Write();
+    
     //Xi
     hTDpiL -> GetXaxis() -> SetTitle("dist [mm]");
     hTDpiL -> GetYaxis() -> SetTitle("counts");
