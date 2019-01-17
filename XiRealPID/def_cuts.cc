@@ -343,7 +343,25 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     TH1F* hRapLcm = new TH1F("hRapLcm", "hRapLcm", nbins3, ymin, ymax);
     TH1F* hPseuRapL = new TH1F("hPseuRapL", "hPseuRapL", nbins3, ymin, ymax);
     TH1F* hPseuRapLcm = new TH1F("hPseuRapLcm", "hPseuRapLcm", nbins3, ymin, ymax);
-			
+    
+    TH1F* hThetaH1 = new TH1F("hThetaH1", "hThetaH1", nbins3, thmin, thmax);
+    TH1F* hPhiH1 = new TH1F("hPhiH1", "hPhiH1", nbins3, phimin, phimax);
+    TH1F* hThetaV = new TH1F("hThetaV", "hThetaV", nbins3, thmin, thmax);
+    TH1F* hPhiV = new TH1F("hPhiV", "hPhiV", nbins3, phimin, phimax);
+    TH1F* hThetaH2 = new TH1F("hThetaH2", "hThetaH2", nbins3, thmin, thmax);
+    TH1F* hPhiH2 = new TH1F("hPhiH2", "hPhiH2", nbins3, phimin, phimax);
+    TH1F* hThetaX = new TH1F("hThetaX", "hThetaX", nbins3, thmin, thmax);
+    TH1F* hPhiX = new TH1F("hPhiX", "hPhiX", nbins3, phimin, phimax);
+
+    TH1F* hThetaH1_cm = new TH1F("hThetaH1_cm", "hThetaH1_cm", nbins3, thmin, thmax);
+    TH1F* hPhiH1_cm = new TH1F("hPhiH1_cm", "hPhiH1_cm", nbins3, phimin, phimax);
+    TH1F* hThetaV_cm = new TH1F("hThetaV_cm", "hThetaV_cm", nbins3, thmin, thmax);
+    TH1F* hPhiV_cm = new TH1F("hPhiV_cm", "hPhiV_cm", nbins3, phimin, phimax);
+    TH1F* hThetaH2_cm = new TH1F("hThetaH2_cm", "hThetaH2_cm", nbins3, thmin, thmax);
+    TH1F* hPhiH2_cm = new TH1F("hPhiH2_cm", "hPhiH2_cm", nbins3, phimin, phimax);
+    TH1F* hThetaX_cm = new TH1F("hThetaX_cm", "hThetaX_cm", nbins3, thmin, thmax);
+    TH1F* hPhiX_cm = new TH1F("hPhiX_cm", "hPhiX_cm", nbins3, phimin, phimax);
+       
     //Xi
     immin=1200;
     immax=1400;
@@ -456,21 +474,32 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		particleID = mass2PIDfit(fitpar, mass2_h, charge_h, nPartSpec); //PID as +/-4sigma in m2 spectrum
 	    else break;
 	    hPpid -> Fill(particleID);
-	    
+
 	    particlecand->calc4vectorProperties(HPhysicsConstants::mass(particleID));
 	    particleGeantID = particlecand -> getGeantPID();
 	    particlecand_parentID = particlecand -> getGeantParentPID();
 	    
+	    TLorentzVector pi1Vector = *particlecand;
+	    float thh1 = pi1Vector.Theta();
+	    float phh1 = pi1Vector.Phi();
+	    //cm
+	    TLorentzVector *pi1Vector_cm = new TLorentzVector(0,0,0,0);
+	    *pi1Vector_cm = *particlecand;
+	    pi1Vector_cm -> Boost(-(*beam).BoostVector());
+	    Float_t thh1cm = pi1Vector_cm->Theta();
+	    Float_t phh1cm = pi1Vector_cm->Phi();
+	  	    
 	    // cout << "tof:" << tof_h << " beta:" << beta << " p:" << mom << " q:" << charge << " mass:" << mass << endl;
 	    if(beta_h != -1){
 		hdEdx_mdc -> Fill(pq_h, dEdx_mdc);
-		hBeta_h -> Fill(pq_h, beta_h);
-		hEkin_h -> Fill(pq_h, ener_h);
+		//hBeta_h -> Fill(pq_h, beta_h);
+		//hEkin_h -> Fill(pq_h, ener_h);
 		hM1_h -> Fill(mass_h*charge_h);
 		hM12_h -> Fill(mass2_h*charge_h);
 		hM2_h -> Fill(pq_h, mass_h);
 		hM22_h -> Fill(pq_h, mass2_h);
 		hM12_h_m2 -> Fill(mass2_h);
+		  
 		if(charge_h < 0)
 		    hM12_h_neg -> Fill(mass2_h*charge_h);
 		else
@@ -507,7 +536,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		}
 
 		if(particlecand -> getSystem() == 0){
-		    hdEdx_rpc -> Fill(pq_h, dEdx_tof);
+		    //hdEdx_rpc -> Fill(pq_h, dEdx_tof);
 		    hBeta_rpc -> Fill(pq_h, beta_h);
 		    hEkin_rpc -> Fill(pq_h, ener_h);
 		    hM1_rpc -> Fill(mass_h*charge_h);
@@ -530,6 +559,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    hTof_pim -> Fill(tof_h);
 		    hTof_all_h -> Fill(tof_h);
 		    hTof_all -> Fill(tof_h);
+		    hThetaH1 -> Fill(thh1);
+		    hPhiH1 -> Fill(phh1);
+		    hThetaH1_cm -> Fill(thh1cm);
+		    hPhiH1_cm -> Fill(phh1cm);
 		}
 		else if(particleID == 11){
 		    hTof_Kp_h -> Fill(tof_h);
@@ -561,7 +594,9 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    hTof_all_h_GeantID -> Fill(tof_h);
 		    hTof_all_GeantID -> Fill(tof_h);
 		}
-	    }  	
+	    }
+
+	
 		//	cout << "beta: " << beta << " mom: " << mom << " dEdx: " << dEdx << " ener: " << ener << endl;
 	    //##############################
 
@@ -620,8 +655,17 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		fwdetstrawvec -> calc4vectorProperties(HPhysicsConstants::mass(vectorcandID));
 		vectorcandGeantID = fwdetstrawvec -> getGeantPID();
 		vectorcand_parentID = fwdetstrawvec -> getGeantParentPID();
-
-				
+	   
+		TLorentzVector pVector = *fwdetstrawvec;
+		float thv = pVector.Theta();
+		float phv = pVector.Phi();
+		//cm
+		TLorentzVector *pVector_cm = new TLorentzVector(0,0,0,0);
+		*pVector_cm = *fwdetstrawvec;
+		pVector_cm -> Boost(-(*beam).BoostVector());
+		Float_t thvcm = pVector_cm->Theta();
+		Float_t phvcm = pVector_cm->Phi();
+						
 		if(tof_v != -1){
 		    //	cout << "tofRec_v: " << tofRec_v << " tof_v: " << tof_v << endl;
 		    hdE_fd -> Fill(dE_v);
@@ -640,6 +684,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    else if(vectorcandID == 14){
 			hTof_p_fd -> Fill(tof_v);
 			hTof_p -> Fill(tof_v);
+			hThetaV -> Fill(thv);
+			hPhiV -> Fill(phv);
+			hThetaV_cm -> Fill(thvcm);
+			hPhiV_cm -> Fill(phvcm);
 		    }
 		}
 		if(tof_v != -1){
@@ -741,15 +789,18 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 
 			    if(vectorcandID == 14){ //pion in HADES, proton in FD
 				hMLPiHpFMTDVert -> Fill(mass);
-				if(particlecand_parentID==18 && vectorcand_parentID==18) //pion and proton from	real Lambda
+				if(particlecand_parentID==18 && vectorcand_parentID==18){ //pion and proton from	real Lambda
 				    hrealLMTDVert -> Fill(mass);
-				hThetaLcm -> Fill(thetaLcm);
-				hCosThetaLcm -> Fill(cosThetaLcm);
-				hMomThetaLcm -> Fill(momLcm, thetaLcm);
-				hPhiLcm -> Fill(phiLcm);
-				hMomLcm -> Fill(momLcm);
-				hRapLcm -> Fill(yLcm);
+				    hThetaLcm -> Fill(thetaLcm);
+				    hThetaL -> Fill(thetaL);
+				    hCosThetaLcm -> Fill(cosThetaLcm);
+				    hMomThetaLcm -> Fill(momLcm, thetaLcm);
+				    hPhiLcm -> Fill(phiLcm);
+				    hPhiL -> Fill(phiL);
+				    hMomLcm -> Fill(momLcm);
+				    hRapLcm -> Fill(yLcm);
 //				hPseuRapLcm -> Fill(pseudoyLcm);
+				}
 			    }
 			}	
 		    }
@@ -795,6 +846,17 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		      }
 
 		      ksicand->calc4vectorProperties(HPhysicsConstants::mass(ksicandID));
+
+		      TLorentzVector pi2Vector = *ksicand;
+		      float thh2 = pi2Vector.Theta();
+		      float phh2 = pi2Vector.Phi();
+		      //cm
+		      TLorentzVector *pi2Vector_cm = new TLorentzVector(0,0,0,0);
+		      *pi2Vector_cm = *ksicand;
+		      pi2Vector_cm -> Boost(-(*beam).BoostVector());
+		      Float_t thh2cm = pi2Vector_cm->Theta();
+		      Float_t phh2cm = pi2Vector_cm->Phi();
+		      
 		      HGeomVector base_pion;
 		      HGeomVector dir_pion;
 		      particle_tool.calcSegVector(ksicand->getZ(),ksicand->getR(),TMath::DegToRad()*ksicand->getPhi(),TMath::DegToRad()*ksicand->getTheta(),base_pion,dir_pion);
@@ -809,10 +871,24 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		      HGeomVector vertex_ksi;
 		      vertex_ksi=particle_tool.calcVertexAnalytical(base_lambda,dir_lambda,base_pion,dir_pion);
 		      double ksiVert = vertex_ksi.Z();
+
+		      float thx = ksiVector.Theta();
+		      float phx = ksiVector.Phi();
+		      //cm
+		      TLorentzVector *ksiVector_cm = new TLorentzVector(0,0,0,0);
+		      *ksiVector_cm = sum_mass+*ksicand;
+		      ksiVector_cm -> Boost(-(*beam).BoostVector());
+		      Float_t thxcm = ksiVector_cm->Theta();
+		      Float_t phxcm = ksiVector_cm->Phi();
+		      
 		      
 		      if(ksicandID==9){ //particle in Hades is pion
     			  hTDpiL->Fill(distance_ksi);  //dist between L and pi
 			  hMXAll->Fill(ksiMass); //mass Xi: MTD_L, VERTzL, mL
+			  hThetaH2 -> Fill(thh2);
+			  hPhiH2 -> Fill(phh2);		    
+			  hThetaH2_cm -> Fill(thh2cm);
+			  hPhiH2_cm -> Fill(phh2cm);		    
 			  if(particlecand_parentID==18 && vectorcand_parentID==18 && ksicand_parentID==23) //pion and proton from real Lambda
 			      hrealX -> Fill(ksiMass);
 			                   
@@ -824,6 +900,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			  			      
 			      if(ksiVert > cut_vertex_z_minX && ksiVert < cut_vertex_z_max){
 				  hMXPiLMTDVert -> Fill(ksiMass);
+				  hThetaX -> Fill(thx);
+				  hPhiX -> Fill(phx);
+				  hThetaX_cm -> Fill(thxcm);
+				  hPhiX_cm -> Fill(phxcm);		    
 				  if(particlecand_parentID==18 && vectorcand_parentID==18 && ksicand_parentID==23) //pion and proton from real Lambda
 				      hrealXMTDVert -> Fill(ksiMass);
 			      }
@@ -838,7 +918,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	heventNo -> Fill(i);
     }//end event loop
 
-    hM12_h = massPID(hM12_h, fitpar, nPartSpec);
+    hM12_h = massPID(hM12_h);
     
     output_file->cd();
     gPad -> SetLogz();
@@ -1478,29 +1558,83 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hrealLMTDVert -> Write();
 
     hThetaLcm -> GetXaxis() -> SetTitle("#theta_{CM} [rad]");
+    hThetaL -> GetXaxis() -> SetTitle("#theta_{lab} [rad]");
     hMomThetaLcm -> GetXaxis() -> SetTitle("p [Gev/c]");
     hCosThetaLcm -> GetXaxis() -> SetTitle("cos#theta");
-    hPhiLcm -> GetXaxis() -> SetTitle("#phi [rad]");
+    hPhiLcm -> GetXaxis() -> SetTitle("#phi_{cm} [rad]");
+    hPhiL -> GetXaxis() -> SetTitle("#phi_{lab} [rad]");
     hMomLcm -> GetXaxis() -> SetTitle("p [Gev/c]");
     hRapLcm -> GetXaxis() -> SetTitle("y []");
 //    hPseuRapLcm -> GetXaxis() -> SetTitle("");
+    hThetaH1 -> GetXaxis() -> SetTitle("#theta_{lab} [rad]");
+    hThetaH2 -> GetXaxis() -> SetTitle("#theta_{lab} [rad]");
+    hThetaV -> GetXaxis() -> SetTitle("#theta_{lab} [rad]");
+    hThetaX -> GetXaxis() -> SetTitle("#theta_{lab} [rad]");
+    hPhiH1 -> GetXaxis() -> SetTitle("#phi_{lab} [rad]");
+    hPhiH2 -> GetXaxis() -> SetTitle("#phi_{lab} [rad]");
+    hPhiV -> GetXaxis() -> SetTitle("#phi_{lab} [rad]");
+    hPhiX -> GetXaxis() -> SetTitle("#phi_{lab} [rad]");
+    hThetaH1_cm -> GetXaxis() -> SetTitle("#theta_{cm} [rad]");
+    hThetaH2_cm -> GetXaxis() -> SetTitle("#theta_{cm} [rad]");
+    hThetaV_cm -> GetXaxis() -> SetTitle("#theta_{cm} [rad]");
+    hThetaX_cm -> GetXaxis() -> SetTitle("#theta_{cm} [rad]");
+    hPhiH1_cm -> GetXaxis() -> SetTitle("#phi_{cm} [rad]");
+    hPhiH2_cm -> GetXaxis() -> SetTitle("#phi_{cm} [rad]");
+    hPhiV_cm -> GetXaxis() -> SetTitle("#phi_{cm} [rad]");
+    hPhiX_cm -> GetXaxis() -> SetTitle("#phi_{cm} [rad]");
 
     hThetaLcm -> GetYaxis() -> SetTitle("counts");
+    hThetaL -> GetYaxis() -> SetTitle("counts");
     hMomThetaLcm -> GetYaxis() -> SetTitle("#theta_{CM} [rad]");
     hCosThetaLcm -> GetYaxis() -> SetTitle("counts");
     hPhiLcm -> GetYaxis() -> SetTitle("counts");
+    hPhiL -> GetYaxis() -> SetTitle("counts");
     hMomLcm -> GetYaxis() -> SetTitle("counts");
     hRapLcm -> GetYaxis() -> SetTitle("counts");
 //    hPseuRapLcm -> GetYaxis() -> SetTitle("counts");
-
+    hThetaH1 -> GetYaxis() -> SetTitle("counts");
+    hThetaH2 -> GetYaxis() -> SetTitle("counts");
+    hThetaV -> GetYaxis() -> SetTitle("counts");
+    hThetaX -> GetYaxis() -> SetTitle("counts");
+    hPhiH1 -> GetYaxis() -> SetTitle("counts");
+    hPhiH2 -> GetYaxis() -> SetTitle("counts");
+    hPhiV -> GetYaxis() -> SetTitle("counts");
+    hPhiX -> GetYaxis() -> SetTitle("counts");
+    hThetaH1_cm -> GetYaxis() -> SetTitle("counts");
+    hThetaH2_cm -> GetYaxis() -> SetTitle("counts");
+    hThetaV_cm -> GetYaxis() -> SetTitle("counts");
+    hThetaX_cm -> GetYaxis() -> SetTitle("counts");
+    hPhiH1_cm -> GetYaxis() -> SetTitle("counts");
+    hPhiH2_cm -> GetYaxis() -> SetTitle("counts");
+    hPhiV_cm -> GetYaxis() -> SetTitle("counts");
+    hPhiX_cm -> GetYaxis() -> SetTitle("counts");
+    
     hThetaLcm -> Write();
+    hThetaL -> Write();
     hMomThetaLcm -> Write();
     hCosThetaLcm -> Write();
     hPhiLcm -> Write();
+    hPhiL -> Write();
     hMomLcm -> Write();
     hRapLcm -> Write();
 //    hPseuRapLcm -> Write();
-    
+    hThetaH1 -> Write();
+    hThetaH2 -> Write();
+    hThetaV -> Write();
+    hThetaX -> Write();
+    hPhiH1 -> Write();
+    hPhiH2 -> Write();
+    hPhiV -> Write();
+    hPhiX -> Write();
+    hThetaH1_cm -> Write();
+    hThetaH2_cm -> Write();
+    hThetaV_cm -> Write();
+    hThetaX_cm -> Write();
+    hPhiH1_cm -> Write();
+    hPhiH2_cm -> Write();
+    hPhiV_cm -> Write();
+    hPhiX_cm -> Write();
+        
     //Xi
     hTDpiL -> GetXaxis() -> SetTitle("dist [mm]");
     hTDpiL -> GetYaxis() -> SetTitle("counts");
