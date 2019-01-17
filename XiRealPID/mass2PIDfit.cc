@@ -3,7 +3,11 @@ int mass2PIDfit(double fitarr[], float mass2h, float chargeh, int n){
 
     for(int j = 0; j < n; j++){
 	float mean = fitarr[3*j+1];
-	float sigma = 4*fitarr[3*j+2];
+	float sigma = -1;
+	if(j < 2)
+	    sigma = 3*fitarr[3*j+2]; //for pions: 3sigma
+	else
+	    sigma = 2*fitarr[3*j+2]; //for p and K: 2sigma
 	float a = mass2h*chargeh;
 	if(a > (mean-sigma) && a < mean+sigma){
 	    switch(j){
