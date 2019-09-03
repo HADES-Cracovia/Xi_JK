@@ -30,7 +30,8 @@ int main(int argc, char **argv)
 	TString output = "output.root";
 	TString pidcut = "CutsDef2.root";
 	TString pidmasscut = "fitPar.dat";
-	float beam_momentum = 690.;
+//	float beam_momentum = 690.;
+	float beam_momentum = 4482.4;
 
 	while (1)
 	{

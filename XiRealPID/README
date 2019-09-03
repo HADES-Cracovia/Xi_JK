@@ -1,0 +1,9 @@
+#############################################
+# How to prepare root file for the analysis #
+############################################
+
+1. Create list of the simulated files (list1)
+2. Set directories in job_script.sh
+3. Run: ./run_job.py list1 -d outDir/
+4. Create list of the out files (list2.dat) and put them into one root file: hadd newFile.root @list2.dat
+5. Go to the analysis (../XiBGana/)

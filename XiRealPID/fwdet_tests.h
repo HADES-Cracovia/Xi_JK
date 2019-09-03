@@ -37,6 +37,8 @@
 #include "hparticletracksorter.h"
 #include "hfwdetcandsim.h"
 #include "hfwdetcand.h"
+#include "hfwdetstrawcalsim.h"
+#include "hfwdetstrawcal.h"
 
 #include "hstart2cal.h"
 //-------------------------------------

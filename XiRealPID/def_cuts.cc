@@ -146,7 +146,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     int mom1 = -2000;
     int mom2 = 2000;
     double bet1 = 0;
-    double bet2 = 1.2;
+    double bet2 = 2;
     int ekin1 = 0;
     int ekin2 = 2000;
     int mas1 = -500;
@@ -157,7 +157,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     int dex2 = 30;
     int tofh1 = 0;
     int tofh2 = 50;
-    int toff1 = 15;
+    int toff1 = 0;
     int toff2 = 40;
 
     int nbins2 = 400;
@@ -552,6 +552,41 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     //PID
     TH1D *hPpid = new TH1D("hPpid", "hPpid", 102, -1, 100);
     TH1D *hVpid = new TH1D("hVpid", "hVpid", 102, -1, 100);
+
+    //
+    int start1 = -1000;
+    int start2 = 1000;
+    int base1 = -200;
+    int base2 = 200;
+    TH1D *hstartt = new TH1D("hstartt", "hstartt", nbins1, -1, 50);
+    TH1D *hstopt = new TH1D("hstopt", "hstopt", nbins1, toff1, toff2);
+    TH1D *hstartx = new TH1D("hstartx", "hstartx", nbins1, -5, 5);
+    TH1D *hstarty = new TH1D("hstarty", "hstarty", nbins1, -5, 5);
+    TH1D *hstartz = new TH1D("hstartz", "hstartz", nbins1, -5, 5);
+    TH1D *hstopx = new TH1D("hstopx", "hstopx", nbins3, start1, start2);
+    TH1D *hstopy = new TH1D("hstopy", "hstopy", nbins3, start1, start2);
+    TH1D *hstopz = new TH1D("hstopz", "hstopz", nbins1, 5500, 6000);
+    TH1D *hbaseHx = new TH1D("hbaseHx", "hbaseHx", nbins1, base1, base2);
+    TH1D *hbaseHy = new TH1D("hbaseHy", "hbaseHy", nbins1, base1, base2);
+    TH1D *hbaseHz = new TH1D("hbaseHz", "hbaseHz", nbins1, base1, base2);
+    TH1D *hdirHx = new TH1D("hdirHx", "hdirHx", nbins1, -5, 5);
+    TH1D *hdirHy = new TH1D("hdirHy", "hdirHy", nbins1, -5, 5);
+    TH1D *hdirHz = new TH1D("hdirHz", "hdirHz", nbins1, -5, 5);
+    TH1D *hbaseFWx = new TH1D("hbaseFWx", "hbaseFWx", nbins1, -10000, 10000);
+    TH1D *hbaseFWy = new TH1D("hbaseFWy", "hbaseFWy", nbins1, -10000, 10000);
+    TH1D *hbaseFWz = new TH1D("hbaseFWz", "hbaseFWz", nbins1, -10000, 10000);
+    TH1D *hdirFWx = new TH1D("hdirFWx", "hdirFWx", nbins1, -10000, 10000);
+    TH1D *hdirFWy = new TH1D("hdirFWy", "hdirFWy", nbins1, -10000, 10000);
+    TH1D *hdirFWz = new TH1D("hdirFWz", "hdirFWz", nbins1, -10000, 10000);
+    TH1D *hdistH = new TH1D("hdistH", "hdistH", nbins1, -10, 500);
+    TH1D *htofH = new TH1D("htofH", "htofH", nbins1, 0, 10);
+    TH1D *hdifftofH= new TH1D("hdifftofH", "hdifftofH", nbins1, -10, 50);
+    TH1D *hdistFW = new TH1D("hdistFW", "hdistFW", nbins1, -10, 500);
+    TH1D *hbetaFW = new TH1D("hbetaFW", "hbetaFW", nbins1, bet1, bet2);
+    TH1D *htofFW = new TH1D("htofFW", "htofFW", nbins1, toff1, toff2);
+    TH1D *hdifftofFW = new TH1D("hdifftofFW", "hdifftofFW", nbins1, -10, 50);
+    TH1D *hmomFW = new TH1D("hmomFW", "hmomFW", nbins1, -30000, 30000);
+    
     
     //cuts values
     double max_distanceL = 25; // !!
@@ -625,7 +660,10 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    double phi_vB = 0;
 	    double theta_hA = particlecand -> getTheta();
 	    double theta_vB = 0;
-
+	    double hitx_hA = particlecand -> X();
+	    double hity_hA = particlecand -> Y();
+	    double hitz_hA = particlecand -> Z();
+	    
 	    Float_t momArecox = particlecand -> Px();
 	    Float_t momArecoy = particlecand -> Py();
 	    Float_t momArecoz = particlecand -> Pz();
@@ -649,7 +687,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 	    // PID	    
 	    if(beta_h!=-1)
 //		particleID = mass2PID(mass2_h, charge_h); //PID as ranges in m2(pq) spectrum
-		particleID = mass2PIDfit(fitpar, mass2_h, charge_h, nPartSpec); //PID as +/-4sigma in m2 spectrum
+		particleID = mass2PIDfit(fitpar, mass2_h, charge_h, nPartSpec); //PID based on m2 spectrum
 	    else break;
 	    hPpid -> Fill(particleID);
 
@@ -811,16 +849,76 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		}
 		tofEloss_v = tof_v*dE_v;
 		//end with FD!!!
-
 		Float_t momBrecox = fwdetstrawvec -> Px();
 		Float_t momBrecoy = fwdetstrawvec -> Py();
-                Float_t momBrecoz = fwdetstrawvec -> Pz();
+		Float_t momBrecoz = fwdetstrawvec -> Pz();
                 Float_t momBsimx = fwdetstrawvec -> getGeantxMom();
                 Float_t momBsimy = fwdetstrawvec -> getGeantyMom();
                 Float_t momBsimz = fwdetstrawvec -> getGeantzMom();
 
-//              vectorcandID = 14;
+		//              vectorcandID = 14;
 		hVpid -> Fill(vectorcandID);
+
+		//
+		float startt = fwdetstrawvec -> getStartTime();
+		float stopt = fwdetstrawvec -> getStopTime();
+		float startx = fwdetstrawvec -> getStartX();
+		float starty = fwdetstrawvec -> getStartY();
+		float startz = fwdetstrawvec -> getStartZ();
+		float stopx = fwdetstrawvec -> getStopX();
+		float stopy = fwdetstrawvec -> getStopY();
+		float stopz = fwdetstrawvec -> getStopZ();
+
+		HGeomVector base_H;
+		HGeomVector dir_H;
+		particle_tool.calcSegVector(particlecand->getZ(),particlecand->getR(),TMath::DegToRad()*particlecand->getPhi(),TMath::DegToRad()*particlecand->getTheta(),base_H,dir_H);
+	
+		HGeomVector base_FW;
+		base_FW.setX(fwdetstrawvec->getBaseX()); //with FD!!!
+		base_FW.setY(fwdetstrawvec->getBaseY());
+		base_FW.setZ(fwdetstrawvec->getBaseZ());
+		HGeomVector dir_FW;
+		dir_FW.setX(fwdetstrawvec->getDirTx());  //with FD!!!
+		dir_FW.setY(fwdetstrawvec->getDirTy());
+		dir_FW.setZ(1);//konwencja, tak jest ustawione w fwdetstrawvec
+		//*******************
+		double distance=particle_tool.calculateMinimumDistance(base_FW,dir_FW,base_H,dir_H);
+
+//                cout << "base,dir FW: " << base_FW.X() << " " << base_FW.Y() << " " << base_FW.Z() << " " << dir_FW.X() << " " << dir_FW.Y() << " " << dir_FW.Z() << endl;
+
+/*		float distH = TMath::Sqrt((hitx_hA - base_H.X())*(hitx_hA - base_H.X()) + (hity_hA - base_H.Y())*(hity_hA - base_H.Y()) + (hitz_hA - base_H.Z())*(hitz_hA - base_H.Z()));
+		float tofH = distH/(300.*beta_h); //300 -> from c
+		float tLdec = tof_h - tofH; //time of the Lambda decay        
+
+		
+		float distFW = TMath::Sqrt((stopx - base_H.X())*(stopx - base_H.X()) + (stopy - base_H.Y())*(stopy - base_H.Y()) + (stopz - base_H.Z())*(stopz - base_H.Z()));
+		float tofFW = tof_v - tLdec;
+		float betaFW = distFW/(300.*tofFW);
+		double momFW = HPhysicsConstants::mass(vectorcandID) / (TMath::Sqrt((1/(betaFW*betaFW)) - 1));
+*/		
+//		cout << "distH: " << distH << " tofH: " << tofH << " tof_h: " << tof_h << " beta_h: " << beta_h << " tLdec: " << tLdec <<  " distFW: " << distFW << " tofFW: " << tofFW << " tof_v: " << tof_v << " betaFW: " << betaFW << " momFW: " << momFW  << endl;
+
+/*		hdistH -> Fill(distH);
+		htofH -> Fill(tofH);
+		hdifftofH -> Fill(tof_h - tofH); //time of the Lambda decay
+		hdistFW -> Fill(distFW);
+		hbetaFW -> Fill(betaFW);
+		htofFW -> Fill(tofFW);
+		hdifftofFW -> Fill(tof_v - tofFW);
+		hmomFW -> Fill(momFW);
+*/		
+		hbaseHx -> Fill(base_H.X());
+		hbaseHy -> Fill(base_H.Y());
+		hbaseHz -> Fill(base_H.Z());
+		hdirHx -> Fill(dir_H.X());
+		hdirHy -> Fill(dir_H.Y());
+		hdirHz -> Fill(dir_H.Z());
+		hbaseFWx -> Fill(base_FW.X());
+		hbaseFWy -> Fill(base_FW.Y());
+		hbaseFWz -> Fill(base_FW.Z());
+		hdirFWx -> Fill(dir_FW.X());
+		hdirFWy -> Fill(dir_FW.Y());
+		hdirFWz -> Fill(dir_FW.Z());
 
 		fwdetstrawvec -> calc4vectorProperties(HPhysicsConstants::mass(vectorcandID));
 		vectorcandGeantID = fwdetstrawvec -> getGeantPID();
@@ -835,7 +933,8 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		pVector_cm -> Boost(-(*beam).BoostVector());
 		Float_t thvcm = pVector_cm->Theta();
 		Float_t phvcm = pVector_cm->Phi();
-						
+
+		
 		if(tof_v != -1){
 		    //	cout << "tofRec_v: " << tofRec_v << " tof_v: " << tof_v << endl;
 		    hdE_fd -> Fill(dE_v);
@@ -843,6 +942,14 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 
 		    hTof_all_fd -> Fill(tof_v);
 		    hTof_all -> Fill(tof_v);
+		    hstartt -> Fill(startt);
+		    hstopt -> Fill(stopt);
+		    hstartx -> Fill(startx);
+		    hstarty -> Fill(starty);
+		    hstartz -> Fill(startz);
+		    hstopx -> Fill(stopx);
+		    hstopy -> Fill(stopy);
+		    hstopz -> Fill(stopz);
 		    if(vectorcandID == 9){
 			hTof_pim_fd -> Fill(tof_v);
 			hTof_pim -> Fill(tof_v);
@@ -884,20 +991,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		    }
 		}
 
-		HGeomVector base_H;
-		HGeomVector dir_H;
-		particle_tool.calcSegVector(particlecand->getZ(),particlecand->getR(),TMath::DegToRad()*particlecand->getPhi(),TMath::DegToRad()*particlecand->getTheta(),base_H,dir_H);
-	
-		HGeomVector base_FW;
-		base_FW.setX(fwdetstrawvec->getPointX()); //with FD!!!
-		base_FW.setY(fwdetstrawvec->getPointY());
-		base_FW.setZ(fwdetstrawvec->getPointZ());
-		HGeomVector dir_FW;
-		dir_FW.setX(fwdetstrawvec->getDirTx());  //with FD!!!
-		dir_FW.setY(fwdetstrawvec->getDirTy());
-		dir_FW.setZ(1);//konwencja, tak jest ustawione w fwdetstrawvec
-		//*******************
-		double distance=particle_tool.calculateMinimumDistance(base_FW,dir_FW,base_H,dir_H);
+
 
 		HGeomVector vertex;
 		vertex=particle_tool.calcVertexAnalytical(base_FW,dir_FW,base_H,dir_H);
@@ -1074,7 +1168,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		      double distance_ksi=particle_tool.calculateMinimumDistance(base_lambda,dir_lambda,base_pion,dir_pion);			  
 		      TLorentzVector ksiVector=sum_mass+*ksicand;
 		      double ksiMass = ksiVector.M();
-		      
+
 		      //calculate vertex Xi
 		      HGeomVector vertex_ksi;
 		      vertex_ksi=particle_tool.calcVertexAnalytical(base_lambda,dir_lambda,base_pion,dir_pion);
@@ -1270,7 +1364,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 		Float_t thvcm = pVector_cm->Theta();
 		Float_t phvcm = pVector_cm->Phi();
 						
-		if(tof_v != -1){
+/*		if(tof_v != -1){
 		    //	cout << "tofRec_v: " << tofRec_v << " tof_v: " << tof_v << endl;
 		    hdE_fd -> Fill(dE_v);
 		    hdetof_fd -> Fill(dE_v, tof_v);
@@ -1317,7 +1411,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
 			hdetof_fd_Geant14 -> Fill(dE_v, tof_v);
 		    }
 		}
-
+*/
 		HGeomVector base_H;
 		HGeomVector dir_H;
 		particle_tool.calcSegVector(particlecand->getZ(),particlecand->getR(),TMath::DegToRad()*particlecand->getPhi(),TMath::DegToRad()*particlecand->getTheta(),base_H,dir_H);
@@ -2051,6 +2145,7 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     }
     cBetaPID -> Write();
     */
+
     //Hades&FwDet ToF
     hTof_pim -> GetXaxis() -> SetTitle("tof [ns]");
     hTof_pim -> GetYaxis() -> SetTitle("counts");
@@ -2716,6 +2811,36 @@ Int_t fwdet_tests(HLoop * loop, const AnaParameters & anapars)
     hrealXMTDVert_HF -> GetXaxis() -> SetTitle("m_{#pi^{-}#Lambda} [MeV]");
     hrealXMTDVert_HF -> GetYaxis() -> SetTitle("counts");
     hrealXMTDVert_HF -> Write();
+
+    hstartt -> Write();
+    hstopt -> Write();
+    hstartx -> Write();
+    hstarty -> Write();
+    hstartz -> Write();
+    hstopx -> Write();
+    hstopy -> Write();
+    hstopz -> Write();
+    hbaseHx -> Write();
+    hbaseHy -> Write();
+    hbaseHz -> Write();
+    hdirHx -> Write();
+    hdirHy -> Write();
+    hdirHz -> Write();
+    hbaseFWx -> Write();
+    hbaseFWy -> Write();
+    hbaseFWz -> Write();
+    hdirFWx -> Write();
+    hdirFWy -> Write();
+    hdirFWz -> Write();
+    /* hdistH -> Write();
+    htofH -> Write();
+    hdifftofH -> Write();
+    hdistFW -> Write();
+    hbetaFW -> Write();
+    htofFW -> Write();
+    hdifftofFW -> Write();
+    hmomFW -> Write();
+    */
     //*******************
     heventNo -> Write();
     

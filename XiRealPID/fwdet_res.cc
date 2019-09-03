@@ -3,6 +3,7 @@
 #include "hgeantfwdet.h"
 #include "fwdetdef.h"
 #include "hfwdetstrawcalsim.h"
+#include "hfwdetstrawcal.h"
 #include "hfwdetcand.h"
 #include "hfwdetcandsim.h"
 #include <TCanvas.h>
