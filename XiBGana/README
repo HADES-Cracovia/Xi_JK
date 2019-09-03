@@ -1,7 +1,10 @@
 In this dir one can analize the Xi production with the use of the GEANT or real PID.
--------------------------------------------------------------------------------------------------------------------------------
-|  PID  |   macro    |      input files (produced with the use of the 'vertex' program)             |  output dir (create it!)|
--------------------------------------------------------------------------------------------------------------------------------
-| GEANT | anaBkgd1.C | /u/jkubos/analiza/hades/pp45sim/Xi_rec/outputs_ch/output_%03d_all5.root      |      ./out_ana          |
-| real  | anaBkgd2.C | /u/jkubos/analiza/gitdir/Xi_rec/XiRealPID/outputs_ch/output_%03d_test5a.root |      ./out_ana          |
--------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------
+|  PID  |   macro    |      input files (produced with the use of the 'vertex' program)                            |  output dir (create it!)|
+----------------------------------------------------------------------------------------------------------------------------------------------
+| GEANT | anaBkgd1.C | /u/jkubos/analiza/hades/pp45sim/Xi_rec/outputs_ch/output_%03d_all5.root                     |      ./out_ana          |
+| real  | anaBkgd2.C | /u/jkubos/analiza/gitdir/Xi_rec/XiRealPID/outputs_ch/output_090_all_0725_M3_fixed_meta.root |      ./out_ana          |
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Specify input and output files in anaBkgd2.C (lines: 273--275 and 2871)
+2. Run: root (-b -q) anaBkgd2.C
