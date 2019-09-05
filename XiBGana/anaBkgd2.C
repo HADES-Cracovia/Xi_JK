@@ -270,10 +270,10 @@ void anaBkgd2(){
 
     TCanvas *ctmp = new TCanvas("ctmp", "ctmp");
     
-//    for(int i = 0; i < 7; i++){
-//      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_all5e3.root", chan[i]);
-      for(int i = 0; i < 1; i++){
-      sprintf(chanNo, "../XiRealPID/outputs_ch/output_090_all_0619_M3_newStruct_5600.root");
+    for(int i = 0; i < 7; i++){
+      sprintf(chanNo, "../XiRealPID/outputs_ch/output_%03d_all_M3_fixed_meta.root", chan[i]);
+//      for(int i = 0; i < 1; i++){
+//      sprintf(chanNo, "../XiRealPID/outputs_ch/output_090_all_0619_M3_newStruct_5600.root");
       	TFile *f1 = TFile::Open(chanNo, "READ");
 
 	TPaveText *ptch = new TPaveText(.5, .7, .8, .85, "NDC");
@@ -1498,8 +1498,8 @@ void anaBkgd2(){
     TString nameXMtd = "hrealXSumMtdCl";
     TH1F *hrealXSumMtdCl = (TH1F*)hrealXSumMtd -> Clone();
     cout << ">>>>>>>>fit xmtd<<<<<<<<<" << endl;
-    fita = 1280; //v0,v1,v2,v3:1280
-    fitb = 1350; //v0,v1,v2,v3:1350
+    fita = 1300; //v0,v1,v2,v3:1280
+    fitb = 1360; //v0,v1,v2,v3:1350
 
     TF1 * ffXmtd = new TF1("ffXmtd", "[0]*([1]*TMath::Gaus(x,[2],[3])+(1.-[1])*TMath::Gaus(x,[2],[4])) + pol7(5)", fita, fitb);
     TF1 *ffXmtdsig = new TF1("ffXmtdsig","[0]*([1]*TMath::Gaus(x,[2],[3])+(1.-[1])*TMath::Gaus(x,[2],[4]))",fita, fitb);
@@ -1522,8 +1522,8 @@ void anaBkgd2(){
     ffXmtd -> SetParLimits(0, 0, 10000000);
     ffXmtd -> SetParLimits(1, 0, 1);
     ffXmtd -> SetParLimits(2, 1310, 1330);
-    ffXmtd -> SetParLimits(3, 0, 10);
-    ffXmtd -> SetParLimits(4, 0, 10);
+    ffXmtd -> SetParLimits(3, 0, 5);
+    ffXmtd -> SetParLimits(4, 0, 5);
     
     hrealXSumMtdCl -> SetName(nameXMtd);
     TString nameXmtdbg = nameXMtd + bg;
@@ -1564,8 +1564,8 @@ void anaBkgd2(){
     TH1F *hrealXSumScMtdCl = (TH1F*)hrealXSumScMtd -> Clone();
     cout << ">>>>>>>>fit Xscmtd<<<<<<<<<" << endl;
 
-    fita = 1270; //v0,v3:1280, v1,v2:1270
-    fitb = 1370; //v0,v3:1360, v1,v2:1370
+    fita = 1300; //v0,v3:1280, v1,v2:1270
+    fitb = 1360; //v0,v3:1360, v1,v2:1370
 
     TF1 *ffXmtdsigsc = new TF1("ffXmtdsigsc","[0]*([1]*TMath::Gaus(x,[2],[3])+(1.-[1])*TMath::Gaus(x,[2],[4]))",fita, fitb);
     TF1 *ffXmtdbgsc = new TF1("ffXmtdbgsc","pol7(0)",fita,fitb);
@@ -1575,15 +1575,18 @@ void anaBkgd2(){
 //	-2.92690e+05, 4.47405e+02, -1.69896e-01, -1.64349e-07, -1.22894e-10, -2.20558e-14
 
 	//v1., v2
-	4.51927e+05,8.81893e-01,1.31843e+03,9.03698e-04,4.72875e+00,
-	-3.29001e+06,4.89366e+03,-1.80414e+00,5.29253e-05,5.33869e-09,-4.60714e-11
+	//4.51927e+05,8.81893e-01,1.31843e+03,9.03698e-04,4.72875e+00,
+	//-3.29001e+06,4.89366e+03,-1.80414e+00,5.29253e-05,5.33869e-09,-4.60714e-11
 
+	4.17935e+04,6.70893e-01,1.31852e+03,3.37664e+00,6.23933e+00,
+	-3.24000e+06,4.23121e+03,-8.01170e-01,-4.12099e-04,-9.91874e-10,1.57919e-12
+	
 	);
-    ffXmtdsc -> SetParLimits(0, 0, 10000000);
+    ffXmtdsc -> SetParLimits(0, 0, 1000000);
     ffXmtdsc -> SetParLimits(1, 0, 1);
     ffXmtdsc -> SetParLimits(2, 1310, 1330);
-    ffXmtdsc -> SetParLimits(3, 0, 10);
-    ffXmtdsc -> SetParLimits(4, 0, 10);
+    ffXmtdsc -> SetParLimits(3, 0, 5);
+    ffXmtdsc -> SetParLimits(4, 0, 5);
 
     hrealXSumScMtdCl -> Fit("ffXmtdsc", "0", "", fita, fitb);
     hrealXSumScMtdCl -> Fit("ffXmtdsc", "0", "", fita, fitb);
@@ -1599,8 +1602,9 @@ void anaBkgd2(){
     hrealXSumMtdPeakSc -> Add(hrealXSumBGScMtd, -1);
     //end BG subtr.
 
-    hrealXSumMtd -> SetLineColor(1);
-    hrealXSumScMtd -> SetLineColor(1);
+    hrealXSumMtd -> SetLineColor(8);
+    hrealXSumScMtd -> SetLineColor(8);
+    hrealXSumScMtd -> SetLineWidth(2);
     hrealXSumMtd -> SetMarkerStyle(20);
     hrealXSumScMtd -> SetMarkerStyle(20);
     hrealXSumMtd -> SetMarkerSize(.7);
@@ -2085,7 +2089,7 @@ void anaBkgd2(){
     TH1F *hrealLSumScVertCl = (TH1F*)hrealLSumScVert -> Clone();
     cout << ">>>>>>>>fit Lscvert<<<<<<<<<" << endl;
 
-    fita = 1090; //v0:1090, v3:1085, v1,v2:1090
+    fita = 1095; //v0:1090, v3:1085, v1,v2:1090
     fitb = 1130; //v0:1130, v3:1135, v1,v2:1130
 
     TF1 *ffLvertsigsc = new TF1("ffLvertsigsc","[0]*([1]*TMath::Gaus(x,[2],[3])+(1.-[1])*TMath::Gaus(x,[2],[4]))",fita, fitb);
@@ -2101,10 +2105,14 @@ void anaBkgd2(){
 	//5.53434e+06, -6.18727e+03, -3.99898e+00, 4.61990e-03, -1.06261e-12, 6.82108e-16
 	
 	//v1.,v2
-	1.47392e+05,3.72360e-01,1.11466e+03,1.66904e+00,2.98172e+00,
-	-8.16007e+06,7.51744e+03,4.83740e+00,-4.44851e-03,-1.50500e-06,1.42492e-09
+	//1.47392e+05,3.72360e-01,1.11466e+03,1.66904e+00,2.98172e+00,
+	//-8.16007e+06,7.51744e+03,4.83740e+00,-4.44851e-03,-1.50500e-06,1.42492e-09
+
+	1.16753e+05,4.58453e-01,1.11458e+03,3.11870e+00,1.72006e+00,
+	-8.65387e+06,1.03744e+04,-2.90890e+00,1.13397e-03,7.63836e-07,-2.74600e-12
+	 
 	);
-    ffLvertsc -> SetParLimits(0, 0, 10000000);
+    ffLvertsc -> SetParLimits(0, 0, 50000000);
     ffLvertsc -> SetParLimits(1, 0, 1);
     ffLvertsc -> SetParLimits(2, 1105, 1125);
     ffLvertsc -> SetParLimits(3, 0, 10);
@@ -2868,8 +2876,8 @@ void anaBkgd2(){
     lChan -> Draw("same");
 
         
-//    TFile *f = new TFile("./out_ana/out_anaBkgd_all_0725_M3_fixed_meta.root", "RECREATE");
-    TFile *f = new TFile("./out_ana/test.root", "RECREATE");
+    TFile *f = new TFile("./out_ana/out_anaBkgd_all_0905_M3_fixed_meta.root", "RECREATE");
+//    TFile *f = new TFile("./out_ana/test.root", "RECREATE");
     cLambdaXiMass -> Write();
     cLambdaXiMassSc -> Write();
     cLambdaXiMassMtd -> Write();
