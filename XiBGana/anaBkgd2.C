@@ -227,7 +227,7 @@ void anaBkgd2(){
     //channels
     char chanNo[64];
     int chan[] = {90, 10, 21, 22, 23, 62, 100};
-    Double_t cr_sec[] = {4.8, 600., 100., 30., 30., 20., 20.};
+    Double_t cr_sec[] = {4.8, 227., 60., 21.3, 29.6, 18., 6.4};
     string reac[] = {"#Xi^{-}K^{+}K^{+}p",
 		     "pp2#pi^{+}2#pi^{-}",
 		     "p#LambdaK^{0}_{s}#pi^{+}",
@@ -474,14 +474,14 @@ void anaBkgd2(){
 
 	cMTDL -> cd(1);
 	gPad->SetLogy();
-	hMTD_Lall1 -> GetYaxis() -> SetRangeUser(100, 5000000000);
+	hMTD_Lall1 -> GetYaxis() -> SetRangeUser(100, 10000000000);
 	hMTD_Lall1 -> SetTitle("MTD_L: all Lambda candidates");
 	hMTD_Lall1 -> GetXaxis() -> SetTitle("MTD_L [mm]");
 	hMTD_Lall1 -> GetYaxis() -> SetTitle("counts*#sigma");
 	hMTD_Lall1 -> Draw("same");
 	cMTDL -> cd(2);
 	gPad->SetLogy();
-	hMTD_Lreal1 -> GetYaxis() -> SetRangeUser(100, 5000000000);
+	hMTD_Lreal1 -> GetYaxis() -> SetRangeUser(100, 10000000000);
 	hMTD_Lreal1 -> SetTitle("MTD_L: real Lambda");
 	hMTD_Lreal1 -> GetXaxis() -> SetTitle("MTD [mm]");
 	hMTD_Lreal1 -> GetYaxis() -> SetTitle("counts*#sigma");
@@ -489,8 +489,8 @@ void anaBkgd2(){
 
 	cMTDX -> cd(2);
 	gPad->SetLogy();
-	hMTD_Xreal1 -> GetYaxis() -> SetRangeUser(1, 10000000);
-	hMTD_Xreal1 -> SetTitle("MTD_X: real Xi");
+	hMTD_Xreal1 -> GetYaxis() -> SetRangeUser(1, 20000000);
+	hMTD_Xreal1 -> SetTitle("MTD_X: #Lambda - #pi^{-} distance");
 	hMTD_Xreal1 -> GetXaxis() -> SetTitle("MTD_X [mm]");
 	hMTD_Xreal1 -> GetYaxis() -> SetTitle("counts*#sigma");
 	hMTD_Xreal1 -> Draw("same");
@@ -1498,8 +1498,8 @@ void anaBkgd2(){
     TString nameXMtd = "hrealXSumMtdCl";
     TH1F *hrealXSumMtdCl = (TH1F*)hrealXSumMtd -> Clone();
     cout << ">>>>>>>>fit xmtd<<<<<<<<<" << endl;
-    fita = 1300; //v0,v1,v2,v3:1280
-    fitb = 1360; //v0,v1,v2,v3:1350
+    fita = 1305; //v0,v1,v2,v3:1280
+    fitb = 1335; //v0,v1,v2,v3:1350
 
     TF1 * ffXmtd = new TF1("ffXmtd", "[0]*([1]*TMath::Gaus(x,[2],[3])+(1.-[1])*TMath::Gaus(x,[2],[4])) + pol7(5)", fita, fitb);
     TF1 *ffXmtdsig = new TF1("ffXmtdsig","[0]*([1]*TMath::Gaus(x,[2],[3])+(1.-[1])*TMath::Gaus(x,[2],[4]))",fita, fitb);
@@ -1521,7 +1521,7 @@ void anaBkgd2(){
 */
     ffXmtd -> SetParLimits(0, 0, 10000000);
     ffXmtd -> SetParLimits(1, 0, 1);
-    ffXmtd -> SetParLimits(2, 1310, 1330);
+    ffXmtd -> SetParLimits(2, 1315, 1325);
     ffXmtd -> SetParLimits(3, 0, 5);
     ffXmtd -> SetParLimits(4, 0, 5);
     
@@ -1560,12 +1560,15 @@ void anaBkgd2(){
     cntfitBGXMtd_ab = ffXmtdbg -> Integral(fitapeak,fitbpeak); //<<<
     
     //scaled
+    TH1F *hrealXSumScMtd_Xi = (TH1F*)hrealXSumScMtd -> Clone("hrealXSumScMtd_Xi");
+    hrealXSumScMtd_Xi -> GetXaxis() -> SetRangeUser(1305,1335);
+
     TString nameXmtdsc = "hrealXSumScMtdCl";
     TH1F *hrealXSumScMtdCl = (TH1F*)hrealXSumScMtd -> Clone();
     cout << ">>>>>>>>fit Xscmtd<<<<<<<<<" << endl;
 
-    fita = 1300; //v0,v3:1280, v1,v2:1270
-    fitb = 1360; //v0,v3:1360, v1,v2:1370
+    fita = 1305;//1300; //v0,v3:1280, v1,v2:1270
+    fitb = 1335;//1360; //v0,v3:1360, v1,v2:1370
 
     TF1 *ffXmtdsigsc = new TF1("ffXmtdsigsc","[0]*([1]*TMath::Gaus(x,[2],[3])+(1.-[1])*TMath::Gaus(x,[2],[4]))",fita, fitb);
     TF1 *ffXmtdbgsc = new TF1("ffXmtdbgsc","pol7(0)",fita,fitb);
@@ -1582,28 +1585,32 @@ void anaBkgd2(){
 	-3.24000e+06,4.23121e+03,-8.01170e-01,-4.12099e-04,-9.91874e-10,1.57919e-12
 	
 	);
-    ffXmtdsc -> SetParLimits(0, 0, 1000000);
+//    ffXmtdsc -> SetParLimits(0, 0, 1000000);
+    ffXmtdsc -> SetParLimits(0, 0, 550000);
     ffXmtdsc -> SetParLimits(1, 0, 1);
-    ffXmtdsc -> SetParLimits(2, 1310, 1330);
+//    ffXmtdsc -> SetParLimits(2, 1310, 1330);
+    ffXmtdsc -> SetParLimits(2, 1315, 1325);
     ffXmtdsc -> SetParLimits(3, 0, 5);
     ffXmtdsc -> SetParLimits(4, 0, 5);
 
-    hrealXSumScMtdCl -> Fit("ffXmtdsc", "0", "", fita, fitb);
-    hrealXSumScMtdCl -> Fit("ffXmtdsc", "0", "", fita, fitb);
+    hrealXSumScMtd_Xi -> Fit("ffXmtdsc", "0", "", fita, fitb);
+    hrealXSumScMtd_Xi -> Fit("ffXmtdsc", "0", "", fita, fitb);
     double parXsc[12] = 0;
-    ffXmtdsc -> GetParameters(parX);
-    ffXmtdsigsc -> SetParameters(parX);
-    ffXmtdbgsc -> SetParameters(&parX[5]);
+    ffXmtdsc -> GetParameters(parXsc);
+    ffXmtdsigsc -> SetParameters(parXsc);
+    ffXmtdbgsc -> SetParameters(&parXsc[5]);
 
-    hrealXSumBGScMtd = (TH1F*)hrealXSumScMtdCl -> Clone("hrealXSumBGScMtd");
+    hrealXSumBGScMtd = (TH1F*)hrealXSumScMtd_Xi -> Clone("hrealXSumBGScMtd");
     hrealXSumBGScMtd -> Add(ffXmtdsigsc, -1);
 
-    hrealXSumMtdPeakSc = (TH1F*)hrealXSumScMtdCl -> Clone("hrealXSumMtdPeakSc");
+    hrealXSumMtdPeakSc = (TH1F*)hrealXSumScMtd_Xi -> Clone("hrealXSumMtdPeakSc");
     hrealXSumMtdPeakSc -> Add(hrealXSumBGScMtd, -1);
     //end BG subtr.
 
     hrealXSumMtd -> SetLineColor(8);
     hrealXSumScMtd -> SetLineColor(8);
+    hrealXSumMtd -> SetLineStyle(9);
+    hrealXSumScMtd -> SetLineStyle(9);
     hrealXSumScMtd -> SetLineWidth(2);
     hrealXSumMtd -> SetMarkerStyle(20);
     hrealXSumScMtd -> SetMarkerStyle(20);
@@ -1717,6 +1724,7 @@ void anaBkgd2(){
 
     TCanvas *cimLMtdlSc = new TCanvas("cimLMtdlSc","cimLMtdlSc", csize1, csize2); //inv mass Lambda spectrum, MTD_L cut, cr sec scaling
     TCanvas *cimXMtdlVertlMlMtdxSc = new TCanvas("cimXMtdlVerlMlMtdxSc","cimXMtdlVerlMlMtdxSc", csize1, csize2); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X cuts, cr sec scaling
+    TCanvas *cimXMtdlVertlMlMtdxSc_Xi = new TCanvas("cimXMtdlVerlMlMtdxSc_Xi","cimXMtdlVerlMlMtdxSc_Xi", csize1, csize2); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X cuts, cr sec scaling, only Xi peak
     TCanvas *cimLMtdl = new TCanvas("cimLMtdl","cimLMtdl", csize1, csize2); //inv mass Lambda spectrum, MTD_L cut, no cr sec scaling
     TCanvas *cimXMtdlVertlMlMtdx = new TCanvas("cimXMtdlVerlMlMtdx","cimXMtdlVerlMlMtdx", csize1, csize2); //inv mass Xi spectrum, MTD_L, VERTz_L, Lmass, MTD_X cuts, no cr sec scaling
     
@@ -1850,7 +1858,7 @@ void anaBkgd2(){
     lfin3 -> SetBorderSize(0);
     lfin3 -> SetTextSize(.04);
 
-    limn = hrealXSumScMtd -> GetBinContent(hrealXSumScMtd -> FindBin(MassmaxX));
+    limn = hrealXSumScMtd -> GetBinContent(hrealXSumScMtd_Xi -> FindBin(fitapeaksc));
 //    limn = hrealXSumScMtd -> GetBinContent(hrealXSumScMtd -> GetMaximumBin());
     massX_min = new TLine(fitapeaksc, 0, fitapeaksc, limn);
     massX_max = new TLine(fitbpeaksc, 0, fitbpeaksc, limn);
@@ -2135,8 +2143,12 @@ void anaBkgd2(){
     hrealLSumVertPeakSc -> Add(hrealLSumBGScVert, -1);
     //end BG subtr.
 
-    hrealLSumVert -> SetLineColor(1);
-    hrealLSumScVert -> SetLineColor(1);
+    hrealLSumVert -> SetLineColor(8);
+    hrealLSumScVert -> SetLineColor(8);
+    hrealLSumVert -> SetLineStyle(9);
+    hrealLSumScVert -> SetLineStyle(9);
+    hrealLSumVert -> SetLineWidth(2);
+    hrealLSumScVert -> SetLineWidth(2);
     hrealLSumVert -> SetMarkerStyle(20);
     hrealLSumScVert -> SetMarkerStyle(20);
     hrealLSumVert -> SetMarkerSize(.7);
@@ -2710,12 +2722,12 @@ void anaBkgd2(){
     lim_min -> SetLineWidth(2);
     cMTDX -> cd(1);
     lChan -> Draw("same");
-    lim_min -> Draw("same");
+    //lim_min -> Draw("same");
 
     lim_min -> SetLineColor(kRed);
     lim_min -> SetLineWidth(2);
     cMTDX -> cd(2);
-    lChan -> Draw("same");
+    //lChan -> Draw("same");
     lim_min -> Draw("same");
 
 
@@ -2876,7 +2888,7 @@ void anaBkgd2(){
     lChan -> Draw("same");
 
         
-    TFile *f = new TFile("./out_ana/out_anaBkgd_all_0905_M3_fixed_meta.root", "RECREATE");
+    TFile *f = new TFile("./out_ana/out_anaBkgd_all_0913_M3_fixed_meta.root", "RECREATE");
 //    TFile *f = new TFile("./out_ana/test.root", "RECREATE");
     cLambdaXiMass -> Write();
     cLambdaXiMassSc -> Write();
